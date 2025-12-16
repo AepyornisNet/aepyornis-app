@@ -41,6 +41,7 @@ final router = GoRouter(
                   authRepository: context.read(),
                   measurementRepository: context.read(),
                   sharedPreferencesService: context.read(),
+                  healthConnectService: context.read(),
                 ),
               );
             },
@@ -96,6 +97,9 @@ final router = GoRouter(
                 return SettingsScreen(
                   viewModel: SettingsViewModel(
                     authRepository: context.read(),
+                    sharedPreferencesService: context.read(),
+                    healthConnectService: context.read(),
+                    measurementRepository: context.read(),
                   ),
                 );
               }),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:workout_tracker_app/l10n/app_localizations.dart';
 
 class MainScaffold extends StatelessWidget {
   static const Key homeScreenKey = ValueKey('home_screen');

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:workout_tracker_app/l10n/app_localizations.dart';
 
 class WorkoutDetailData extends StatelessWidget {
   const WorkoutDetailData(this.workout, {super.key});
@@ -11,153 +11,139 @@ class WorkoutDetailData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [];
-    if (workout.data != null) {
-      final data = workout.data!;
+    List<_WorkoutDetailListItem> items = [];
 
-      List<_WorkoutDetailListItem> items = [];
-      if (data.addressString != "") {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.location_on),
-          label: AppLocalizations.of(context)!.location,
-          text: data.addressString,
-        ));
-      }
+    final address = workout.addressString ?? '';
+    if (address.isNotEmpty) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.location_on),
+        label: AppLocalizations.of(context)!.location,
+        text: address,
+      ));
+    }
 
-      if (data.creator != "") {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.bookmark),
-          label: AppLocalizations.of(context)!.source,
-          text: data.creator,
-        ));
-      }
+    final source = workout.data?.creator ?? '';
+    if (source.isNotEmpty) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.bookmark),
+        label: AppLocalizations.of(context)!.source,
+        text: source,
+      ));
+    }
 
-      if (data.totalRepetitions > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.sync),
-          label: AppLocalizations.of(context)!.total_repetitions,
-          text: '${data.totalRepetitions}',
-        ));
-      }
+    if (workout.totalRepetitions > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.sync),
+        label: AppLocalizations.of(context)!.total_repetitions,
+        text: '${workout.totalRepetitions}',
+      ));
+    }
 
-      if (data.totalWeight > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.fitness_center),
-          label: AppLocalizations.of(context)!.total_weight,
-          text: '${NumberFormat("#.##").format(data.totalWeight)} kg',
-        ));
-      }
+    if (workout.totalWeight > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.fitness_center),
+        label: AppLocalizations.of(context)!.total_weight,
+        text: '${NumberFormat("#.##").format(workout.totalWeight)} kg',
+      ));
+    }
 
-      if (data.totalDuration > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.timer),
-          label: AppLocalizations.of(context)!.total_duration,
-          text: '${(data.totalDuration) / 1000000000 ~/ 60} min',
-        ));
-      }
+    if (workout.totalDuration > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.timer),
+        label: AppLocalizations.of(context)!.total_duration,
+        text: _formatDuration(workout.totalDuration),
+      ));
+    }
 
-      if (data.pauseDuration > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.hourglass_empty),
-          label: AppLocalizations.of(context)!.time_paused,
-          text: '${(data.pauseDuration) / 1000000000 ~/ 60} min',
-        ));
-      }
+    if (workout.pauseDuration > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.hourglass_empty),
+        label: AppLocalizations.of(context)!.time_paused,
+        text: _formatDuration(workout.pauseDuration),
+      ));
+    }
 
-      if (data.totalDistance > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.arrow_right_alt),
-          label: AppLocalizations.of(context)!.total_distance,
-          text:
-              '${NumberFormat("#.##").format((data.totalDistance) / 1000)} km',
-        ));
-      }
+    if (workout.totalDistance > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.arrow_right_alt),
+        label: AppLocalizations.of(context)!.total_distance,
+        text:
+            '${NumberFormat("#.##").format(workout.totalDistance / 1000)} km',
+      ));
+    }
 
-      if (data.averageSpeed > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.speed),
-          label: AppLocalizations.of(context)!.average_speed,
-          text:
-              '${NumberFormat("#.##").format((data.averageSpeed) * 3.6)} km/h',
-        ));
-      }
+    if (workout.averageSpeed > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.speed),
+        label: AppLocalizations.of(context)!.average_speed,
+        text:
+            '${NumberFormat("#.##").format(workout.averageSpeed * 3.6)} km/h',
+      ));
+    }
 
-      if (data.averageSpeedNoPause > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.speed),
-          label: AppLocalizations.of(context)!.average_speed_no_pause,
-          text:
-              '${NumberFormat("#.##").format((data.averageSpeedNoPause) * 3.6)} km/h',
-        ));
-      }
+    if (workout.averageSpeedNoPause > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.speed),
+        label: AppLocalizations.of(context)!.average_speed_no_pause,
+        text: '${NumberFormat("#.##").format(workout.averageSpeedNoPause * 3.6)} km/h',
+      ));
+    }
 
-      if (data.averageSpeed > 0) {
-        // TODO: Add average tempo
-      }
+    if (workout.maxSpeed > 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.speed),
+        label: AppLocalizations.of(context)!.max_speed,
+        text: '${NumberFormat("#.##").format(workout.maxSpeed * 3.6)} km/h',
+      ));
+    }
 
-      if (data.averageSpeedNoPause > 0) {
-        // TODO: Add average tempo (no pause)
-      }
+    if (workout.minElevation != 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.terrain),
+        label: AppLocalizations.of(context)!.min_elevation,
+        text: '${NumberFormat("#.##").format(workout.minElevation)} m',
+      ));
+    }
 
-      if (data.maxSpeed > 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.speed),
-          label: AppLocalizations.of(context)!.max_speed,
-          text: '${NumberFormat("#.##").format((data.maxSpeed) * 3.6)} km/h',
-        ));
-      }
+    if (workout.maxElevation != 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.terrain),
+        label: AppLocalizations.of(context)!.max_elevation,
+        text: '${NumberFormat("#.##").format(workout.maxElevation)} m',
+      ));
+    }
 
-      if (data.minElevation != 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.terrain),
-          label: AppLocalizations.of(context)!.min_elevation,
-          text: '${NumberFormat("#.##").format((data.minElevation))} m',
-        ));
-      }
+    if (workout.totalUp != 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.arrow_upward),
+        label: AppLocalizations.of(context)!.total_up,
+        text: '${NumberFormat("#.##").format(workout.totalUp)} m',
+      ));
+    }
 
-      if (data.maxElevation != 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.terrain),
-          label: AppLocalizations.of(context)!.max_elevation,
-          text: '${NumberFormat("#.##").format((data.maxElevation))} m',
-        ));
-      }
+    if (workout.totalDown != 0) {
+      items.add(_WorkoutDetailListItem(
+        icon: const Icon(Icons.arrow_downward),
+        label: AppLocalizations.of(context)!.total_down,
+        text: '${NumberFormat("#.##").format(workout.totalDown)} m',
+      ));
+    }
 
-      if (data.totalUp != 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.arrow_upward),
-          label: AppLocalizations.of(context)!.total_up,
-          text: '${NumberFormat("#.##").format((data.totalUp))} m',
-        ));
-      }
-
-      if (data.totalDown != 0) {
-        items.add(_WorkoutDetailListItem(
-          icon: const Icon(Icons.arrow_downward),
-          label: AppLocalizations.of(context)!.total_down,
-          text: '${NumberFormat("#.##").format((data.totalDown))} m',
-        ));
-      }
-
-      // TODO: Add calories burned
-      // TODO: Add equipment
-      // TODO: Add extra metrics
-
-      for (var item in items) {
-        widgets.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(children: [
-              item.icon,
-              SizedBox(width: 8),
-              Text(item.label),
-              SizedBox(width: 8),
-            ]),
-            Spacer(),
-            Text(item.text),
-          ],
-        ));
-        widgets.add(SizedBox(height: 8));
-      }
+    for (var item in items) {
+      widgets.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(children: [
+            item.icon,
+            SizedBox(width: 8),
+            Text(item.label),
+            SizedBox(width: 8),
+          ]),
+          Spacer(),
+          Text(item.text),
+        ],
+      ));
+      widgets.add(SizedBox(height: 8));
     }
 
     return Padding(
@@ -183,6 +169,16 @@ class WorkoutDetailData extends StatelessWidget {
           ],
         ));
   }
+}
+
+String _formatDuration(int seconds) {
+  final duration = Duration(seconds: seconds);
+  final hours = duration.inHours;
+  final minutes = duration.inMinutes.remainder(60);
+  if (hours > 0) {
+    return '${hours}h ${minutes}m';
+  }
+  return '${duration.inMinutes} min';
 }
 
 class _WorkoutDetailListItem {

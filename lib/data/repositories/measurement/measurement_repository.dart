@@ -11,7 +11,13 @@ abstract class MeasurementRepository {
     DateTime endDate,
   });
 
-  Future<Result<void>> setSteps({required int steps, DateTime date});
+  Future<Result<void>> upsertMeasurement({
+    required DateTime date,
+    int? steps,
+    double? weightKg,
+    double? heightCm,
+    int? restingHeartRate,
+  });
 
   // Fetches the full [Measurement] list from the server and updates the local cache
   Future<Result<void>> updateMeasurements();

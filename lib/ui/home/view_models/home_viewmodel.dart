@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/repositories/auth/auth_repository.dart';
 import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository.dart';
+import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
 import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
 import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
 
@@ -15,9 +13,11 @@ class HomeViewModel extends ChangeNotifier {
     required AuthRepository authRepository,
     required MeasurementRepository measurementRepository,
     required SharedPreferencesService sharedPreferencesService,
+    required HealthConnectService healthConnectService,
   })  : _authRepository = authRepository,
         _measurementRepository = measurementRepository,
-        _sharedPreferencesService = sharedPreferencesService {
+        _sharedPreferencesService = sharedPreferencesService,
+        _healthConnectService = healthConnectService {
     getWeekMeasurement = Command.createAsync<int, Result<List<Measurement>>?>(
       _getWeekMeasurement,
       initialValue: null,
@@ -27,6 +27,7 @@ class HomeViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
   final MeasurementRepository _measurementRepository;
   final SharedPreferencesService _sharedPreferencesService;
+  final HealthConnectService _healthConnectService;
 
   late Command<void, Result<Measurement>?> getTodayMeasurement;
   late Command<int, Result<List<Measurement>>?> getWeekMeasurement;
@@ -67,20 +68,13 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> requestPermissions() async {
-    if (!await _sharedPreferencesService.getSyncPedometer()) {
+    if (!await _sharedPreferencesService.getSyncHealthConnect()) {
       return;
     }
 
-    PermissionStatus status = PermissionStatus.denied;
-    if (Platform.isAndroid &&
-        !(await Permission.activityRecognition.isGranted)) {
-      status = await Permission.activityRecognition.request();
-    } else if (Platform.isIOS && !(await Permission.sensors.isGranted)) {
-      status = await Permission.sensors.request();
-    }
-
-    if (status.isDenied || status.isPermanentlyDenied) {
-      await _sharedPreferencesService.setSyncPedometer(false);
+    final granted = await _healthConnectService.requestPermissions();
+    if (!granted) {
+      await _sharedPreferencesService.setSyncHealthConnect(false);
     }
   }
 

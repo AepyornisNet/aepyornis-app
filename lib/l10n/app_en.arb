@@ -28,5 +28,21 @@
   "extra_metrics": "Extra metrics",
   "total_repetitions": "Total repetitions",
   "total_weight": "Total weight",
-  "steps": "Steps"
+  "steps": "Steps",
+  "connectHealth": "Connect Health Connect",
+  "connectHealthSuccess": "Health Connect access granted",
+  "connectHealthFailure": "Health Connect permission denied",
+  "syncHealthDaysLabel": "Days to sync",
+  "syncHealthDescription": "Number of recent days to import from Health Connect.",
+  "syncHealthButton": "Sync measurements",
+  "syncHealthSuccess": "Synced {count} day(s) from Health Connect",
+  "@syncHealthSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncHealthFailure": "Health Connect sync failed",
+  "syncHealthInvalidDays": "Enter at least one day"
 }

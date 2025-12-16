@@ -48,12 +48,17 @@ class ApiClient {
 
   Future<Result<List<Measurement>>> getDailyMeasurements() async {
     try {
-      final response = await http.get(_url('/api/v1/daily'), headers: await _headers());
+      final response =
+          await http.get(_url('/api/v2/measurements'), headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse =
             ApiResponse.fromJson<List<Measurement>, List<dynamic>>(
-                jsonDecode(utf8.decode(response.bodyBytes)),
-                (json) => json.map((e) => Measurement.fromJson(e)).toList());
+          jsonDecode(utf8.decode(response.bodyBytes))
+              as Map<String, dynamic>,
+          (results) => results
+              .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        );
         try {
           final data = apiResponse.getOrThrow();
           return Success(data);
@@ -68,14 +73,40 @@ class ApiClient {
     }
   }
 
-  Future<Result<void>> setSteps(
-      {required int steps, required String date}) async {
+  Future<Result<void>> upsertMeasurement({
+    required DateTime date,
+    int? steps,
+    double? weightKg,
+    double? heightCm,
+    int? restingHeartRate,
+  }) async {
+    final payload = <String, dynamic>{
+      'date': date.toIso8601String().substring(0, 10),
+    };
+
+    if (steps != null) {
+      payload['steps'] = steps;
+    }
+    if (weightKg != null) {
+      payload['weight'] = weightKg;
+    }
+    if (heightCm != null) {
+      payload['height'] = heightCm;
+    }
+    if (restingHeartRate != null) {
+      payload['resting_heart_rate'] = restingHeartRate;
+    }
+
+    if (payload.length == 1) {
+      return Failure(Exception('No measurement data supplied'));
+    }
+
     try {
-      final response = await http.post(_url('/api/v1/daily'), headers: {
+      final response = await http.post(_url('/api/v2/measurements'), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         ...await _headers(),
-      }, body: jsonEncode({'steps': steps, 'date': date}));
-      if (response.statusCode == 200) {
+      }, body: jsonEncode(payload));
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(0);
       } else {
         return Failure(HttpException("Invalid response"));
@@ -87,11 +118,17 @@ class ApiClient {
 
   Future<Result<List<Workout>>> getWorkouts() async {
     try {
-      final response = await http.get(_url('/api/v1/workouts'), headers: await _headers());
+      final response =
+          await http.get(_url('/api/v2/workouts'), headers: await _headers());
       if (response.statusCode == 200) {
-        final apiResponse = ApiResponse.fromJson<List<Workout>, List<dynamic>>(
-            jsonDecode(utf8.decode(response.bodyBytes)),
-            (json) => json.map((e) => Workout.fromJson(e)).toList());
+        final apiResponse =
+            ApiResponse.fromJson<List<Workout>, List<dynamic>>(
+          jsonDecode(utf8.decode(response.bodyBytes))
+              as Map<String, dynamic>,
+          (results) => results
+              .map((e) => Workout.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        );
         try {
           final data = apiResponse.getOrThrow();
           return Success(data);
@@ -108,7 +145,7 @@ class ApiClient {
 
   Future<Result<Workout>> getWorkout(int id) async {
     try {
-      final response = await http.get(_url('/api/v1/workouts/$id'), headers: await _headers());
+      final response = await http.get(_url('/api/v2/workouts/$id'), headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
             jsonDecode(utf8.decode(response.bodyBytes)),
@@ -129,7 +166,7 @@ class ApiClient {
 
   Future<Result<User>> whoAmI() async {
     try {
-      final response = await http.get(_url('/api/v1/whoami'), headers: await _headers());
+      final response = await http.get(_url('/api/v2/whoami'), headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson<User, dynamic>(
             jsonDecode(utf8.decode(response.bodyBytes)),

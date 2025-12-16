@@ -9,52 +9,108 @@ part 'workout.g.dart';
 @freezed
 abstract class Workout with _$Workout {
   const factory Workout({
-    @JsonKey(name: 'ID')
-    int? id,
+    @JsonKey(name: 'id') int? id,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
 
-    @JsonKey(name: 'CreatedAt')
-    String? createdAt,
+    /// The ID of the user who owns the workout
+    @JsonKey(name: 'user_id') int? userID,
 
-    @JsonKey(name: 'UpdatedAt')
-    String? updatedAt,
-
-    /* The ID of the user who owns the workout */
-    required int userID,
-
-    /* The map data associated with the workout */
-    MapData? data,
-
-    /* The timestamp the workout was recorded */
+    /// The timestamp the workout was recorded
     required DateTime date,
 
-    /* Whether the workout has been modified and the details should be re-rendered */
+    /// Whether the workout has been modified and the details should be re-rendered
     bool? dirty,
 
-    /* Which equipment is used for this workout */
-    @Default([]) List<Equipment> equipment,
+    /// Which equipment is used for this workout
+    @JsonKey(name: 'equipment') @Default([]) List<Equipment> equipment,
 
-    /* The file data associated with the workout */
-    // AllOfdatabaseWorkoutGpx? gpx,
+    /// The map data associated with the workout
+    @JsonKey(name: 'map_data') MapData? data,
 
-    /* The name of the workout */
+    /// The name of the workout
     required String name,
 
-    /* The notes associated with the workout, in markdown */
+    /// The notes associated with the workout, in markdown
     @Default('') String notes,
 
-    /* UUID to publicly share a workout - this UUID can be rotated */
-    String? publicUUID,
+    /// UUID to publicly share a workout - this UUID can be rotated
+    @JsonKey(name: 'public_uuid') String? publicUUID,
 
-    /* Which route segments match */
-    // List<DatabaseRouteSegmentMatch> routeSegmentMatches,
+    /// Optional custom workout type descriptors
+    @JsonKey(name: 'custom_type') String? customType,
+    @JsonKey(name: 'sub_type') String? subType,
 
-    /* The type of the workout */
+    /// The type of the workout
     required WorkoutType type,
 
-    /* The user who owns the workout */
-    // AllOfdatabaseWorkoutUser user,
+    @JsonKey(name: 'locked') @Default(false) bool locked,
+    @JsonKey(name: 'has_file') @Default(false) bool hasFile,
+    @JsonKey(name: 'has_tracks') @Default(false) bool hasTracks,
+
+    @JsonKey(name: 'address_string') String? addressString,
+    @JsonKey(name: 'total_distance') @Default(0.0) double totalDistance,
+    @JsonKey(name: 'total_duration') @Default(0) int totalDuration,
+    @JsonKey(name: 'pause_duration') @Default(0) int pauseDuration,
+    @JsonKey(name: 'total_weight') @Default(0.0) double totalWeight,
+    @JsonKey(name: 'total_repetitions') @Default(0) int totalRepetitions,
+    @JsonKey(name: 'total_up') @Default(0.0) double totalUp,
+    @JsonKey(name: 'total_down') @Default(0.0) double totalDown,
+    @JsonKey(name: 'average_speed') @Default(0.0) double averageSpeed,
+    @JsonKey(name: 'average_speed_no_pause')
+        @Default(0.0)
+        double averageSpeedNoPause,
+    @JsonKey(name: 'max_speed') @Default(0.0) double maxSpeed,
+    @JsonKey(name: 'min_elevation') @Default(0.0) double minElevation,
+    @JsonKey(name: 'max_elevation') @Default(0.0) double maxElevation,
+    @JsonKey(name: 'average_cadence') double? averageCadence,
+    @JsonKey(name: 'max_cadence') double? maxCadence,
+    @JsonKey(name: 'average_heart_rate') double? averageHeartRate,
+    @JsonKey(name: 'max_heart_rate') double? maxHeartRate,
+    @JsonKey(name: 'average_power') double? averagePower,
+    @JsonKey(name: 'max_power') double? maxPower,
   }) = _Workout;
 
   factory Workout.fromJson(Map<String, dynamic> json) =>
-      _$WorkoutFromJson(json);
+      _$WorkoutFromJson(_normalizeWorkoutJson(json));
+}
+
+Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
+  final normalized = Map<String, dynamic>.from(json);
+
+  void copyKey(String target, String source) {
+    if (!normalized.containsKey(target) && json.containsKey(source)) {
+      normalized[target] = json[source];
+    }
+  }
+
+  copyKey('id', 'ID');
+  copyKey('created_at', 'CreatedAt');
+  copyKey('updated_at', 'UpdatedAt');
+  copyKey('user_id', 'userID');
+  copyKey('map_data', 'data');
+  copyKey('public_uuid', 'publicUUID');
+  copyKey('address_string', 'addressString');
+  copyKey('total_distance', 'totalDistance');
+  copyKey('total_duration', 'totalDuration');
+  copyKey('pause_duration', 'pauseDuration');
+  copyKey('total_weight', 'totalWeight');
+  copyKey('total_repetitions', 'totalRepetitions');
+  copyKey('total_up', 'totalUp');
+  copyKey('total_down', 'totalDown');
+  copyKey('average_speed', 'averageSpeed');
+  copyKey('average_speed_no_pause', 'averageSpeedNoPause');
+  copyKey('max_speed', 'maxSpeed');
+  copyKey('min_elevation', 'minElevation');
+  copyKey('max_elevation', 'maxElevation');
+  copyKey('average_cadence', 'averageCadence');
+  copyKey('max_cadence', 'maxCadence');
+  copyKey('average_heart_rate', 'averageHeartRate');
+  copyKey('max_heart_rate', 'maxHeartRate');
+  copyKey('average_power', 'averagePower');
+  copyKey('max_power', 'maxPower');
+  copyKey('custom_type', 'customType');
+  copyKey('sub_type', 'subType');
+
+  return normalized;
 }

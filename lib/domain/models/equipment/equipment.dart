@@ -27,5 +27,21 @@ abstract class Equipment with _$Equipment {
   }) = _Equipment;
 
   factory Equipment.fromJson(Map<String, dynamic> json) =>
-      _$EquipmentFromJson(json);
+      _$EquipmentFromJson(_normalizeEquipmentJson(json));
+}
+
+Map<String, dynamic> _normalizeEquipmentJson(Map<String, dynamic> json) {
+  final normalized = Map<String, dynamic>.from(json);
+
+  void copyKey(String target, String source) {
+    if (!normalized.containsKey(target) && json.containsKey(source)) {
+      normalized[target] = json[source];
+    }
+  }
+
+  copyKey('createdAt', 'created_at');
+  copyKey('updatedAt', 'updated_at');
+  copyKey('userID', 'user_id');
+
+  return normalized;
 }

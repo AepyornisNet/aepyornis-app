@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesService {
   static const _baseUrl = 'BASE_URL';
   static const _apiKey = 'API_KEY';
-  static const _syncPedometer = 'SYNC_PEDOMETER';
+  static const _syncHealthConnect = 'SYNC_HEALTH_CONNECT';
+  static const _legacySyncPedometer = 'SYNC_PEDOMETER';
 
   Future<void> setUrl(String? value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,13 +34,23 @@ class SharedPreferencesService {
     return prefs.getString(_apiKey);
   }
 
-  Future<void> setSyncPedometer(bool value) async {
+  Future<void> setSyncHealthConnect(bool value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_syncPedometer, value);
+    await prefs.setBool(_syncHealthConnect, value);
+    await prefs.remove(_legacySyncPedometer);
   }
 
-  Future<bool> getSyncPedometer() async {
+  Future<bool> getSyncHealthConnect() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_syncPedometer) ?? true;
+    if (prefs.containsKey(_syncHealthConnect)) {
+      return prefs.getBool(_syncHealthConnect) ?? true;
+    }
+    return prefs.getBool(_legacySyncPedometer) ?? true;
   }
+
+  @Deprecated('Use setSyncHealthConnect instead')
+  Future<void> setSyncPedometer(bool value) => setSyncHealthConnect(value);
+
+  @Deprecated('Use getSyncHealthConnect instead')
+  Future<bool> getSyncPedometer() => getSyncHealthConnect();
 }

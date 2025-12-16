@@ -32,6 +32,7 @@ class MeasurementRepositoryRemote implements MeasurementRepository {
         date: date.toIso8601String().substring(0, 10),
         weight: null,
         height: null,
+        restingHeartRate: null,
       ),
     );
 
@@ -79,11 +80,26 @@ class MeasurementRepositoryRemote implements MeasurementRepository {
   }
 
   @override
-  Future<Result<void>> setSteps({required int steps, DateTime? date}) async {
-    date ??= DateTime.now();
+  Future<Result<void>> upsertMeasurement({
+    required DateTime date,
+    int? steps,
+    double? weightKg,
+    double? heightCm,
+    int? restingHeartRate,
+  }) async {
+    final response = await _apiClient.upsertMeasurement(
+      date: date,
+      steps: steps,
+      weightKg: weightKg,
+      heightCm: heightCm,
+      restingHeartRate: restingHeartRate,
+    );
 
-    String dateStr = date.toIso8601String().substring(0, 10);
-    await _apiClient.setSteps(steps: steps, date: dateStr);
-    return Success(0);
+    try {
+      response.getOrThrow();
+      return Success(0);
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 }

@@ -2,22 +2,27 @@ import 'dart:io';
 
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_command/flutter_command.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:pedometer_2/pedometer_2.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_tracker_app/config/dependencies.dart';
 import 'package:workout_tracker_app/data/repositories/auth/auth_repository_remote.dart';
 import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository_remote.dart';
 import 'package:workout_tracker_app/data/services/api/api_client.dart';
+import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
 import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
 import 'package:workout_tracker_app/routing/router.dart';
 import 'package:workout_tracker_app/ui/core/themes/theme.dart';
 
 void main() {
+  Command.globalExceptionHandler = (error, stackTrace) {
+    debugPrint('[CommandError] ${error.commandName ?? 'unknown'}: ${error.error}');
+  };
+
   Intl.defaultLocale = Platform.localeName;
   initializeDateFormatting(Platform.localeName, null).then((_) {
     runApp(MultiProvider(providers: providersRemote, child: const MainApp()));
@@ -71,12 +76,12 @@ class _MainAppState extends State<MainApp> {
         requiredNetworkType: NetworkType.ANY,
       ),
       (String taskId) async {
-        print("[BackgroundFetch] Event received $taskId");
+        debugPrint('[BackgroundFetch] Event received $taskId');
         backgroundUpdateSteps();
         BackgroundFetch.finish(taskId);
       },
       (String taskId) async {
-        print("[BackgroundFetch] Timeout $taskId");
+        debugPrint('[BackgroundFetch] Timeout $taskId');
         BackgroundFetch.finish(taskId);
       },
     );
@@ -84,20 +89,33 @@ class _MainAppState extends State<MainApp> {
 }
 
 Future<void> backgroundUpdateSteps() async {
-  // Perform your background task here
+  final sharedPreferencesService = SharedPreferencesService();
+  if (!await sharedPreferencesService.getSyncHealthConnect()) {
+    return;
+  }
+
   final apiClient = ApiClient();
   final authRepo = AuthRepositoryRemote(
     apiClient: apiClient,
-    sharedPreferencesService: SharedPreferencesService(),
+    sharedPreferencesService: sharedPreferencesService,
   );
-  if (await authRepo.isAuthenticated) {
-    DateTime startOfDay = DateTime.now().subtract(Duration(
-        hours: DateTime.now().hour,
-        minutes: DateTime.now().minute,
-        seconds: DateTime.now().second));
-    DateTime endOfDay = startOfDay.add(Duration(days: 1));
-    int steps = await Pedometer().getStepCount(from: startOfDay, to: endOfDay);
-    await MeasurementRepositoryRemote(apiClient: apiClient)
-        .setSteps(steps: steps);
+
+  if (!await authRepo.isAuthenticated) {
+    return;
   }
+
+  final healthConnectService = HealthConnectService();
+  final metrics = await healthConnectService.readDailyMetrics(DateTime.now());
+  if (metrics == null) {
+    return;
+  }
+
+  await MeasurementRepositoryRemote(apiClient: apiClient)
+      .upsertMeasurement(
+    date: metrics.date,
+    steps: metrics.steps,
+    weightKg: metrics.weightKg,
+    heightCm: metrics.heightCm,
+    restingHeartRate: metrics.restingHeartRateBpm,
+  );
 }

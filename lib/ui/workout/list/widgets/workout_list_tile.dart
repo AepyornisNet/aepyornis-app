@@ -13,21 +13,13 @@ class WorkoutListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       minTileHeight: 80,
-      leading: SizedBox(
-        width: 60,
-        height: 60,
-        child: Builder(builder: (context) {
-          if (workout.data == null) {
-            return const Center(
-              child: Icon(Icons.error),
-            );
-          } else {
-            return Center(
-              child: Icon(workout.type.icon),
-            );
-          }
-        }),
-      ),
+        leading: SizedBox(
+          width: 60,
+          height: 60,
+          child: Center(
+            child: Icon(workout.type.icon),
+          ),
+        ),
       title: Text(workout.name),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,7 +41,7 @@ class WorkoutListTile extends StatelessWidget {
                     Icon(Icons.arrow_right_alt),
                     SizedBox(width: 5),
                     Text(
-                        '${NumberFormat("#.##").format((workout.data?.totalDistance ?? 0) / 1000)} km'),
+                        '${NumberFormat("#.##").format(workout.totalDistance / 1000)} km'),
                   ],
                 ),
               ],
@@ -65,7 +57,7 @@ class WorkoutListTile extends StatelessWidget {
                     Icon(Icons.timer),
                     SizedBox(width: 5),
                     Text(
-                      '${(workout.data?.totalDuration ?? 0) / 1000000000 ~/ 60} min',
+                      '${Duration(seconds: workout.totalDuration).inMinutes} min',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -76,7 +68,7 @@ class WorkoutListTile extends StatelessWidget {
                     Icon(Icons.location_pin),
                     SizedBox(width: 5),
                     Expanded(
-                      child: Text(workout.data?.addressString ?? ''),
+                      child: Text(workout.addressString ?? ''),
                     ),
                   ],
                 ),

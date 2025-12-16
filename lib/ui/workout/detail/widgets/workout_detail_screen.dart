@@ -60,7 +60,10 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
 
               List<Widget> widgets = [];
               final workout = widget.viewModel.workout!;
-              if (workout.data?.details != null) {
+              final hasDetails =
+                  workout.data?.details != null &&
+                      workout.data!.details!.points.isNotEmpty;
+              if (hasDetails) {
                 widgets.add(SizedBox(
                   height: 300,
                   child: WorkoutDetailMap(workout: widget.viewModel.workout!),
@@ -71,7 +74,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
               widgets.add(WorkoutDetailData(workout));
               widgets.add(SizedBox(height: 16));
 
-              if (workout.data?.details != null) {
+              if (hasDetails) {
                 widgets.add(SizedBox(
                   height: 300,
                   child: WorkoutDetailChart(

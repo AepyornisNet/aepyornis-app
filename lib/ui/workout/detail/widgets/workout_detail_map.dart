@@ -14,7 +14,7 @@ class WorkoutDetailMap extends StatefulWidget {
 class _WorkoutDetailMapState extends State<WorkoutDetailMap>
     with OSMMixinObserver {
   List<GeoPoint> workoutPath = [];
-  late MapController mapController;
+  MapController? mapController;
   String? _roadKey;
   bool mapReady = false;
 
@@ -23,8 +23,10 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap>
     super.initState();
 
     final workout = widget.workout;
-    if (workout.data != null && workout.data?.details?.points != null) {
-      final mapData = workout.data!;
+    final mapData = workout.data;
+    final hasPoints = mapData?.details?.points.isNotEmpty ?? false;
+    final center = mapData?.center;
+    if (mapData != null && hasPoints && center != null) {
       workoutPath = mapData.details!.points
           .map((e) => GeoPoint(
                 latitude: e.lat,
@@ -34,25 +36,24 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap>
 
       mapController = MapController.withPosition(
         initPosition: GeoPoint(
-          latitude: mapData.center.lat,
-          longitude: mapData.center.lng,
+          latitude: center.lat,
+          longitude: center.lng,
         ),
       );
-      mapController.addObserver(this);
+      mapController!.addObserver(this);
     }
   }
 
   @override
   void dispose() {
+    mapController?.removeObserver(this);
+    mapController?.dispose();
     super.dispose();
-
-    mapController.removeObserver(this);
-    mapController.dispose();
   }
 
   @override
   Future<void> mapIsReady(bool isReady) async {
-    if (!isReady) {
+    if (!isReady || mapController == null) {
       return;
     }
 
@@ -64,15 +65,22 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap>
 
   @override
   Widget build(BuildContext context) {
-    return OSMFlutter(controller: mapController, osmOption: OSMOption());
+    if (mapController == null) {
+      return const Center(child: Text('No map data'));
+    }
+    return OSMFlutter(controller: mapController!, osmOption: OSMOption());
   }
 
   Future<void> _updatePath() async {
-    if (_roadKey != null) {
-      mapController.removeRoad(roadKey: _roadKey!);
+    if (mapController == null || workoutPath.isEmpty) {
+      return;
     }
 
-    _roadKey = await mapController.drawRoadManually(
+    if (_roadKey != null) {
+      mapController!.removeRoad(roadKey: _roadKey!);
+    }
+
+    _roadKey = await mapController!.drawRoadManually(
         workoutPath,
         RoadOption(
           roadColor: Colors.red,

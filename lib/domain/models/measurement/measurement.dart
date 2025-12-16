@@ -19,6 +19,9 @@ abstract class Measurement with _$Measurement {
     /* The weight of the user, in kilograms */
     required double? weight,
 
+    /* Resting heart rate (beats per minute) */
+    @JsonKey(name: 'resting_heart_rate') double? restingHeartRate,
+
     /* The date of the measurement (yyyy-mm-dd) */
     required String date,
 

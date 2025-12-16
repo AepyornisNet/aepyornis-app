@@ -1,3 +1,19 @@
 {
-  "apiKey": "API-Schlüssel"
+  "apiKey": "API-Schlüssel",
+  "connectHealth": "Health Connect verbinden",
+  "connectHealthSuccess": "Health Connect Zugriff gewährt",
+  "connectHealthFailure": "Health Connect Zugriff verweigert",
+  "syncHealthDaysLabel": "Tage zum Synchronisieren",
+  "syncHealthDescription": "Anzahl der letzten Tage, die aus Health Connect importiert werden sollen.",
+  "syncHealthButton": "Messungen synchronisieren",
+  "syncHealthSuccess": "{count} Tag(e) aus Health Connect importiert",
+  "@syncHealthSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncHealthFailure": "Health Connect Synchronisierung fehlgeschlagen",
+  "syncHealthInvalidDays": "Bitte mindestens einen Tag angeben"
 }

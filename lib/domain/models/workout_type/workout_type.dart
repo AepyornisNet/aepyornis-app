@@ -20,6 +20,10 @@ class WorkoutType {
   static WorkoutType hiking_ = WorkoutType._internal("hiking");
   static WorkoutType pushUps_ = WorkoutType._internal("push-ups");
   static WorkoutType weightLifting_ = WorkoutType._internal("weight-lifting");
+  static WorkoutType horseRiding_ = WorkoutType._internal("horse-riding");
+  static WorkoutType inlineSkating_ = WorkoutType._internal("inline-skating");
+  static WorkoutType rowing_ = WorkoutType._internal("rowing");
+  static WorkoutType other_ = WorkoutType._internal("other");
 
   @override
   bool operator ==(other) {
@@ -62,53 +66,74 @@ class WorkoutType {
         return Icons.fitness_center;
       case "weight-lifting":
         return Icons.fitness_center;
+      case "horse-riding":
+        return Icons.directions_run;
+      case "inline-skating":
+        return Icons.directions_walk;
+      case "rowing":
+        return Icons.rowing;
+      case "other":
+        return Icons.sports;
     }
-    throw ('Unknown enum value to decode: $value');
+    return Icons.sports;
   }
 
   WorkoutType.fromJson(dynamic data) {
-    switch (data) {
+    final decoded = data as String?;
+    switch (decoded) {
       case "auto":
-        value = data;
+        value = decoded!;
         break;
       case "running":
-        value = data;
+        value = decoded!;
         break;
       case "cycling":
-        value = data;
+        value = decoded!;
         break;
       case "e-cycling":
-        value = data;
+        value = decoded!;
         break;
       case "walking":
-        value = data;
+        value = decoded!;
         break;
       case "skiing":
-        value = data;
+        value = decoded!;
         break;
       case "snowboarding":
-        value = data;
+        value = decoded!;
         break;
       case "swimming":
-        value = data;
+        value = decoded!;
         break;
       case "kayaking":
-        value = data;
+        value = decoded!;
         break;
       case "golfing":
-        value = data;
+        value = decoded!;
         break;
       case "hiking":
-        value = data;
+        value = decoded!;
         break;
       case "push-ups":
-        value = data;
+        value = decoded!;
         break;
       case "weight-lifting":
-        value = data;
+        value = decoded!;
+        break;
+      case "horse-riding":
+        value = decoded!;
+        break;
+      case "inline-skating":
+        value = decoded!;
+        break;
+      case "rowing":
+        value = decoded!;
+        break;
+      case "other":
+        value = decoded!;
         break;
       default:
-        throw ('Unknown enum value to decode: $data');
+        value = other_.value;
     }
   }
 
