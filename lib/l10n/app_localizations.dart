@@ -613,6 +613,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data for {metricName}'**
   String noDataForMetric(String metricName);
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @records.
+  ///
+  /// In en, this message translates to:
+  /// **'Records'**
+  String get records;
+
+  /// No description provided for @since.
+  ///
+  /// In en, this message translates to:
+  /// **'Since'**
+  String get since;
+
+  /// No description provided for @per.
+  ///
+  /// In en, this message translates to:
+  /// **'Per'**
+  String get per;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// No description provided for @week.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get week;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @days7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get days7;
+
+  /// No description provided for @month1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 month'**
+  String get month1;
+
+  /// No description provided for @months3.
+  ///
+  /// In en, this message translates to:
+  /// **'3 months'**
+  String get months3;
+
+  /// No description provided for @months6.
+  ///
+  /// In en, this message translates to:
+  /// **'6 months'**
+  String get months6;
+
+  /// No description provided for @year1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 year'**
+  String get year1;
+
+  /// No description provided for @years2.
+  ///
+  /// In en, this message translates to:
+  /// **'2 years'**
+  String get years2;
+
+  /// No description provided for @years5.
+  ///
+  /// In en, this message translates to:
+  /// **'5 years'**
+  String get years5;
+
+  /// No description provided for @years10.
+  ///
+  /// In en, this message translates to:
+  /// **'10 years'**
+  String get years10;
+
+  /// No description provided for @forever.
+  ///
+  /// In en, this message translates to:
+  /// **'Forever'**
+  String get forever;
+
+  /// No description provided for @noStatisticsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No statistics available'**
+  String get noStatisticsAvailable;
+
+  /// No description provided for @noRecordsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No records available'**
+  String get noRecordsAvailable;
+
+  /// No description provided for @workoutsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts'**
+  String get workoutsCount;
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance (km)'**
+  String get distanceKm;
 }
 
 class _AppLocalizationsDelegate

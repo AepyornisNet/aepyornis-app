@@ -10,6 +10,7 @@ import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.d
 import 'package:workout_tracker_app/ui/settings/widgets/health_connect_settings_screen.dart';
 import 'package:workout_tracker_app/ui/settings/widgets/health_workouts_screen.dart';
 import 'package:workout_tracker_app/ui/settings/widgets/settings_screen.dart';
+import 'package:workout_tracker_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
 import 'package:workout_tracker_app/ui/statistic/overview/widgets/statistic_overview_screen.dart';
 import 'package:workout_tracker_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
 import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_screen.dart';
@@ -75,7 +76,9 @@ final router = GoRouter(
           GoRoute(
               path: Routes.stats,
               builder: (context, state) {
-                return StatisticOverviewScreen();
+                return StatisticOverviewScreen(
+                  viewModel: context.read<StatisticOverviewViewModel>(),
+                );
               }),
         ]),
         StatefulShellBranch(routes: [

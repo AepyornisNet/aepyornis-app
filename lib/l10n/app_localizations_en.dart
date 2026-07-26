@@ -274,4 +274,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String noDataForMetric(String metricName) {
     return 'No data for $metricName';
   }
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get records => 'Records';
+
+  @override
+  String get since => 'Since';
+
+  @override
+  String get per => 'Per';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String get week => 'Week';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get days7 => '7 days';
+
+  @override
+  String get month1 => '1 month';
+
+  @override
+  String get months3 => '3 months';
+
+  @override
+  String get months6 => '6 months';
+
+  @override
+  String get year1 => '1 year';
+
+  @override
+  String get years2 => '2 years';
+
+  @override
+  String get years5 => '5 years';
+
+  @override
+  String get years10 => '10 years';
+
+  @override
+  String get forever => 'Forever';
+
+  @override
+  String get noStatisticsAvailable => 'No statistics available';
+
+  @override
+  String get noRecordsAvailable => 'No records available';
+
+  @override
+  String get workoutsCount => 'Workouts';
+
+  @override
+  String get distanceKm => 'Distance (km)';
 }

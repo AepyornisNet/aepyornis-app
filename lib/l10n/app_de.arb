@@ -108,5 +108,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "overview": "Übersicht",
+  "records": "Rekorde",
+  "since": "Seit",
+  "per": "Pro",
+  "day": "Tag",
+  "week": "Woche",
+  "month": "Monat",
+  "year": "Jahr",
+  "days7": "7 Tage",
+  "month1": "1 Monat",
+  "months3": "3 Monate",
+  "months6": "6 Monate",
+  "year1": "1 Jahr",
+  "years2": "2 Jahre",
+  "years5": "5 Jahre",
+  "years10": "10 Jahre",
+  "forever": "Für immer",
+  "noStatisticsAvailable": "Keine Statistiken verfügbar",
+  "noRecordsAvailable": "Keine Rekorde verfügbar",
+  "workoutsCount": "Workouts",
+  "distanceKm": "Distanz (km)"
 }

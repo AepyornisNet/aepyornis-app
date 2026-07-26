@@ -6,6 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/services/api/model/api_response/api_response.dart';
 import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
+import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
 import 'package:workout_tracker_app/domain/models/user/user.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
@@ -430,6 +431,86 @@ class ApiClient {
           } on Exception catch (e) {
             return Failure(e);
           }
+        }
+        return Failure(HttpException("Invalid response structure"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<StatisticsResponse>> getStatistics({
+    String? since,
+    String? per,
+  }) async {
+    try {
+      final queryParams = <String, String>{};
+      if (since != null && since.isNotEmpty) queryParams['since'] = since;
+      if (per != null && per.isNotEmpty) queryParams['per'] = per;
+
+      final uri = _url('/api/v2/statistics')
+          .replace(queryParameters: queryParams.isNotEmpty ? queryParams : null);
+      final response = await http.get(uri, headers: await _headers());
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<StatisticsResponse, dynamic>(
+            decoded,
+            (json) => StatisticsResponse.fromJson(json as Map<String, dynamic>),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException("Invalid response structure"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<WorkoutRecord>>> getRecords({String? handle}) async {
+    try {
+      final queryParams = <String, String>{};
+      if (handle != null && handle.isNotEmpty) queryParams['handle'] = handle;
+
+      final uri = _url('/api/v2/records')
+          .replace(queryParameters: queryParams.isNotEmpty ? queryParams : null);
+      final response = await http.get(uri, headers: await _headers());
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse =
+              ApiResponse.fromJson<List<WorkoutRecord>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => WorkoutRecord.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) => WorkoutRecord.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
         }
         return Failure(HttpException("Invalid response structure"));
       } else {

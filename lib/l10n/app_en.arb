@@ -108,5 +108,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "overview": "Overview",
+  "records": "Records",
+  "since": "Since",
+  "per": "Per",
+  "day": "Day",
+  "week": "Week",
+  "month": "Month",
+  "year": "Year",
+  "days7": "7 days",
+  "month1": "1 month",
+  "months3": "3 months",
+  "months6": "6 months",
+  "year1": "1 year",
+  "years2": "2 years",
+  "years5": "5 years",
+  "years10": "10 years",
+  "forever": "Forever",
+  "noStatisticsAvailable": "No statistics available",
+  "noRecordsAvailable": "No records available",
+  "workoutsCount": "Workouts",
+  "distanceKm": "Distance (km)"
 }
