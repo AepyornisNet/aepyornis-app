@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen>
     _scrollController = ScrollController(
       initialScrollOffset: widget.viewModel.savedScrollOffset,
     );
-    widget.viewModel.requestPermissions();
     _scrollController.addListener(_onScroll);
   }
 
