@@ -170,21 +170,9 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Prominent Header Card for Non-Location Workout
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: _WorkoutHeader(workout: workout),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
+            // Header section
+            _WorkoutHeader(workout: workout),
+            const SizedBox(height: 12),
 
             // Summary stats & breakdown details
             WorkoutDetailData(workout),
