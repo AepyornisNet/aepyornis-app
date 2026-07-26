@@ -282,6 +282,8 @@ class _FeedPostItemState extends State<_FeedPostItem> {
     final attachmentUrl = _getAttachmentUrl(workout);
     final avatarUrl = _getUserAvatarUrl(workout);
 
+    final authHeaders = widget.viewModel.authHeaders;
+
     return InkWell(
       onTap: workout.id != null
           ? () => context.push(Routes.workoutWithId(workout.id!))
@@ -298,8 +300,12 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: colorScheme.primaryContainer,
-                  backgroundImage:
-                      avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                  backgroundImage: avatarUrl != null
+                      ? NetworkImage(
+                          avatarUrl,
+                          headers: authHeaders.isNotEmpty ? authHeaders : null,
+                        )
+                      : null,
                   child: avatarUrl == null
                       ? Text(
                           _formatAuthorName(workout)
@@ -433,6 +439,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                 borderRadius: BorderRadius.circular(16),
                 child: Image.network(
                   attachmentUrl,
+                  headers: authHeaders.isNotEmpty ? authHeaders : null,
                   height: 220,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -627,6 +634,8 @@ class _CommentSectionState extends State<_CommentSection> {
     final isLoading = widget.viewModel.loadingReplies[widget.workoutId] ?? false;
     final isReplying = widget.viewModel.replyingState[widget.workoutId] ?? false;
 
+    final authHeaders = widget.viewModel.authHeaders;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -670,8 +679,13 @@ class _CommentSectionState extends State<_CommentSection> {
                     CircleAvatar(
                       radius: 14,
                       backgroundColor: colorScheme.secondaryContainer,
-                      backgroundImage:
-                          avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                      backgroundImage: avatarUrl != null
+                          ? NetworkImage(
+                              avatarUrl,
+                              headers:
+                                  authHeaders.isNotEmpty ? authHeaders : null,
+                            )
+                          : null,
                       child: avatarUrl == null
                           ? Text(
                               authorName.characters.first.toUpperCase(),

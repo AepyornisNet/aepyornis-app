@@ -33,6 +33,8 @@ class HomeViewModel extends ChangeNotifier {
 
   String? resolveUrl(String? path) => _apiClient.resolveUrl(path);
 
+  Map<String, String> get authHeaders => _apiClient.authHeaders;
+
   String _feedScope = 'following'; // 'following' | 'global'
   String get feedScope => _feedScope;
 

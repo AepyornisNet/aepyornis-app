@@ -29,6 +29,15 @@ class ApiClient {
     _authHeaderProvider = value;
   }
 
+  Map<String, String> get authHeaders {
+    final headers = <String, String>{};
+    final authHeader = _authHeaderProvider?.call();
+    if (authHeader != null) {
+      headers[HttpHeaders.authorizationHeader] = authHeader;
+    }
+    return headers;
+  }
+
   String? resolveUrl(String? path) {
     if (path == null || path.isEmpty) return null;
     if (path.startsWith('http://') || path.startsWith('https://')) {
