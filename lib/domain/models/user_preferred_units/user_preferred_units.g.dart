@@ -8,11 +8,11 @@ part of 'user_preferred_units.dart';
 
 _UserPreferredUnits _$UserPreferredUnitsFromJson(Map<String, dynamic> json) =>
     _UserPreferredUnits(
-      distance: json['distance'] as String,
-      elevation: json['elevation'] as String,
-      height: json['height'] as String,
-      speed: json['speed'] as String,
-      weight: json['weight'] as String,
+      distance: json['distance'] as String? ?? "km",
+      elevation: json['elevation'] as String? ?? "m",
+      height: json['height'] as String? ?? "cm",
+      speed: json['speed'] as String? ?? "kmh",
+      weight: json['weight'] as String? ?? "kg",
     );
 
 Map<String, dynamic> _$UserPreferredUnitsToJson(_UserPreferredUnits instance) =>

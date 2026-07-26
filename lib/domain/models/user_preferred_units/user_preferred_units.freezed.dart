@@ -285,28 +285,33 @@ extension UserPreferredUnitsPatterns on UserPreferredUnits {
 @JsonSerializable()
 class _UserPreferredUnits implements UserPreferredUnits {
   const _UserPreferredUnits(
-      {required this.distance,
-      required this.elevation,
-      required this.height,
-      required this.speed,
-      required this.weight});
+      {this.distance = "km",
+      this.elevation = "m",
+      this.height = "cm",
+      this.speed = "kmh",
+      this.weight = "kg"});
   factory _UserPreferredUnits.fromJson(Map<String, dynamic> json) =>
       _$UserPreferredUnitsFromJson(json);
 
 /* The user's preferred distance unit */
   @override
+  @JsonKey()
   final String distance;
 /* The user's preferred elevation unit */
   @override
+  @JsonKey()
   final String elevation;
 /* The user's preferred height unit */
   @override
+  @JsonKey()
   final String height;
 /* The user's preferred speed unit */
   @override
+  @JsonKey()
   final String speed;
 /* The user's preferred weight unit */
   @override
+  @JsonKey()
   final String weight;
 
   /// Create a copy of UserPreferredUnits

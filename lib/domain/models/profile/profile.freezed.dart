@@ -24,15 +24,16 @@ mixin _$Profile {
   String get language; /* Whether to show full dates in the workout details */
   @JsonKey(name: "prefer_full_date")
   bool get preferFullDate; /* The user's preferred units */
-  UserPreferredUnits
+  UserPreferredUnits?
       get preferredUnits; /* Whether social sharing buttons are disabled when viewing a workout */
   @JsonKey(name: "socials_disabled")
   bool get socialsDisabled; /* The user's preferred color scheme */
   String get theme; /* The user's preferred timezone */
   String get timezone; /* What workout type of totals to show */
   @JsonKey(name: "totals_show")
-  WorkoutType get totalsShow; /* The ID of the user who owns this profile */
-  int get userID;
+  WorkoutType? get totalsShow; /* The ID of the user who owns this profile */
+  @JsonKey(name: "userID")
+  int? get userID;
 
   /// Create a copy of Profile
   /// with the given fields replaced by the non-null parameter values.
@@ -111,14 +112,14 @@ abstract mixin class $ProfileCopyWith<$Res> {
       @JsonKey(name: "auto_import_directory") String? autoImportDirectory,
       String language,
       @JsonKey(name: "prefer_full_date") bool preferFullDate,
-      UserPreferredUnits preferredUnits,
+      UserPreferredUnits? preferredUnits,
       @JsonKey(name: "socials_disabled") bool socialsDisabled,
       String theme,
       String timezone,
-      @JsonKey(name: "totals_show") WorkoutType totalsShow,
-      int userID});
+      @JsonKey(name: "totals_show") WorkoutType? totalsShow,
+      @JsonKey(name: "userID") int? userID});
 
-  $UserPreferredUnitsCopyWith<$Res> get preferredUnits;
+  $UserPreferredUnitsCopyWith<$Res>? get preferredUnits;
 }
 
 /// @nodoc
@@ -140,12 +141,12 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
     Object? autoImportDirectory = freezed,
     Object? language = null,
     Object? preferFullDate = null,
-    Object? preferredUnits = null,
+    Object? preferredUnits = freezed,
     Object? socialsDisabled = null,
     Object? theme = null,
     Object? timezone = null,
-    Object? totalsShow = null,
-    Object? userID = null,
+    Object? totalsShow = freezed,
+    Object? userID = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -176,10 +177,10 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _self.preferFullDate
           : preferFullDate // ignore: cast_nullable_to_non_nullable
               as bool,
-      preferredUnits: null == preferredUnits
+      preferredUnits: freezed == preferredUnits
           ? _self.preferredUnits
           : preferredUnits // ignore: cast_nullable_to_non_nullable
-              as UserPreferredUnits,
+              as UserPreferredUnits?,
       socialsDisabled: null == socialsDisabled
           ? _self.socialsDisabled
           : socialsDisabled // ignore: cast_nullable_to_non_nullable
@@ -192,14 +193,14 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _self.timezone
           : timezone // ignore: cast_nullable_to_non_nullable
               as String,
-      totalsShow: null == totalsShow
+      totalsShow: freezed == totalsShow
           ? _self.totalsShow
           : totalsShow // ignore: cast_nullable_to_non_nullable
-              as WorkoutType,
-      userID: null == userID
+              as WorkoutType?,
+      userID: freezed == userID
           ? _self.userID
           : userID // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 
@@ -207,8 +208,12 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserPreferredUnitsCopyWith<$Res> get preferredUnits {
-    return $UserPreferredUnitsCopyWith<$Res>(_self.preferredUnits, (value) {
+  $UserPreferredUnitsCopyWith<$Res>? get preferredUnits {
+    if (_self.preferredUnits == null) {
+      return null;
+    }
+
+    return $UserPreferredUnitsCopyWith<$Res>(_self.preferredUnits!, (value) {
       return _then(_self.copyWith(preferredUnits: value));
     });
   }
@@ -315,12 +320,12 @@ extension ProfilePatterns on Profile {
             @JsonKey(name: "auto_import_directory") String? autoImportDirectory,
             String language,
             @JsonKey(name: "prefer_full_date") bool preferFullDate,
-            UserPreferredUnits preferredUnits,
+            UserPreferredUnits? preferredUnits,
             @JsonKey(name: "socials_disabled") bool socialsDisabled,
             String theme,
             String timezone,
-            @JsonKey(name: "totals_show") WorkoutType totalsShow,
-            int userID)?
+            @JsonKey(name: "totals_show") WorkoutType? totalsShow,
+            @JsonKey(name: "userID") int? userID)?
         $default, {
     required TResult orElse(),
   }) {
@@ -369,12 +374,12 @@ extension ProfilePatterns on Profile {
             @JsonKey(name: "auto_import_directory") String? autoImportDirectory,
             String language,
             @JsonKey(name: "prefer_full_date") bool preferFullDate,
-            UserPreferredUnits preferredUnits,
+            UserPreferredUnits? preferredUnits,
             @JsonKey(name: "socials_disabled") bool socialsDisabled,
             String theme,
             String timezone,
-            @JsonKey(name: "totals_show") WorkoutType totalsShow,
-            int userID)
+            @JsonKey(name: "totals_show") WorkoutType? totalsShow,
+            @JsonKey(name: "userID") int? userID)
         $default,
   ) {
     final _that = this;
@@ -421,12 +426,12 @@ extension ProfilePatterns on Profile {
             @JsonKey(name: "auto_import_directory") String? autoImportDirectory,
             String language,
             @JsonKey(name: "prefer_full_date") bool preferFullDate,
-            UserPreferredUnits preferredUnits,
+            UserPreferredUnits? preferredUnits,
             @JsonKey(name: "socials_disabled") bool socialsDisabled,
             String theme,
             String timezone,
-            @JsonKey(name: "totals_show") WorkoutType totalsShow,
-            int userID)?
+            @JsonKey(name: "totals_show") WorkoutType? totalsShow,
+            @JsonKey(name: "userID") int? userID)?
         $default,
   ) {
     final _that = this;
@@ -461,14 +466,14 @@ class _Profile implements Profile {
       this.updatedAt,
       @JsonKey(name: "api_active") this.apiActive = false,
       @JsonKey(name: "auto_import_directory") this.autoImportDirectory = "",
-      required this.language,
+      this.language = "en",
       @JsonKey(name: "prefer_full_date") this.preferFullDate = false,
-      required this.preferredUnits,
+      this.preferredUnits,
       @JsonKey(name: "socials_disabled") this.socialsDisabled = false,
-      required this.theme,
-      required this.timezone,
-      @JsonKey(name: "totals_show") required this.totalsShow,
-      required this.userID});
+      this.theme = "system",
+      this.timezone = "UTC",
+      @JsonKey(name: "totals_show") this.totalsShow,
+      @JsonKey(name: "userID") this.userID});
   factory _Profile.fromJson(Map<String, dynamic> json) =>
       _$ProfileFromJson(json);
 
@@ -488,6 +493,7 @@ class _Profile implements Profile {
   final String? autoImportDirectory;
 /* The user's preferred language */
   @override
+  @JsonKey()
   final String language;
 /* Whether to show full dates in the workout details */
   @override
@@ -495,24 +501,27 @@ class _Profile implements Profile {
   final bool preferFullDate;
 /* The user's preferred units */
   @override
-  final UserPreferredUnits preferredUnits;
+  final UserPreferredUnits? preferredUnits;
 /* Whether social sharing buttons are disabled when viewing a workout */
   @override
   @JsonKey(name: "socials_disabled")
   final bool socialsDisabled;
 /* The user's preferred color scheme */
   @override
+  @JsonKey()
   final String theme;
 /* The user's preferred timezone */
   @override
+  @JsonKey()
   final String timezone;
 /* What workout type of totals to show */
   @override
   @JsonKey(name: "totals_show")
-  final WorkoutType totalsShow;
+  final WorkoutType? totalsShow;
 /* The ID of the user who owns this profile */
   @override
-  final int userID;
+  @JsonKey(name: "userID")
+  final int? userID;
 
   /// Create a copy of Profile
   /// with the given fields replaced by the non-null parameter values.
@@ -597,15 +606,15 @@ abstract mixin class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       @JsonKey(name: "auto_import_directory") String? autoImportDirectory,
       String language,
       @JsonKey(name: "prefer_full_date") bool preferFullDate,
-      UserPreferredUnits preferredUnits,
+      UserPreferredUnits? preferredUnits,
       @JsonKey(name: "socials_disabled") bool socialsDisabled,
       String theme,
       String timezone,
-      @JsonKey(name: "totals_show") WorkoutType totalsShow,
-      int userID});
+      @JsonKey(name: "totals_show") WorkoutType? totalsShow,
+      @JsonKey(name: "userID") int? userID});
 
   @override
-  $UserPreferredUnitsCopyWith<$Res> get preferredUnits;
+  $UserPreferredUnitsCopyWith<$Res>? get preferredUnits;
 }
 
 /// @nodoc
@@ -627,12 +636,12 @@ class __$ProfileCopyWithImpl<$Res> implements _$ProfileCopyWith<$Res> {
     Object? autoImportDirectory = freezed,
     Object? language = null,
     Object? preferFullDate = null,
-    Object? preferredUnits = null,
+    Object? preferredUnits = freezed,
     Object? socialsDisabled = null,
     Object? theme = null,
     Object? timezone = null,
-    Object? totalsShow = null,
-    Object? userID = null,
+    Object? totalsShow = freezed,
+    Object? userID = freezed,
   }) {
     return _then(_Profile(
       id: freezed == id
@@ -663,10 +672,10 @@ class __$ProfileCopyWithImpl<$Res> implements _$ProfileCopyWith<$Res> {
           ? _self.preferFullDate
           : preferFullDate // ignore: cast_nullable_to_non_nullable
               as bool,
-      preferredUnits: null == preferredUnits
+      preferredUnits: freezed == preferredUnits
           ? _self.preferredUnits
           : preferredUnits // ignore: cast_nullable_to_non_nullable
-              as UserPreferredUnits,
+              as UserPreferredUnits?,
       socialsDisabled: null == socialsDisabled
           ? _self.socialsDisabled
           : socialsDisabled // ignore: cast_nullable_to_non_nullable
@@ -679,14 +688,14 @@ class __$ProfileCopyWithImpl<$Res> implements _$ProfileCopyWith<$Res> {
           ? _self.timezone
           : timezone // ignore: cast_nullable_to_non_nullable
               as String,
-      totalsShow: null == totalsShow
+      totalsShow: freezed == totalsShow
           ? _self.totalsShow
           : totalsShow // ignore: cast_nullable_to_non_nullable
-              as WorkoutType,
-      userID: null == userID
+              as WorkoutType?,
+      userID: freezed == userID
           ? _self.userID
           : userID // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 
@@ -694,8 +703,12 @@ class __$ProfileCopyWithImpl<$Res> implements _$ProfileCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserPreferredUnitsCopyWith<$Res> get preferredUnits {
-    return $UserPreferredUnitsCopyWith<$Res>(_self.preferredUnits, (value) {
+  $UserPreferredUnitsCopyWith<$Res>? get preferredUnits {
+    if (_self.preferredUnits == null) {
+      return null;
+    }
+
+    return $UserPreferredUnitsCopyWith<$Res>(_self.preferredUnits!, (value) {
       return _then(_self.copyWith(preferredUnits: value));
     });
   }

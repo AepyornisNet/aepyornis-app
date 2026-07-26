@@ -23,7 +23,10 @@ mixin _$User {
   String get lastVersion; /* The user's name */
   String get name; /* The user's profile settings */
   Profile? get profile; /* The user's username */
-  String get username;
+  String get username; /* Optional user avatar URL */
+  @JsonKey(name: 'icon_url')
+  String? get iconUrl; /* Optional ActivityPub domain */
+  String? get domain;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -52,17 +55,19 @@ mixin _$User {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.username, username) ||
-                other.username == username));
+                other.username == username) &&
+            (identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl) &&
+            (identical(other.domain, domain) || other.domain == domain));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt, active,
-      admin, lastVersion, name, profile, username);
+      admin, lastVersion, name, profile, username, iconUrl, domain);
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, active: $active, admin: $admin, lastVersion: $lastVersion, name: $name, profile: $profile, username: $username)';
+    return 'User(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, active: $active, admin: $admin, lastVersion: $lastVersion, name: $name, profile: $profile, username: $username, iconUrl: $iconUrl, domain: $domain)';
   }
 }
 
@@ -80,7 +85,9 @@ abstract mixin class $UserCopyWith<$Res> {
       String lastVersion,
       String name,
       Profile? profile,
-      String username});
+      String username,
+      @JsonKey(name: 'icon_url') String? iconUrl,
+      String? domain});
 
   $ProfileCopyWith<$Res>? get profile;
 }
@@ -106,6 +113,8 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? name = null,
     Object? profile = freezed,
     Object? username = null,
+    Object? iconUrl = freezed,
+    Object? domain = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -144,6 +153,14 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _self.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      iconUrl: freezed == iconUrl
+          ? _self.iconUrl
+          : iconUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      domain: freezed == domain
+          ? _self.domain
+          : domain // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -264,7 +281,9 @@ extension UserPatterns on User {
             String lastVersion,
             String name,
             Profile? profile,
-            String username)?
+            String username,
+            @JsonKey(name: 'icon_url') String? iconUrl,
+            String? domain)?
         $default, {
     required TResult orElse(),
   }) {
@@ -280,7 +299,9 @@ extension UserPatterns on User {
             _that.lastVersion,
             _that.name,
             _that.profile,
-            _that.username);
+            _that.username,
+            _that.iconUrl,
+            _that.domain);
       case _:
         return orElse();
     }
@@ -310,7 +331,9 @@ extension UserPatterns on User {
             String lastVersion,
             String name,
             Profile? profile,
-            String username)
+            String username,
+            @JsonKey(name: 'icon_url') String? iconUrl,
+            String? domain)
         $default,
   ) {
     final _that = this;
@@ -325,7 +348,9 @@ extension UserPatterns on User {
             _that.lastVersion,
             _that.name,
             _that.profile,
-            _that.username);
+            _that.username,
+            _that.iconUrl,
+            _that.domain);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -354,7 +379,9 @@ extension UserPatterns on User {
             String lastVersion,
             String name,
             Profile? profile,
-            String username)?
+            String username,
+            @JsonKey(name: 'icon_url') String? iconUrl,
+            String? domain)?
         $default,
   ) {
     final _that = this;
@@ -369,7 +396,9 @@ extension UserPatterns on User {
             _that.lastVersion,
             _that.name,
             _that.profile,
-            _that.username);
+            _that.username,
+            _that.iconUrl,
+            _that.domain);
       case _:
         return null;
     }
@@ -388,7 +417,9 @@ class _User implements User {
       this.lastVersion = "",
       this.name = "",
       this.profile,
-      required this.username});
+      this.username = "",
+      @JsonKey(name: 'icon_url') this.iconUrl,
+      this.domain});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   @override
@@ -418,7 +449,15 @@ class _User implements User {
   final Profile? profile;
 /* The user's username */
   @override
+  @JsonKey()
   final String username;
+/* Optional user avatar URL */
+  @override
+  @JsonKey(name: 'icon_url')
+  final String? iconUrl;
+/* Optional ActivityPub domain */
+  @override
+  final String? domain;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -452,17 +491,19 @@ class _User implements User {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.username, username) ||
-                other.username == username));
+                other.username == username) &&
+            (identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl) &&
+            (identical(other.domain, domain) || other.domain == domain));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt, active,
-      admin, lastVersion, name, profile, username);
+      admin, lastVersion, name, profile, username, iconUrl, domain);
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, active: $active, admin: $admin, lastVersion: $lastVersion, name: $name, profile: $profile, username: $username)';
+    return 'User(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, active: $active, admin: $admin, lastVersion: $lastVersion, name: $name, profile: $profile, username: $username, iconUrl: $iconUrl, domain: $domain)';
   }
 }
 
@@ -481,7 +522,9 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String lastVersion,
       String name,
       Profile? profile,
-      String username});
+      String username,
+      @JsonKey(name: 'icon_url') String? iconUrl,
+      String? domain});
 
   @override
   $ProfileCopyWith<$Res>? get profile;
@@ -508,6 +551,8 @@ class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
     Object? name = null,
     Object? profile = freezed,
     Object? username = null,
+    Object? iconUrl = freezed,
+    Object? domain = freezed,
   }) {
     return _then(_User(
       id: freezed == id
@@ -546,6 +591,14 @@ class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
           ? _self.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      iconUrl: freezed == iconUrl
+          ? _self.iconUrl
+          : iconUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      domain: freezed == domain
+          ? _self.domain
+          : domain // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 

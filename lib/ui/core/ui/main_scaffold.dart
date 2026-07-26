@@ -6,7 +6,6 @@ import 'package:workout_tracker_app/l10n/app_localizations.dart';
 class MainScaffold extends StatelessWidget {
   static const Key homeScreenKey = ValueKey('home_screen');
   static const Key trainingsScreenKey = ValueKey('trainings_screen');
-  static const Key recordingScreenKey = ValueKey('recording_screen');
   static const Key statisticsScreenKey = ValueKey('statistics_screen');
   static const Key settingsScreenKey = ValueKey('settings_screen');
 
@@ -34,10 +33,6 @@ class MainScaffold extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.fitness_center),
             label: AppLocalizations.of(context)!.trainings,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.radio_button_checked),
-            label: AppLocalizations.of(context)!.recording,
           ),
           NavigationDestination(
             icon: Icon(Icons.bar_chart),

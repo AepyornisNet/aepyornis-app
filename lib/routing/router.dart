@@ -5,7 +5,6 @@ import 'package:workout_tracker_app/ui/auth/login/view_models/login_viewmodel.da
 import 'package:workout_tracker_app/ui/core/ui/main_scaffold.dart';
 import 'package:workout_tracker_app/ui/home/view_models/home_viewmodel.dart';
 import 'package:workout_tracker_app/ui/home/widgets/home_screen.dart';
-import 'package:workout_tracker_app/ui/recording/widgets/recording_screen.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/health_workouts_viewmodel.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:workout_tracker_app/ui/settings/widgets/health_connect_settings_screen.dart';
@@ -45,6 +44,8 @@ final router = GoRouter(
                   measurementRepository: context.read(),
                   sharedPreferencesService: context.read(),
                   healthConnectService: context.read(),
+                  workoutRepository: context.read(),
+                  apiClient: context.read(),
                 ),
               );
             },
@@ -76,13 +77,6 @@ final router = GoRouter(
               )
             ],
           ),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(
-              path: Routes.record,
-              builder: (context, state) {
-                return RecordingScreen();
-              }),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

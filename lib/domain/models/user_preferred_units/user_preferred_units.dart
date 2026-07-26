@@ -7,19 +7,19 @@ part 'user_preferred_units.g.dart';
 abstract class UserPreferredUnits with _$UserPreferredUnits {
   const factory UserPreferredUnits({
     /* The user's preferred distance unit */
-    required String distance,
+    @Default("km") String distance,
 
     /* The user's preferred elevation unit */
-    required String elevation,
+    @Default("m") String elevation,
 
     /* The user's preferred height unit */
-    required String height,
+    @Default("cm") String height,
 
     /* The user's preferred speed unit */
-    required String speed,
+    @Default("kmh") String speed,
 
     /* The user's preferred weight unit */
-    required String weight,
+    @Default("kg") String weight,
   }) = _UserPreferredUnits;
 
   factory UserPreferredUnits.fromJson(Map<String, dynamic> json) =>

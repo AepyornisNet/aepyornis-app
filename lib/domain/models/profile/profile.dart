@@ -21,30 +21,42 @@ abstract class Profile with _$Profile {
     String? autoImportDirectory,
 
     /* The user's preferred language */
-    required String language,
+    @Default("en") String language,
 
     /* Whether to show full dates in the workout details */
     @JsonKey(name: "prefer_full_date") @Default(false) bool preferFullDate,
 
     /* The user's preferred units */
-    required UserPreferredUnits preferredUnits,
+    UserPreferredUnits? preferredUnits,
 
     /* Whether social sharing buttons are disabled when viewing a workout */
     @JsonKey(name: "socials_disabled") @Default(false) bool socialsDisabled,
 
     /* The user's preferred color scheme */
-    required String theme,
+    @Default("system") String theme,
 
     /* The user's preferred timezone */
-    required String timezone,
+    @Default("UTC") String timezone,
 
     /* What workout type of totals to show */
-    @JsonKey(name: "totals_show") required WorkoutType totalsShow,
+    @JsonKey(name: "totals_show") WorkoutType? totalsShow,
 
     /* The ID of the user who owns this profile */
-    required int userID,
+    @JsonKey(name: "userID") int? userID,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
+      _$ProfileFromJson(_normalizeProfileJson(json));
+}
+
+Map<String, dynamic> _normalizeProfileJson(Map<String, dynamic> json) {
+  final normalized = Map<String, dynamic>.from(json);
+  if (!normalized.containsKey('userID') && json.containsKey('user_id')) {
+    normalized['userID'] = json['user_id'];
+  }
+  if (normalized['preferredUnits'] == null ||
+      normalized['preferredUnits'] is! Map<String, dynamic>) {
+    normalized.remove('preferredUnits');
+  }
+  return normalized;
 }

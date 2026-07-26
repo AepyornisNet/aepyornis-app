@@ -2,6 +2,7 @@ import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
 import 'package:workout_tracker_app/data/services/api/api_client.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
 
 class WorkoutRepositoryRemote implements WorkoutRepository {
   WorkoutRepositoryRemote({
@@ -87,5 +88,33 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
         _cachedWorkouts!.insert(0, workout);
       }
     }
+  }
+
+  @override
+  Future<Result<List<Workout>>> getRecentWorkouts({
+    int limit = 10,
+    int offset = 0,
+    String scope = 'following',
+  }) {
+    return _apiClient.getRecentWorkouts(
+      limit: limit,
+      offset: offset,
+      scope: scope,
+    );
+  }
+
+  @override
+  Future<Result<Map<String, dynamic>>> likeWorkout(int workoutId) {
+    return _apiClient.likeWorkout(workoutId);
+  }
+
+  @override
+  Future<Result<List<WorkoutReply>>> getWorkoutReplies(int workoutId) {
+    return _apiClient.getWorkoutReplies(workoutId);
+  }
+
+  @override
+  Future<Result<WorkoutReply>> createReply(int workoutId, String content) {
+    return _apiClient.createReply(workoutId, content);
   }
 }

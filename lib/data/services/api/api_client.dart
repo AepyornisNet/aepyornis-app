@@ -8,6 +8,7 @@ import 'package:workout_tracker_app/data/services/api/model/api_response/api_res
 import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
 import 'package:workout_tracker_app/domain/models/user/user.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
 
 typedef AuthHeaderProvider = String? Function();
 typedef ApiUrlProvider = String? Function();
@@ -26,6 +27,19 @@ class ApiClient {
 
   set authHeaderProvider(AuthHeaderProvider value) {
     _authHeaderProvider = value;
+  }
+
+  String? resolveUrl(String? path) {
+    if (path == null || path.isEmpty) return null;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    final base = _apiUrlProvider?.call();
+    if (base == null || base.isEmpty) return path;
+    final cleanBase =
+        base.endsWith('/') ? base.substring(0, base.length - 1) : base;
+    final cleanPath = path.startsWith('/') ? path : '/$path';
+    return '$cleanBase$cleanPath';
   }
 
   Uri _url(String path) {
@@ -266,6 +280,152 @@ class ApiClient {
           HttpException(
             'Invalid response (${response.statusCode}): ${response.body}',
           ),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<Workout>>> getRecentWorkouts({
+    int limit = 10,
+    int offset = 0,
+    String scope = 'following',
+  }) async {
+    try {
+      final baseUri = _url('/api/v2/workouts/recent');
+      final queryParams = Map<String, String>.from(baseUri.queryParameters);
+      queryParams['limit'] = limit.toString();
+      queryParams['offset'] = offset.toString();
+      queryParams['scope'] = scope;
+      final uri = baseUri.replace(queryParameters: queryParams);
+
+      final response = await http.get(uri, headers: await _headers());
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse =
+              ApiResponse.fromJson<List<Workout>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => Workout.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) => Workout.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
+        }
+        return Failure(HttpException("Invalid response"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<Map<String, dynamic>>> likeWorkout(int id) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/workouts/$id/like'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic> && decoded.containsKey('results')) {
+          final results = decoded['results'];
+          if (results is Map<String, dynamic>) {
+            return Success(results);
+          }
+        }
+        return Success({'liked': true});
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<WorkoutReply>>> getWorkoutReplies(int workoutId) async {
+    try {
+      final response = await http.get(
+        _url('/api/v2/workouts/$workoutId/replies'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse =
+              ApiResponse.fromJson<List<WorkoutReply>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => WorkoutReply.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) => WorkoutReply.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
+        }
+        return Failure(HttpException("Invalid response"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<WorkoutReply>> createReply(int workoutId, String content) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/workouts/$workoutId/replies'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          ...await _headers(),
+        },
+        body: jsonEncode({'content': content}),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<WorkoutReply, dynamic>(
+            decoded,
+            (json) => WorkoutReply.fromJson(json as Map<String, dynamic>),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException("Invalid response structure"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
         );
       }
     } on Exception catch (e) {

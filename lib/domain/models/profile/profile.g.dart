@@ -12,15 +12,19 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
       updatedAt: json['updatedAt'] as String?,
       apiActive: json['api_active'] as bool? ?? false,
       autoImportDirectory: json['auto_import_directory'] as String? ?? "",
-      language: json['language'] as String,
+      language: json['language'] as String? ?? "en",
       preferFullDate: json['prefer_full_date'] as bool? ?? false,
-      preferredUnits: UserPreferredUnits.fromJson(
-          json['preferredUnits'] as Map<String, dynamic>),
+      preferredUnits: json['preferredUnits'] == null
+          ? null
+          : UserPreferredUnits.fromJson(
+              json['preferredUnits'] as Map<String, dynamic>),
       socialsDisabled: json['socials_disabled'] as bool? ?? false,
-      theme: json['theme'] as String,
-      timezone: json['timezone'] as String,
-      totalsShow: WorkoutType.fromJson(json['totals_show']),
-      userID: (json['userID'] as num).toInt(),
+      theme: json['theme'] as String? ?? "system",
+      timezone: json['timezone'] as String? ?? "UTC",
+      totalsShow: json['totals_show'] == null
+          ? null
+          : WorkoutType.fromJson(json['totals_show']),
+      userID: (json['userID'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{

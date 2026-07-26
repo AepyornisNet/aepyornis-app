@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
 import 'package:workout_tracker_app/domain/models/map_data/map_data.dart';
+import 'package:workout_tracker_app/domain/models/user/user.dart';
+import 'package:workout_tracker_app/domain/models/workout_attachment/workout_attachment.dart';
 import 'package:workout_tracker_app/domain/models/workout_type/workout_type.dart';
 
 part 'workout.freezed.dart';
@@ -15,6 +17,9 @@ abstract class Workout with _$Workout {
 
     /// The ID of the user who owns the workout
     @JsonKey(name: 'user_id') int? userID,
+
+    /// The owner user of the workout
+    User? user,
 
     /// The timestamp the workout was recorded
     required DateTime date,
@@ -67,6 +72,10 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'max_heart_rate') double? maxHeartRate,
     @JsonKey(name: 'average_power') double? averagePower,
     @JsonKey(name: 'max_power') double? maxPower,
+    @JsonKey(name: 'liked_by_me') @Default(false) bool likedByMe,
+    @JsonKey(name: 'likes_count') @Default(0) int likesCount,
+    @JsonKey(name: 'replies_count') @Default(0) int repliesCount,
+    @Default([]) List<WorkoutAttachment> attachments,
   }) = _Workout;
 
   factory Workout.fromJson(Map<String, dynamic> json) =>
@@ -109,6 +118,14 @@ Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
   copyKey('max_power', 'maxPower');
   copyKey('custom_type', 'customType');
   copyKey('sub_type', 'subType');
+  copyKey('liked_by_me', 'likedByMe');
+  copyKey('likes_count', 'likesCount');
+  copyKey('replies_count', 'repliesCount');
+
+  if (normalized['user'] == null ||
+      normalized['user'] is! Map<String, dynamic>) {
+    normalized.remove('user');
+  }
 
   if (normalized['map_data'] is Map<String, dynamic>) {
     final mapData = Map<String, dynamic>.from(

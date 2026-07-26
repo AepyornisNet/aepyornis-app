@@ -17,7 +17,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       profile: json['profile'] == null
           ? null
           : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-      username: json['username'] as String,
+      username: json['username'] as String? ?? "",
+      iconUrl: json['icon_url'] as String?,
+      domain: json['domain'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -30,4 +32,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       'name': instance.name,
       'profile': instance.profile,
       'username': instance.username,
+      'icon_url': instance.iconUrl,
+      'domain': instance.domain,
     };

@@ -27,8 +27,24 @@ abstract class User with _$User {
     Profile? profile,
 
     /* The user's username */
-    required String username,
+    @Default("") String username,
+
+    /* Optional user avatar URL */
+    @JsonKey(name: 'icon_url') String? iconUrl,
+
+    /* Optional ActivityPub domain */
+    String? domain,
   }) = _User;
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) =>
+      _$UserFromJson(_normalizeUserJson(json));
+}
+
+Map<String, dynamic> _normalizeUserJson(Map<String, dynamic> json) {
+  final normalized = Map<String, dynamic>.from(json);
+  if (normalized['profile'] == null ||
+      normalized['profile'] is! Map<String, dynamic>) {
+    normalized.remove('profile');
+  }
+  return normalized;
 }

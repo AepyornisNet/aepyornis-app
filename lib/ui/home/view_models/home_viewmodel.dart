@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_command/flutter_command.dart';
-import 'package:intl/intl.dart';
-import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/repositories/auth/auth_repository.dart';
 import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository.dart';
+import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
 import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
 import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
-import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
+import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
+
+import 'package:workout_tracker_app/data/services/api/api_client.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeViewModel({
@@ -14,57 +15,206 @@ class HomeViewModel extends ChangeNotifier {
     required MeasurementRepository measurementRepository,
     required SharedPreferencesService sharedPreferencesService,
     required HealthConnectService healthConnectService,
+    required WorkoutRepository workoutRepository,
+    required ApiClient apiClient,
   })  : _authRepository = authRepository,
-        _measurementRepository = measurementRepository,
         _sharedPreferencesService = sharedPreferencesService,
-        _healthConnectService = healthConnectService {
-    getWeekMeasurement = Command.createAsync<int, Result<List<Measurement>>?>(
-      _getWeekMeasurement,
-      initialValue: null,
-    )..execute(0);
+        _healthConnectService = healthConnectService,
+        _workoutRepository = workoutRepository,
+        _apiClient = apiClient {
+    loadInitialFeed();
   }
 
   final AuthRepository _authRepository;
-  final MeasurementRepository _measurementRepository;
   final SharedPreferencesService _sharedPreferencesService;
   final HealthConnectService _healthConnectService;
+  final WorkoutRepository _workoutRepository;
+  final ApiClient _apiClient;
 
-  late Command<void, Result<Measurement>?> getTodayMeasurement;
-  late Command<int, Result<List<Measurement>>?> getWeekMeasurement;
+  String? resolveUrl(String? path) => _apiClient.resolveUrl(path);
 
-  String height = 'x';
+  String _feedScope = 'following'; // 'following' | 'global'
+  String get feedScope => _feedScope;
 
-  Map<String, int> measurements = {};
+  List<Workout> _workouts = [];
+  List<Workout> get workouts => _workouts;
 
-  Future<Result<List<Measurement>>> _getWeekMeasurement(int offsetWeeks) async {
-    final DateTime now = DateTime.now();
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
-    DateTime startOfWeek = now
-        .subtract(Duration(days: now.weekday - 1))
-        .subtract(Duration(days: offsetWeeks * 7));
-    startOfWeek =
-        DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
-    DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+  bool _isLoadingMore = false;
+  bool get isLoadingMore => _isLoadingMore;
 
-    final result = await _measurementRepository.getMeasurementsBetween(
-      startDate: startOfWeek,
-      endDate: endOfWeek,
-    );
+  bool _hasMore = true;
+  bool get hasMore => _hasMore;
 
-    final measurements = result.getOrNull();
-    if (measurements != null) {
-      this.measurements = {};
-      for (var measurement in measurements) {
-        String date = DateFormat('E').format(DateTime.parse(measurement.date));
-        final steps = measurement.steps.isFinite ? measurement.steps : 0;
-        this.measurements[date] = steps.toInt();
-      }
-    } else {
-      this.measurements = {};
-    }
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
+  final Map<int, List<WorkoutReply>> _workoutReplies = {};
+  Map<int, List<WorkoutReply>> get workoutReplies => _workoutReplies;
+
+  final Map<int, bool> _loadingReplies = {};
+  Map<int, bool> get loadingReplies => _loadingReplies;
+
+  final Map<int, bool> _likingState = {};
+  Map<int, bool> get likingState => _likingState;
+
+  final Map<int, bool> _replyingState = {};
+  Map<int, bool> get replyingState => _replyingState;
+
+  Future<void> setFeedScope(String scope) async {
+    if (_feedScope == scope) return;
+    _feedScope = scope;
+    notifyListeners();
+    await loadInitialFeed();
+  }
+
+  Future<void> loadInitialFeed() async {
+    _isLoading = true;
+    _errorMessage = null;
+    _workouts = [];
+    _hasMore = true;
     notifyListeners();
 
-    return result;
+    final result = await _workoutRepository.getRecentWorkouts(
+      limit: 10,
+      offset: 0,
+      scope: _feedScope,
+    );
+
+    result.fold(
+      (data) {
+        _workouts = List.from(data);
+        _hasMore = data.length == 10;
+        _isLoading = false;
+        notifyListeners();
+      },
+      (error) {
+        _errorMessage = error.toString();
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> loadMoreFeed() async {
+    if (_isLoading || _isLoadingMore || !_hasMore) return;
+
+    _isLoadingMore = true;
+    notifyListeners();
+
+    final currentOffset = _workouts.length;
+    final result = await _workoutRepository.getRecentWorkouts(
+      limit: 10,
+      offset: currentOffset,
+      scope: _feedScope,
+    );
+
+    result.fold(
+      (data) {
+        if (data.isNotEmpty) {
+          _workouts.addAll(data);
+          _hasMore = data.length == 10;
+        } else {
+          _hasMore = false;
+        }
+        _isLoadingMore = false;
+        notifyListeners();
+      },
+      (error) {
+        _hasMore = false;
+        _isLoadingMore = false;
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> toggleLike(Workout workout) async {
+    if (workout.id == null || _likingState[workout.id] == true) return;
+
+    final id = workout.id!;
+    _likingState[id] = true;
+    notifyListeners();
+
+    final result = await _workoutRepository.likeWorkout(id);
+
+    result.fold(
+      (res) {
+        final liked = res['liked'] == true;
+        final likesCount = (res['likes_count'] as num?)?.toInt() ??
+            (liked
+                ? workout.likesCount + 1
+                : (workout.likesCount > 0 ? workout.likesCount - 1 : 0));
+
+        final index = _workouts.indexWhere((w) => w.id == id);
+        if (index >= 0) {
+          _workouts[index] = _workouts[index].copyWith(
+            likedByMe: liked,
+            likesCount: likesCount,
+          );
+        }
+      },
+      (error) {
+        // failed
+      },
+    );
+
+    _likingState[id] = false;
+    notifyListeners();
+  }
+
+  Future<void> loadReplies(int workoutId) async {
+    _loadingReplies[workoutId] = true;
+    notifyListeners();
+
+    final result = await _workoutRepository.getWorkoutReplies(workoutId);
+    result.fold(
+      (replies) {
+        _workoutReplies[workoutId] = replies;
+      },
+      (error) {
+        _workoutReplies[workoutId] = [];
+      },
+    );
+
+    _loadingReplies[workoutId] = false;
+    notifyListeners();
+  }
+
+  Future<bool> postReply(int workoutId, String content) async {
+    if (content.trim().isEmpty || _replyingState[workoutId] == true) {
+      return false;
+    }
+
+    _replyingState[workoutId] = true;
+    notifyListeners();
+
+    final result =
+        await _workoutRepository.createReply(workoutId, content.trim());
+    bool success = false;
+
+    result.fold(
+      (newReply) {
+        final currentReplies = _workoutReplies[workoutId] ?? [];
+        _workoutReplies[workoutId] = [newReply, ...currentReplies];
+
+        final index = _workouts.indexWhere((w) => w.id == workoutId);
+        if (index >= 0) {
+          _workouts[index] = _workouts[index].copyWith(
+            repliesCount: _workouts[index].repliesCount + 1,
+          );
+        }
+        success = true;
+      },
+      (error) {
+        success = false;
+      },
+    );
+
+    _replyingState[workoutId] = false;
+    notifyListeners();
+    return success;
   }
 
   Future<void> requestPermissions() async {
