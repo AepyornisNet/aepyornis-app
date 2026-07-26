@@ -1,6 +1,6 @@
 import 'package:result_dart/result_dart.dart';
 import 'package:flutter_command/flutter_command.dart';
-import 'package:workout_tracker_app/data/repositories/auth/auth_repository.dart';
+import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
 
 class LoginData {
   LoginData({required this.url, required this.apiKey});

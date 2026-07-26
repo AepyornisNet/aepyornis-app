@@ -2,12 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
-import 'package:workout_tracker_app/ui/core/utils/workout_type_l10n.dart';
-import 'package:workout_tracker_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
+import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/core/utils/formatters.dart';
+import 'package:aepyornis_app/ui/core/utils/workout_type_l10n.dart';
+import 'package:aepyornis_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
 
 class StatisticOverviewScreen extends StatefulWidget {
   const StatisticOverviewScreen({super.key, required this.viewModel});

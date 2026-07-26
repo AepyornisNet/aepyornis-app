@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:health_connector/health_connector.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/data/services/health_connect/fit_exporter.dart';
-import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/data/services/health_connect/fit_exporter.dart';
+import 'package:aepyornis_app/data/services/health_connect/health_connect_service.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
 
 class HealthWorkoutItem {
   HealthWorkoutItem({

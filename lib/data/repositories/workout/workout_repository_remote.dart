@@ -1,10 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
+import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout_reply/workout_reply.dart';
 
 class WorkoutRepositoryRemote implements WorkoutRepository {
   WorkoutRepositoryRemote({

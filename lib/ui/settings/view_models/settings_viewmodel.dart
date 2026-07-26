@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:intl/intl.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/repositories/auth/auth_repository.dart';
-import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository.dart';
-import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
-import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
-import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
+import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
+import 'package:aepyornis_app/data/repositories/measurement/measurement_repository.dart';
+import 'package:aepyornis_app/data/services/health_connect/health_connect_service.dart';
+import 'package:aepyornis_app/data/services/shared_preferences_service.dart';
+import 'package:aepyornis_app/domain/models/measurement/measurement.dart';
 
 class SettingsViewModel {
   SettingsViewModel({

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:workout_tracker_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/domain/models/user/user.dart';
 
 part 'workout_reply.freezed.dart';
 part 'workout_reply.g.dart';

@@ -1,8 +1,8 @@
 import 'package:result_dart/result_dart.dart';
 
-import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
+import 'package:aepyornis_app/data/repositories/measurement/measurement_repository.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/domain/models/measurement/measurement.dart';
 
 class MeasurementRepositoryRemote implements MeasurementRepository {
   MeasurementRepositoryRemote({

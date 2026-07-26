@@ -9,14 +9,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:workout_tracker_app/config/dependencies.dart';
-import 'package:workout_tracker_app/data/repositories/auth/auth_repository_remote.dart';
-import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository_remote.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
-import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
-import 'package:workout_tracker_app/routing/router.dart';
-import 'package:workout_tracker_app/ui/core/themes/theme.dart';
+import 'package:aepyornis_app/config/dependencies.dart';
+import 'package:aepyornis_app/data/repositories/auth/auth_repository_remote.dart';
+import 'package:aepyornis_app/data/repositories/measurement/measurement_repository_remote.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/data/services/health_connect/health_connect_service.dart';
+import 'package:aepyornis_app/data/services/shared_preferences_service.dart';
+import 'package:aepyornis_app/routing/router.dart';
+import 'package:aepyornis_app/ui/core/themes/theme.dart';
 
 void main() {
   Command.globalExceptionHandler = (error, stackTrace) {

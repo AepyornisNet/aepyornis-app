@@ -1,5 +1,5 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
+import 'package:aepyornis_app/domain/models/measurement/measurement.dart';
 
 abstract class MeasurementRepository {
   // Returns the [Measurement] for the given [date]

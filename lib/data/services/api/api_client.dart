@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/services/api/model/api_response/api_response.dart';
-import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
-import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
-import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
-import 'package:workout_tracker_app/domain/models/user/user.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
+import 'package:aepyornis_app/data/services/api/model/api_response/api_response.dart';
+import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
+import 'package:aepyornis_app/domain/models/measurement/measurement.dart';
+import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
+import 'package:aepyornis_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout_reply/workout_reply.dart';
 
 typedef AuthHeaderProvider = String? Function();
 typedef ApiUrlProvider = String? Function();

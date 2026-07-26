@@ -1,7 +1,7 @@
 import 'package:fit_tool/fit_tool.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:health_connector/health_connector.dart';
-import 'package:workout_tracker_app/data/services/health_connect/fit_exporter.dart';
+import 'package:aepyornis_app/data/services/health_connect/fit_exporter.dart';
 
 void main() {
   test('FitExporter builds valid FIT file bytes with 14-byte header', () {

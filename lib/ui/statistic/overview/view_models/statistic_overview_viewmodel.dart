@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:workout_tracker_app/data/repositories/statistics/statistics_repository.dart';
-import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
+import 'package:aepyornis_app/data/repositories/statistics/statistics_repository.dart';
+import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
 
 class StatisticOverviewViewModel extends ChangeNotifier {
   StatisticOverviewViewModel({

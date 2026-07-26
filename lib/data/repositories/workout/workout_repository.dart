@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
+import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout_reply/workout_reply.dart';
 
 abstract class WorkoutRepository {
   // Returns cached workouts if available

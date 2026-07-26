@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/core/utils/formatters.dart';
 
 class WorkoutListTile extends StatelessWidget {
   final Workout workout;

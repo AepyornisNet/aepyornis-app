@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:workout_tracker_app/data/repositories/auth/auth_repository.dart';
-import 'package:workout_tracker_app/data/repositories/measurement/measurement_repository.dart';
-import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
-import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
-import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
+import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
+import 'package:aepyornis_app/data/repositories/measurement/measurement_repository.dart';
+import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
+import 'package:aepyornis_app/data/services/health_connect/health_connect_service.dart';
+import 'package:aepyornis_app/data/services/shared_preferences_service.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout_reply/workout_reply.dart';
 
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeViewModel({

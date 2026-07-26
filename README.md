@@ -1,4 +1,3 @@
-# WIP: workout_tracker_app
+# Aepyornis App
 
-Client for https://github.com/jovandeginste/workout-tracker
-
+Mobile client for [Aepyornis](https://github.com/AepyornisNet/aepyornis).

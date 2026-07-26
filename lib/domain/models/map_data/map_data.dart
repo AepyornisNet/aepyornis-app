@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:workout_tracker_app/domain/models/map_center/map_center.dart';
-import 'package:workout_tracker_app/domain/models/map_data_details/map_data_details.dart';
+import 'package:aepyornis_app/domain/models/map_center/map_center.dart';
+import 'package:aepyornis_app/domain/models/map_data_details/map_data_details.dart';
 
 part 'map_data.freezed.dart';
 part 'map_data.g.dart';

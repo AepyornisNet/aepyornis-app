@@ -1,5 +1,5 @@
-name: workout_tracker_app
-description: "An app to track your workouts"
+name: aepyornis_app
+description: "Aepyornis - Mobile app to track your workouts"
 publish_to: 'none'
 
 version: 1.0.0+1

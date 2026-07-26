@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:health_connector/health_connector.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
-import 'package:workout_tracker_app/ui/settings/view_models/health_workouts_viewmodel.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/ui/core/utils/formatters.dart';
+import 'package:aepyornis_app/ui/settings/view_models/health_workouts_viewmodel.dart';
 
 class HealthWorkoutsScreen extends StatefulWidget {
   const HealthWorkoutsScreen({super.key, required this.viewModel});

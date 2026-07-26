@@ -1,7 +1,7 @@
 import 'package:flutter_command/flutter_command.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
 
 class WorkoutListViewModel {
   WorkoutListViewModel({

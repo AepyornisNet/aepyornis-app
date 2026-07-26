@@ -1,7 +1,7 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/repositories/statistics/statistics_repository.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
+import 'package:aepyornis_app/data/repositories/statistics/statistics_repository.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
 
 class StatisticsRepositoryRemote implements StatisticsRepository {
   StatisticsRepositoryRemote({

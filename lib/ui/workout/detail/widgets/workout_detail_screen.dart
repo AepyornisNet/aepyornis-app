@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
-import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_chart.dart';
-import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_data.dart';
-import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_map.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_chart.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_data.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_map.dart';
 
 extension WorkoutGeoInfo on Workout {
   bool get hasGeoInfo {

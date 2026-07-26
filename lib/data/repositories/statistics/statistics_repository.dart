@@ -1,5 +1,5 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
+import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
 
 abstract class StatisticsRepository {
   Future<Result<StatisticsResponse>> getStatistics({

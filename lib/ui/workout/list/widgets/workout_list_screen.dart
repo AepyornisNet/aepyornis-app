@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/workout/list/view_models/workout_list_viewmodel.dart';
-import 'package:workout_tracker_app/ui/workout/list/widgets/workout_list_tile.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/workout/list/view_models/workout_list_viewmodel.dart';
+import 'package:aepyornis_app/ui/workout/list/widgets/workout_list_tile.dart';
 
 class WorkoutListScreen extends StatefulWidget {
   const WorkoutListScreen({super.key, required this.viewModel});

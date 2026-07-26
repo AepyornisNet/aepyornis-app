@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:workout_tracker_app/domain/models/map_point/map_point.dart';
+import 'package:aepyornis_app/domain/models/map_point/map_point.dart';
 
 part 'map_data_details.freezed.dart';
 part 'map_data_details.g.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/domain/models/user/user.dart';
 
 abstract class AuthRepository extends ChangeNotifier {
   /// Returns true when the user is logged in

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
 
 class WorkoutDetailMap extends StatefulWidget {
   const WorkoutDetailMap({
@@ -102,7 +102,7 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap> {
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'de.bastianjoel.workout_tracker_app',
+              userAgentPackageName: 'net.aepyornis.app',
             ),
             if (_points.isNotEmpty)
               PolylineLayer(

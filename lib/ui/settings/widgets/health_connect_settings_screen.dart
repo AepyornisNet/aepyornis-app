@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/settings/view_models/settings_viewmodel.dart';
 
 class HealthConnectSettingsScreen extends StatefulWidget {
   const HealthConnectSettingsScreen({super.key, required this.viewModel});

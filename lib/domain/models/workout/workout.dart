@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
-import 'package:workout_tracker_app/domain/models/map_data/map_data.dart';
-import 'package:workout_tracker_app/domain/models/user/user.dart';
-import 'package:workout_tracker_app/domain/models/workout_attachment/workout_attachment.dart';
-import 'package:workout_tracker_app/domain/models/workout_type/workout_type.dart';
+import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
+import 'package:aepyornis_app/domain/models/map_data/map_data.dart';
+import 'package:aepyornis_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/domain/models/workout_attachment/workout_attachment.dart';
+import 'package:aepyornis_app/domain/models/workout_type/workout_type.dart';
 
 part 'workout.freezed.dart';
 part 'workout.g.dart';

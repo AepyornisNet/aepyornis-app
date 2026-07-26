@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/domain/models/workout/workout.dart';
-import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
-import 'package:workout_tracker_app/ui/home/view_models/home_viewmodel.dart';
-import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_map.dart';
+import 'package:aepyornis_app/domain/models/workout/workout.dart';
+import 'package:aepyornis_app/domain/models/workout_reply/workout_reply.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/core/utils/formatters.dart';
+import 'package:aepyornis_app/ui/home/view_models/home_viewmodel.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_map.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.viewModel});

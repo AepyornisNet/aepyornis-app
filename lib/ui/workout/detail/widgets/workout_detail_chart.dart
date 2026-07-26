@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:workout_tracker_app/domain/models/map_data_details/map_data_details.dart';
-import 'package:workout_tracker_app/domain/models/map_point/map_point.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/domain/models/map_data_details/map_data_details.dart';
+import 'package:aepyornis_app/domain/models/map_point/map_point.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
 
 enum ChartMetricType { speed, elevation, heartRate, cadence, power }
 

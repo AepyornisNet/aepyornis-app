@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/data/services/shared_preferences_service.dart';
-import 'package:workout_tracker_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/data/services/api/api_client.dart';
+import 'package:aepyornis_app/data/services/shared_preferences_service.dart';
+import 'package:aepyornis_app/domain/models/user/user.dart';
 
 import 'auth_repository.dart';
 

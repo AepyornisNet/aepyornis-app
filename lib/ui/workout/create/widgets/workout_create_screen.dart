@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:workout_tracker_app/l10n/app_localizations.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
-import 'package:workout_tracker_app/ui/core/utils/workout_type_l10n.dart';
-import 'package:workout_tracker_app/ui/workout/create/view_models/workout_create_viewmodel.dart';
+import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/routing/routes.dart';
+import 'package:aepyornis_app/ui/core/utils/workout_type_l10n.dart';
+import 'package:aepyornis_app/ui/workout/create/view_models/workout_create_viewmodel.dart';
 
 class WorkoutCreateScreen extends StatefulWidget {
   const WorkoutCreateScreen({super.key, required this.viewModel});

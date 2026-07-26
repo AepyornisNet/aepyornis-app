@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:workout_tracker_app/domain/models/user_preferred_units/user_preferred_units.dart';
-import 'package:workout_tracker_app/domain/models/workout_type/workout_type.dart';
+import 'package:aepyornis_app/domain/models/user_preferred_units/user_preferred_units.dart';
+import 'package:aepyornis_app/domain/models/workout_type/workout_type.dart';
 
 part 'profile.freezed.dart';
 part 'profile.g.dart';
