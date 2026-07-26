@@ -452,7 +452,7 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     _successMessage = null;
     notifyListeners();
 
-    final dateStr = DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(_date);
+    final dateStr = DateFormat("yyyy-MM-dd'T'HH:mm").format(_date);
     final timezone = DateTime.now().timeZoneName;
 
     final Map<String, dynamic> payload = {
