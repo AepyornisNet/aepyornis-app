@@ -191,7 +191,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failedToLoadFeed => 'Failed to load feed';
 
   @override
-  String get tryAgain => 'Try Again';
+  String get tryAgain => 'Try again';
 
   @override
   String get noActivitiesFound => 'No activities found';
@@ -337,4 +337,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get distanceKm => 'Distance (km)';
+
+  @override
+  String get addWorkout => 'Add a workout';
+
+  @override
+  String get createWorkout => 'Create Workout';
+
+  @override
+  String get useAFile => 'Use a file';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get selectFile => 'Select file(s)';
+
+  @override
+  String get autoDetect => 'Auto-detect';
+
+  @override
+  String get pleaseSelectFile => 'Please select at least one file';
+
+  @override
+  String get workoutCreatedSuccessfully => 'Workout created successfully';
+
+  @override
+  String get workoutsCreatedSuccessfully => 'Successfully created workout(s)';
+
+  @override
+  String get workoutType => 'Workout type';
+
+  @override
+  String get selectWorkoutType => 'Select...';
+
+  @override
+  String get customType => 'Custom type';
+
+  @override
+  String get visibility => 'Visibility';
+
+  @override
+  String get private => 'Private';
+
+  @override
+  String get followers => 'Followers';
+
+  @override
+  String get public => 'Public';
+
+  @override
+  String get durationHours => 'Hours';
+
+  @override
+  String get durationMinutes => 'Minutes';
+
+  @override
+  String get durationSeconds => 'Seconds';
+
+  @override
+  String get repetitions => 'Repetitions';
+
+  @override
+  String get weight => 'Weight';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get date => 'Date';
 }

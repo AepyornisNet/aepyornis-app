@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/services/api/model/api_response/api_response.dart';
+import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
 import 'package:workout_tracker_app/domain/models/measurement/measurement.dart';
 import 'package:workout_tracker_app/domain/models/statistics/statistics_response.dart';
 import 'package:workout_tracker_app/domain/models/user/user.dart';
@@ -518,6 +520,144 @@ class ApiClient {
           HttpException("Invalid response (${response.statusCode})"),
         );
       }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<Workout>>> uploadWorkoutFiles({
+    required List<PlatformFile> files,
+    String? type,
+    String? notes,
+  }) async {
+    try {
+      final uri = _url('/api/v2/workouts');
+      final request = http.MultipartRequest('POST', uri);
+      final headers = await _headers();
+      request.headers.addAll(headers);
+
+      for (final file in files) {
+        if (file.bytes != null) {
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'file',
+              file.bytes!,
+              filename: file.name,
+              contentType: MediaType('application', 'octet-stream'),
+            ),
+          );
+        } else if (file.path != null) {
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'file',
+              file.path!,
+              filename: file.name,
+              contentType: MediaType('application', 'octet-stream'),
+            ),
+          );
+        }
+      }
+
+      if (type != null && type.isNotEmpty && type != 'auto') {
+        request.fields['type'] = type;
+      }
+      if (notes != null && notes.isNotEmpty) {
+        request.fields['notes'] = notes;
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<List<Workout>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => Workout.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException('Unexpected response payload'));
+      } else {
+        return Failure(
+          HttpException(
+            'Invalid response (${response.statusCode}): ${response.body}',
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<Workout>> createWorkoutManual(Map<String, dynamic> data) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/workouts'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          ...await _headers(),
+        },
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
+            decoded,
+            (json) => Workout.fromJson(json as Map<String, dynamic>),
+          );
+          try {
+            final workout = apiResponse.getOrThrow();
+            return Success(workout);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException("Invalid response payload"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode}): ${response.body}"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<Equipment>>> getEquipment() async {
+    try {
+      final uri = _url('/api/v2/equipment');
+      final response = await http.get(uri, headers: await _headers());
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<List<Equipment>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => Equipment.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) => Equipment.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
+        }
+      }
+      return Success([]);
     } on Exception catch (e) {
       return Failure(e);
     }

@@ -12,6 +12,8 @@ import 'package:workout_tracker_app/ui/settings/widgets/health_workouts_screen.d
 import 'package:workout_tracker_app/ui/settings/widgets/settings_screen.dart';
 import 'package:workout_tracker_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
 import 'package:workout_tracker_app/ui/statistic/overview/widgets/statistic_overview_screen.dart';
+import 'package:workout_tracker_app/ui/workout/create/view_models/workout_create_viewmodel.dart';
+import 'package:workout_tracker_app/ui/workout/create/widgets/workout_create_screen.dart';
 import 'package:workout_tracker_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
 import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_screen.dart';
 import 'package:workout_tracker_app/ui/workout/list/view_models/workout_list_viewmodel.dart';
@@ -55,6 +57,16 @@ final router = GoRouter(
             },
             routes: [
               GoRoute(
+                path: Routes.workoutCreateRelative,
+                builder: (context, state) {
+                  return WorkoutCreateScreen(
+                    viewModel: WorkoutCreateViewModel(
+                      workoutRepository: context.read(),
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
                 path: ':id',
                 builder: (context, state) {
                   final id = int.parse(state.pathParameters['id']!);
@@ -68,7 +80,7 @@ final router = GoRouter(
                     viewModel: workoutDetailViewModel,
                   );
                 },
-              )
+              ),
             ],
           ),
         ]),

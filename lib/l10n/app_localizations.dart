@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// No description provided for @tryAgain.
   ///
   /// In en, this message translates to:
-  /// **'Try Again'**
+  /// **'Try again'**
   String get tryAgain;
 
   /// No description provided for @noActivitiesFound.
@@ -739,6 +739,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Distance (km)'**
   String get distanceKm;
+
+  /// No description provided for @addWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a workout'**
+  String get addWorkout;
+
+  /// No description provided for @createWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Workout'**
+  String get createWorkout;
+
+  /// No description provided for @useAFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a file'**
+  String get useAFile;
+
+  /// No description provided for @manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get manual;
+
+  /// No description provided for @selectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select file(s)'**
+  String get selectFile;
+
+  /// No description provided for @autoDetect.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-detect'**
+  String get autoDetect;
+
+  /// No description provided for @pleaseSelectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one file'**
+  String get pleaseSelectFile;
+
+  /// No description provided for @workoutCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout created successfully'**
+  String get workoutCreatedSuccessfully;
+
+  /// No description provided for @workoutsCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully created workout(s)'**
+  String get workoutsCreatedSuccessfully;
+
+  /// No description provided for @workoutType.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout type'**
+  String get workoutType;
+
+  /// No description provided for @selectWorkoutType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select...'**
+  String get selectWorkoutType;
+
+  /// No description provided for @customType.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom type'**
+  String get customType;
+
+  /// No description provided for @visibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get visibility;
+
+  /// No description provided for @private.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get private;
+
+  /// No description provided for @followers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get followers;
+
+  /// No description provided for @public.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get public;
+
+  /// No description provided for @durationHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get durationHours;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get durationMinutes;
+
+  /// No description provided for @durationSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds'**
+  String get durationSeconds;
+
+  /// No description provided for @repetitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Repetitions'**
+  String get repetitions;
+
+  /// No description provided for @weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get weight;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
 }
 
 class _AppLocalizationsDelegate

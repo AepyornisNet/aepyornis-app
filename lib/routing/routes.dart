@@ -4,6 +4,8 @@ abstract final class Routes {
   static const login = '/login';
   static const workouts = '/$workoutRelative';
   static const workoutRelative = 'workout';
+  static const workoutCreateRelative = 'new';
+  static const workoutCreate = '$workouts/$workoutCreateRelative';
   static String workoutWithId(int id) => '$workouts/$id';
   static const record = '/record';
   static const stats = '/statistics';

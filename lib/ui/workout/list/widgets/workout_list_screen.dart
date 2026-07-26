@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workout_tracker_app/routing/routes.dart';
 import 'package:workout_tracker_app/ui/workout/list/view_models/workout_list_viewmodel.dart';
 import 'package:workout_tracker_app/ui/workout/list/widgets/workout_list_tile.dart';
 
@@ -29,7 +31,7 @@ class _WorkoutListScreenState extends State<WorkoutListScreen> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // TODO: Add new workout
+              context.push(Routes.workoutCreate);
             },
           ),
         ],

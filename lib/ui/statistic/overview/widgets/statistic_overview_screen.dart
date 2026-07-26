@@ -6,6 +6,7 @@ import 'package:workout_tracker_app/domain/models/statistics/statistics_response
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
 import 'package:workout_tracker_app/routing/routes.dart';
 import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
+import 'package:workout_tracker_app/ui/core/utils/workout_type_l10n.dart';
 import 'package:workout_tracker_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
 
 class StatisticOverviewScreen extends StatefulWidget {
@@ -196,11 +197,7 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
               ),
             ),
             items: typesSet.map((t) {
-              final rawLabel = t == 'all'
-                  ? (l10n.global == 'Global' ? 'All' : 'Alle')
-                  : t.replaceAll('-', ' ');
-              final formattedLabel =
-                  rawLabel[0].toUpperCase() + rawLabel.substring(1);
+              final formattedLabel = getLocalizedWorkoutTypeName(context, t);
               return DropdownMenuItem<String>(
                 value: t,
                 child: Text(
@@ -517,7 +514,7 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
     ColorScheme colorScheme,
   ) {
     final theme = Theme.of(context);
-    final workoutTypeStr = record.workoutType?.replaceAll('-', ' ') ?? '';
+    final workoutTypeStr = getLocalizedWorkoutTypeName(context, record.workoutType);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -534,10 +531,7 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
                 Icon(Icons.emoji_events, color: Colors.amber.shade700, size: 24),
                 const SizedBox(width: 8),
                 Text(
-                  workoutTypeStr.isNotEmpty
-                      ? workoutTypeStr[0].toUpperCase() +
-                          workoutTypeStr.substring(1)
-                      : 'Activity',
+                  workoutTypeStr.isNotEmpty ? workoutTypeStr : 'Activity',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

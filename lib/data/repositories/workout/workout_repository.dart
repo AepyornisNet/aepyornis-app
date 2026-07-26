@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:result_dart/result_dart.dart';
+import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
 
@@ -33,4 +35,17 @@ abstract class WorkoutRepository {
 
   // Posts a new reply/comment for a workout
   Future<Result<WorkoutReply>> createReply(int workoutId, String content);
+
+  // Creates a manual workout
+  Future<Result<Workout>> createWorkoutManual(Map<String, dynamic> data);
+
+  // Uploads one or more workout files (.fit, .gpx, .tcx, .zip)
+  Future<Result<List<Workout>>> uploadWorkoutFiles({
+    required List<PlatformFile> files,
+    String? type,
+    String? notes,
+  });
+
+  // Fetches available equipment
+  Future<Result<List<Equipment>>> getEquipment();
 }

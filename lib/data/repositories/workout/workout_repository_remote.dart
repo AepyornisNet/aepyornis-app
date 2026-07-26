@@ -1,6 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
 import 'package:workout_tracker_app/data/services/api/api_client.dart';
+import 'package:workout_tracker_app/domain/models/equipment/equipment.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
 
@@ -116,5 +118,38 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
   @override
   Future<Result<WorkoutReply>> createReply(int workoutId, String content) {
     return _apiClient.createReply(workoutId, content);
+  }
+
+  @override
+  Future<Result<Workout>> createWorkoutManual(Map<String, dynamic> data) async {
+    final result = await _apiClient.createWorkoutManual(data);
+    if (result.isSuccess()) {
+      addWorkout(result.getOrThrow());
+    }
+    return result;
+  }
+
+  @override
+  Future<Result<List<Workout>>> uploadWorkoutFiles({
+    required List<PlatformFile> files,
+    String? type,
+    String? notes,
+  }) async {
+    final result = await _apiClient.uploadWorkoutFiles(
+      files: files,
+      type: type,
+      notes: notes,
+    );
+    if (result.isSuccess()) {
+      for (final w in result.getOrThrow()) {
+        addWorkout(w);
+      }
+    }
+    return result;
+  }
+
+  @override
+  Future<Result<List<Equipment>>> getEquipment() {
+    return _apiClient.getEquipment();
   }
 }

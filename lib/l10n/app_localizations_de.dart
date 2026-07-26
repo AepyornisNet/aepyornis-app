@@ -340,4 +340,73 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get distanceKm => 'Distanz (km)';
+
+  @override
+  String get addWorkout => 'Workout hinzufügen';
+
+  @override
+  String get createWorkout => 'Workout erstellen';
+
+  @override
+  String get useAFile => 'Datei verwenden';
+
+  @override
+  String get manual => 'Manuell';
+
+  @override
+  String get selectFile => 'Datei(en) auswählen';
+
+  @override
+  String get autoDetect => 'Automatisch erkennen';
+
+  @override
+  String get pleaseSelectFile => 'Bitte mindestens eine Datei auswählen';
+
+  @override
+  String get workoutCreatedSuccessfully => 'Workout erfolgreich erstellt';
+
+  @override
+  String get workoutsCreatedSuccessfully => 'Workout(s) erfolgreich erstellt';
+
+  @override
+  String get workoutType => 'Workout-Typ';
+
+  @override
+  String get selectWorkoutType => 'Auswählen...';
+
+  @override
+  String get customType => 'Eigener Typ';
+
+  @override
+  String get visibility => 'Sichtbarkeit';
+
+  @override
+  String get private => 'Privat';
+
+  @override
+  String get followers => 'Follower';
+
+  @override
+  String get public => 'Öffentlich';
+
+  @override
+  String get durationHours => 'Stunden';
+
+  @override
+  String get durationMinutes => 'Minuten';
+
+  @override
+  String get durationSeconds => 'Sekunden';
+
+  @override
+  String get repetitions => 'Wiederholungen';
+
+  @override
+  String get weight => 'Gewicht';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get date => 'Datum';
 }
