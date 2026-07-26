@@ -1,8 +1,8 @@
 name: aepyornis_app
 description: "Aepyornis - Mobile app to track your workouts"
-publish_to: 'none'
+publish_to: "none"
 
-version: 0.1.0+1
+version: 0.2.0+1
 
 environment:
   sdk: ^3.6.0
@@ -30,7 +30,6 @@ dependencies:
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
   file_picker: ^11.0.2
-
 
 dev_dependencies:
   flutter_test:
