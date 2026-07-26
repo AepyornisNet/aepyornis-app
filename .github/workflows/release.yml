@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release-apk:
+    name: Build & Upload Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.8
+
+      - name: Build Android APK
+        uses: cedvdb/action-flutter-build-android@v1
+        with:
+          keystore-base64: ${{ secrets.ANDROID_RELEASE_KEY }}
+          keystore-password: "${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}"
+          build-cmd: flutter build apk --release
+          working-directory: ./
+
+      - name: Prepare APK files for Release
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          TAG_NAME="${TAG_NAME:-${{ github.ref_name }}}"
+          cp build/app/outputs/flutter-apk/app-release.apk "aepyornis-app-${TAG_NAME}.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "aepyornis-app-release.apk"
+
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            aepyornis-app-*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
