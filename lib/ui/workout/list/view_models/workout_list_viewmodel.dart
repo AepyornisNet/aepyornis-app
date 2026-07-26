@@ -6,15 +6,19 @@ import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 class WorkoutListViewModel {
   WorkoutListViewModel({
     required WorkoutRepository workoutRepository,
-  }) : _workoutRepository = workoutRepository {
+  })  : _workoutRepository = workoutRepository,
+        _workouts = workoutRepository.cachedWorkouts ?? [] {
     loadWorkouts = Command.createAsyncNoParam<Result<void>?>(
       _loadWorkouts,
       initialValue: null,
-    )..execute();
+    );
+    if (_workouts.isEmpty) {
+      loadWorkouts.execute();
+    }
   }
 
   final WorkoutRepository _workoutRepository;
-  List<Workout> _workouts = [];
+  List<Workout> _workouts;
 
   // List of all [Workout]
   List<Workout> get workouts => _workouts;

@@ -78,7 +78,7 @@ class WorkoutListTile extends StatelessWidget {
         ],
       ),
       onTap: () {
-        context.go(Routes.workoutWithId(workout.id!));
+        context.push(Routes.workoutWithId(workout.id!));
       },
     );
   }

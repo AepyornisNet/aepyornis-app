@@ -13,6 +13,14 @@ class WorkoutListScreen extends StatefulWidget {
 
 class _WorkoutListScreenState extends State<WorkoutListScreen> {
   @override
+  void initState() {
+    super.initState();
+    if (widget.viewModel.workouts.isEmpty) {
+      widget.viewModel.loadWorkouts.execute();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +42,7 @@ class _WorkoutListScreenState extends State<WorkoutListScreen> {
           listenable: widget.viewModel.loadWorkouts,
           builder: (context, child) {
             return ListView.builder(
+              key: const PageStorageKey('workout_list_view'),
               itemCount: widget.viewModel.workouts.length,
               itemBuilder: (context, index) {
                 return WorkoutListTile(widget.viewModel.workouts[index]);

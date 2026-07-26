@@ -55,9 +55,7 @@ final router = GoRouter(
             path: Routes.workouts,
             builder: (context, state) {
               return WorkoutListScreen(
-                viewModel: WorkoutListViewModel(
-                  workoutRepository: context.read(),
-                ),
+                viewModel: context.read<WorkoutListViewModel>(),
               );
             },
             routes: [

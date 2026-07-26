@@ -13,6 +13,9 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
   List<Workout>? _cachedWorkouts;
 
   @override
+  List<Workout>? get cachedWorkouts => _cachedWorkouts;
+
+  @override
   Future<Result<List<Workout>>> getAll({
     DateTime? startDate,
     DateTime? endDate,

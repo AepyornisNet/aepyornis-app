@@ -2,6 +2,9 @@ import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 
 abstract class WorkoutRepository {
+  // Returns cached workouts if available
+  List<Workout>? get cachedWorkouts;
+
   // Returns all [Workout]s
   Future<Result<List<Workout>>> getAll();
 
