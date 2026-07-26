@@ -10,6 +10,7 @@ import '../data/repositories/workout/workout_repository_remote.dart';
 import '../data/services/api/api_client.dart';
 import '../data/services/health_connect/health_connect_service.dart';
 import '../data/services/shared_preferences_service.dart';
+import '../ui/home/view_models/home_viewmodel.dart';
 import '../ui/workout/list/view_models/workout_list_viewmodel.dart';
 
 /// Configure dependencies for remote data.
@@ -34,6 +35,15 @@ List<SingleChildWidget> get providersRemote {
     Provider(
         create: (context) => WorkoutListViewModel(
               workoutRepository: context.read(),
+            )),
+    ChangeNotifierProvider(
+        create: (context) => HomeViewModel(
+              authRepository: context.read(),
+              measurementRepository: context.read(),
+              sharedPreferencesService: context.read(),
+              healthConnectService: context.read(),
+              workoutRepository: context.read(),
+              apiClient: context.read(),
             )),
   ];
 }

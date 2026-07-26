@@ -17,12 +17,19 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final ScrollController _scrollController = ScrollController();
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  late final ScrollController _scrollController;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController(
+      initialScrollOffset: widget.viewModel.savedScrollOffset,
+    );
     widget.viewModel.requestPermissions();
     _scrollController.addListener(_onScroll);
   }
@@ -35,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    widget.viewModel.savedScrollOffset = _scrollController.offset;
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 300) {
       widget.viewModel.loadMoreFeed();
@@ -43,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context);
@@ -174,6 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return RefreshIndicator(
             onRefresh: vm.loadInitialFeed,
             child: ListView.separated(
+              key: const PageStorageKey('home_feed_list'),
               controller: _scrollController,
               padding: const EdgeInsets.only(top: 4, bottom: 24),
               itemCount: vm.workouts.length + (vm.isLoadingMore ? 1 : 0),

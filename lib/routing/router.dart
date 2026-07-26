@@ -39,14 +39,7 @@ final router = GoRouter(
             path: Routes.home,
             builder: (context, state) {
               return HomeScreen(
-                viewModel: HomeViewModel(
-                  authRepository: context.read(),
-                  measurementRepository: context.read(),
-                  sharedPreferencesService: context.read(),
-                  healthConnectService: context.read(),
-                  workoutRepository: context.read(),
-                  apiClient: context.read(),
-                ),
+                viewModel: context.read<HomeViewModel>(),
               );
             },
           )

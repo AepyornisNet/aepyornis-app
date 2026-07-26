@@ -35,6 +35,8 @@ class HomeViewModel extends ChangeNotifier {
 
   Map<String, String> get authHeaders => _apiClient.authHeaders;
 
+  double savedScrollOffset = 0.0;
+
   String _feedScope = 'following'; // 'following' | 'global'
   String get feedScope => _feedScope;
 
@@ -77,6 +79,7 @@ class HomeViewModel extends ChangeNotifier {
     _errorMessage = null;
     _workouts = [];
     _hasMore = true;
+    savedScrollOffset = 0.0;
     notifyListeners();
 
     final result = await _workoutRepository.getRecentWorkouts(
