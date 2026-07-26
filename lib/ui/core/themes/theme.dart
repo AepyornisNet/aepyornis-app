@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppTheme {
+  static const Color brandColor = Color(0xFFFA7A1C);
+
   static ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(
-      primary: Colors.blue,
-      onPrimary: Colors.white,
-      secondary: Colors.green,
-      onSecondary: Colors.white,
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: brandColor,
+      brightness: Brightness.light,
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(
-      primary: Colors.blue,
-      onPrimary: Colors.white,
-      secondary: Colors.green,
-      onSecondary: Colors.white,
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: brandColor,
+      brightness: Brightness.dark,
     ),
   );
 }
