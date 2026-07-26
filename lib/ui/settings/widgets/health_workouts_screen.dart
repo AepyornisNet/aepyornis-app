@@ -78,21 +78,35 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.healthWorkouts),
-        actions: [
-          ListenableBuilder(
-            listenable: widget.viewModel,
-            builder: (context, child) {
-              final hasUnsynced = widget.viewModel.workouts.any((w) => !w.isSynced);
-              return TextButton.icon(
-                onPressed: hasUnsynced
-                    ? () => widget.viewModel.syncAll.execute()
-                    : null,
-                icon: const Icon(Icons.sync_rounded),
-                label: Text(l10n.syncAllWorkouts),
-              );
-            },
-          ),
-        ],
+      ),
+      floatingActionButton: ListenableBuilder(
+        listenable: widget.viewModel,
+        builder: (context, child) {
+          final hasUnsynced =
+              widget.viewModel.workouts.any((w) => !w.isSynced);
+          if (!hasUnsynced) {
+            return const SizedBox.shrink();
+          }
+
+          final isSyncingAll = widget.viewModel.syncAll.isExecuting.value;
+
+          return FloatingActionButton.extended(
+            onPressed: isSyncingAll
+                ? null
+                : () => widget.viewModel.syncAll.execute(),
+            icon: isSyncingAll
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.sync_rounded),
+            label: Text(l10n.syncAllWorkouts),
+          );
+        },
       ),
       body: ListenableBuilder(
         listenable: widget.viewModel,
@@ -109,11 +123,35 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
             child: widget.viewModel.workouts.isEmpty
                 ? _buildEmptyView(context, l10n)
                 : ListView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: widget.viewModel.workouts.length,
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 16.0,
+                      top: 16.0,
+                      bottom: 88.0,
+                    ),
+                    itemCount: widget.viewModel.workouts.length + 1,
                     itemBuilder: (context, index) {
+                      if (index == widget.viewModel.workouts.length) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: OutlinedButton.icon(
+                              onPressed: widget.viewModel.loadMore,
+                              icon: const Icon(Icons.history_rounded),
+                              label: Text(
+                                'Load older workouts (${widget.viewModel.daysToLoad} days)',
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       final item = widget.viewModel.workouts[index];
-                      return _buildWorkoutCard(context, item, l10n, colorScheme);
+                      return _buildWorkoutCard(
+                        context,
+                        item,
+                        l10n,
+                        colorScheme,
+                      );
                     },
                   ),
           );
@@ -141,10 +179,23 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16),
-              OutlinedButton.icon(
-                onPressed: () => widget.viewModel.loadWorkouts.execute(),
-                icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Refresh'),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () => widget.viewModel.loadWorkouts.execute(),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('Refresh'),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: widget.viewModel.loadMore,
+                    icon: const Icon(Icons.history_rounded),
+                    label: Text(
+                      'Load older (${widget.viewModel.daysToLoad}d)',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -190,9 +241,10 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
                       Flexible(
                         child: Text(
                           item.title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -288,9 +340,10 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
       );
     }
 
-    return FilledButton.tonal(
+    return IconButton.filledTonal(
       onPressed: () => widget.viewModel.syncWorkout.execute(item),
-      child: Text(l10n.syncWorkout),
+      icon: const Icon(Icons.cloud_upload_rounded),
+      tooltip: l10n.syncWorkout,
     );
   }
 

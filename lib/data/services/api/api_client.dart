@@ -117,27 +117,44 @@ class ApiClient {
     }
   }
 
-  Future<Result<List<Workout>>> getWorkouts() async {
+  Future<Result<List<Workout>>> getWorkouts({int page = 1, int? limit}) async {
     try {
-      final response =
-          await http.get(_url('/api/v2/workouts'), headers: await _headers());
+      final baseUri = _url('/api/v2/workouts');
+      final queryParams = Map<String, String>.from(baseUri.queryParameters);
+      queryParams['page'] = page.toString();
+      if (limit != null) {
+        queryParams['limit'] = limit.toString();
+      }
+      final uri = baseUri.replace(queryParameters: queryParams);
+
+      final response = await http.get(uri, headers: await _headers());
       if (response.statusCode == 200) {
-        final apiResponse =
-            ApiResponse.fromJson<List<Workout>, List<dynamic>>(
-          jsonDecode(utf8.decode(response.bodyBytes))
-              as Map<String, dynamic>,
-          (results) => results
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse =
+              ApiResponse.fromJson<List<Workout>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => Workout.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
               .map((e) => Workout.fromJson(e as Map<String, dynamic>))
-              .toList(),
-        );
-        try {
-          final data = apiResponse.getOrThrow();
-          return Success(data);
-        } on Exception catch (e) {
-          return Failure(e);
+              .toList();
+          return Success(list);
         }
-      } else {
         return Failure(HttpException("Invalid response"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
       }
     } on Exception catch (e) {
       return Failure(e);

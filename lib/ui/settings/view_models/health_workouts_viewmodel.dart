@@ -67,13 +67,16 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
   final ApiClient _apiClient;
 
   List<HealthWorkoutItem> workouts = [];
+  int daysToLoad = 7;
 
   late Command<void, List<HealthWorkoutItem>> loadWorkouts;
   late Command<HealthWorkoutItem, Result<void>?> syncWorkout;
   late Command<void, Result<int>?> syncAll;
 
   Future<List<HealthWorkoutItem>> _loadWorkouts() async {
-    final sessions = await _healthConnectService.readExerciseSessions();
+    final startTime = DateTime.now().subtract(Duration(days: daysToLoad));
+    final sessions =
+        await _healthConnectService.readExerciseSessions(startTime: startTime);
     List<Workout> existingWorkouts = [];
 
     try {
@@ -103,6 +106,11 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
     workouts = items;
     notifyListeners();
     return items;
+  }
+
+  void loadMore() {
+    daysToLoad += 30;
+    loadWorkouts.execute();
   }
 
   bool _checkIsSynced(
@@ -167,6 +175,10 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
       );
 
       if (uploadResult.isSuccess()) {
+        final uploadedWorkout = uploadResult.getOrNull();
+        if (uploadedWorkout != null) {
+          _workoutRepository.addWorkout(uploadedWorkout);
+        }
         item.isSynced = true;
         item.isSyncing = false;
         notifyListeners();

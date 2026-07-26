@@ -10,4 +10,7 @@ abstract class WorkoutRepository {
 
   // Fetches the full [Workout] list from the server and updates the local cache
   Future<Result<void>> updateWorkouts();
+
+  // Adds a newly created or uploaded [Workout] to local repository cache
+  void addWorkout(Workout workout);
 }

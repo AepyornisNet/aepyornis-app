@@ -172,7 +172,7 @@ class HealthConnectService {
     }
 
     final end = endTime ?? DateTime.now();
-    final start = startTime ?? end.subtract(const Duration(days: 90));
+    final start = startTime ?? end.subtract(const Duration(days: 7));
 
     try {
       final request = HealthDataType.exerciseSession.readInTimeRange(
