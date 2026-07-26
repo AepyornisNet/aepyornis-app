@@ -177,4 +177,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hasGpsRoute => 'GPS Route';
+
+  @override
+  String get workoutDetail => 'Workout Detail';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get failedToLoadFeed => 'Failed to load feed';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get noActivitiesFound => 'No activities found';
+
+  @override
+  String get emptyFeedFollowing => 'Follow users to see their activities here.';
+
+  @override
+  String get emptyFeedGlobal => 'No global activities yet.';
+
+  @override
+  String get athlete => 'Athlete';
+
+  @override
+  String likesAndComments(int likesCount, int repliesCount) {
+    return '$likesCount likes • $repliesCount comments';
+  }
+
+  @override
+  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+
+  @override
+  String get addComment => 'Add a comment...';
+
+  @override
+  String get like => 'Like';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get metricsAndDetails => 'Metrics & Details';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get avgHeartRate => 'Avg Heart Rate';
+
+  @override
+  String get maxHeartRate => 'Max Heart Rate';
+
+  @override
+  String get avgCadence => 'Avg Cadence';
+
+  @override
+  String get maxCadence => 'Max Cadence';
+
+  @override
+  String get avgPower => 'Avg Power';
+
+  @override
+  String get maxPower => 'Max Power';
+
+  @override
+  String get speed => 'Speed';
+
+  @override
+  String get elevation => 'Elevation';
+
+  @override
+  String get heartRate => 'Heart Rate';
+
+  @override
+  String get cadence => 'Cadence';
+
+  @override
+  String get power => 'Power';
+
+  @override
+  String get timeMin => 'Time (min)';
+
+  @override
+  String get distKm => 'Dist (km)';
+
+  @override
+  String noDataForMetric(String metricName) {
+    return 'No data for $metricName';
+  }
 }

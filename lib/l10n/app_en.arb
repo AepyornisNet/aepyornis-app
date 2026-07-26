@@ -60,5 +60,53 @@
   "syncWorkout": "Sync",
   "syncingWorkout": "Syncing...",
   "noWorkoutsFound": "No exercise sessions found in health store",
-  "hasGpsRoute": "GPS Route"
+  "hasGpsRoute": "GPS Route",
+  "workoutDetail": "Workout Detail",
+  "following": "Following",
+  "global": "Global",
+  "failedToLoadFeed": "Failed to load feed",
+  "tryAgain": "Try Again",
+  "noActivitiesFound": "No activities found",
+  "emptyFeedFollowing": "Follow users to see their activities here.",
+  "emptyFeedGlobal": "No global activities yet.",
+  "athlete": "Athlete",
+  "likesAndComments": "{likesCount} likes • {repliesCount} comments",
+  "@likesAndComments": {
+    "placeholders": {
+      "likesCount": {
+        "type": "int"
+      },
+      "repliesCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noCommentsYet": "No comments yet. Be the first to comment!",
+  "addComment": "Add a comment...",
+  "like": "Like",
+  "comments": "Comments",
+  "summary": "Summary",
+  "metricsAndDetails": "Metrics & Details",
+  "notes": "Notes",
+  "avgHeartRate": "Avg Heart Rate",
+  "maxHeartRate": "Max Heart Rate",
+  "avgCadence": "Avg Cadence",
+  "maxCadence": "Max Cadence",
+  "avgPower": "Avg Power",
+  "maxPower": "Max Power",
+  "speed": "Speed",
+  "elevation": "Elevation",
+  "heartRate": "Heart Rate",
+  "cadence": "Cadence",
+  "power": "Power",
+  "timeMin": "Time (min)",
+  "distKm": "Dist (km)",
+  "noDataForMetric": "No data for {metricName}",
+  "@noDataForMetric": {
+    "placeholders": {
+      "metricName": {
+        "type": "String"
+      }
+    }
+  }
 }

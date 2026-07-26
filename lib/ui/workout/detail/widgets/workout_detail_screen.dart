@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
+import 'package:workout_tracker_app/l10n/app_localizations.dart';
 import 'package:workout_tracker_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
 import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_chart.dart';
 import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_data.dart';
@@ -32,9 +33,11 @@ class WorkoutDetailScreen extends StatefulWidget {
 class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Workout Detail'),
+        title: Text(l10n?.workoutDetail ?? 'Workout Detail'),
         elevation: 0,
         actions: [
           ListenableBuilder(

@@ -15,10 +15,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get apiKey => 'API-Schlüssel';
 
   @override
-  String get login => 'Login';
+  String get login => 'Anmelden';
 
   @override
-  String get logout => 'Logout';
+  String get logout => 'Abmelden';
 
   @override
   String get home => 'Home';
@@ -27,76 +27,76 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trainings => 'Trainings';
 
   @override
-  String get recording => 'Recording';
+  String get recording => 'Aufzeichnung';
 
   @override
-  String get statistics => 'Statistics';
+  String get statistics => 'Statistiken';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Einstellungen';
 
   @override
-  String get loginError => 'Could not login';
+  String get loginError => 'Anmeldung fehlgeschlagen';
 
   @override
-  String get location => 'Location';
+  String get location => 'Ort';
 
   @override
-  String get source => 'Source';
+  String get source => 'Quelle';
 
   @override
-  String get total_duration => 'Total duration';
+  String get total_duration => 'Gesamtdauer';
 
   @override
-  String get time_paused => 'Time paused';
+  String get time_paused => 'Pausenzeit';
 
   @override
-  String get total_distance => 'Total distance';
+  String get total_distance => 'Gesamtdistanz';
 
   @override
-  String get average_speed => 'Average speed';
+  String get average_speed => 'Ø Geschwindigkeit';
 
   @override
-  String get average_speed_no_pause => 'Average speed (no pause)';
+  String get average_speed_no_pause => 'Ø Geschwindigkeit (ohne Pause)';
 
   @override
-  String get average_tempo => 'Average tempo';
+  String get average_tempo => 'Ø Tempo';
 
   @override
-  String get average_tempo_no_pause => 'Average tempo (no pause)';
+  String get average_tempo_no_pause => 'Ø Tempo (ohne Pause)';
 
   @override
-  String get max_speed => 'Max speed';
+  String get max_speed => 'Max. Geschwindigkeit';
 
   @override
-  String get min_elevation => 'Min elevation';
+  String get min_elevation => 'Min. Höhe';
 
   @override
-  String get max_elevation => 'Max elevation';
+  String get max_elevation => 'Max. Höhe';
 
   @override
-  String get total_up => 'Total up';
+  String get total_up => 'Höhenmeter auf';
 
   @override
-  String get total_down => 'Total down';
+  String get total_down => 'Höhenmeter ab';
 
   @override
-  String get est_calories_burned => 'Est. calories burned';
+  String get est_calories_burned => 'Geschätzte Kalorien';
 
   @override
-  String get equipment => 'Equipment';
+  String get equipment => 'Ausrüstung';
 
   @override
-  String get extra_metrics => 'Extra metrics';
+  String get extra_metrics => 'Zusätzliche Metriken';
 
   @override
-  String get total_repetitions => 'Total repetitions';
+  String get total_repetitions => 'Wiederholungen gesamt';
 
   @override
-  String get total_weight => 'Total weight';
+  String get total_weight => 'Gesamtgewicht';
 
   @override
-  String get steps => 'Steps';
+  String get steps => 'Schritte';
 
   @override
   String get connectHealth => 'Health verbinden';
@@ -178,4 +178,103 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hasGpsRoute => 'GPS Route';
+
+  @override
+  String get workoutDetail => 'Trainingsdetails';
+
+  @override
+  String get following => 'Gefolgt';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get failedToLoadFeed => 'Feed konnte nicht geladen werden';
+
+  @override
+  String get tryAgain => 'Erneut versuchen';
+
+  @override
+  String get noActivitiesFound => 'Keine Aktivitäten gefunden';
+
+  @override
+  String get emptyFeedFollowing =>
+      'Folge Nutzern, um hier ihre Aktivitäten zu sehen.';
+
+  @override
+  String get emptyFeedGlobal => 'Noch keine globalen Aktivitäten.';
+
+  @override
+  String get athlete => 'Athlet';
+
+  @override
+  String likesAndComments(int likesCount, int repliesCount) {
+    return '$likesCount Likes • $repliesCount Kommentare';
+  }
+
+  @override
+  String get noCommentsYet =>
+      'Noch keine Kommentare. Schreibe den ersten Kommentar!';
+
+  @override
+  String get addComment => 'Kommentar hinzufügen...';
+
+  @override
+  String get like => 'Gefällt mir';
+
+  @override
+  String get comments => 'Kommentare';
+
+  @override
+  String get summary => 'Zusammenfassung';
+
+  @override
+  String get metricsAndDetails => 'Metriken & Details';
+
+  @override
+  String get notes => 'Notizen';
+
+  @override
+  String get avgHeartRate => 'Ø Herzfrequenz';
+
+  @override
+  String get maxHeartRate => 'Max. Herzfrequenz';
+
+  @override
+  String get avgCadence => 'Ø Trittfrequenz';
+
+  @override
+  String get maxCadence => 'Max. Trittfrequenz';
+
+  @override
+  String get avgPower => 'Ø Leistung';
+
+  @override
+  String get maxPower => 'Max. Leistung';
+
+  @override
+  String get speed => 'Geschwindigkeit';
+
+  @override
+  String get elevation => 'Höhe';
+
+  @override
+  String get heartRate => 'Herzfrequenz';
+
+  @override
+  String get cadence => 'Trittfrequenz';
+
+  @override
+  String get power => 'Leistung';
+
+  @override
+  String get timeMin => 'Zeit (min)';
+
+  @override
+  String get distKm => 'Distanz (km)';
+
+  @override
+  String noDataForMetric(String metricName) {
+    return 'Keine Daten für $metricName';
+  }
 }

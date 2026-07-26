@@ -1,5 +1,34 @@
 {
+  "url": "URL",
   "apiKey": "API-Schlüssel",
+  "login": "Anmelden",
+  "logout": "Abmelden",
+  "home": "Home",
+  "trainings": "Trainings",
+  "recording": "Aufzeichnung",
+  "statistics": "Statistiken",
+  "settings": "Einstellungen",
+  "loginError": "Anmeldung fehlgeschlagen",
+  "location": "Ort",
+  "source": "Quelle",
+  "total_duration": "Gesamtdauer",
+  "time_paused": "Pausenzeit",
+  "total_distance": "Gesamtdistanz",
+  "average_speed": "Ø Geschwindigkeit",
+  "average_speed_no_pause": "Ø Geschwindigkeit (ohne Pause)",
+  "average_tempo": "Ø Tempo",
+  "average_tempo_no_pause": "Ø Tempo (ohne Pause)",
+  "max_speed": "Max. Geschwindigkeit",
+  "min_elevation": "Min. Höhe",
+  "max_elevation": "Max. Höhe",
+  "total_up": "Höhenmeter auf",
+  "total_down": "Höhenmeter ab",
+  "est_calories_burned": "Geschätzte Kalorien",
+  "equipment": "Ausrüstung",
+  "extra_metrics": "Zusätzliche Metriken",
+  "total_repetitions": "Wiederholungen gesamt",
+  "total_weight": "Gesamtgewicht",
+  "steps": "Schritte",
   "connectHealth": "Health verbinden",
   "connectHealthSuccess": "Zugriff gewährt",
   "connectHealthFailure": "Zugriff verweigert",
@@ -31,5 +60,53 @@
   "syncWorkout": "Synchronisieren",
   "syncingWorkout": "Synchronisiere...",
   "noWorkoutsFound": "Keine Trainingseinheiten im Health-Speicher gefunden",
-  "hasGpsRoute": "GPS Route"
+  "hasGpsRoute": "GPS Route",
+  "workoutDetail": "Trainingsdetails",
+  "following": "Gefolgt",
+  "global": "Global",
+  "failedToLoadFeed": "Feed konnte nicht geladen werden",
+  "tryAgain": "Erneut versuchen",
+  "noActivitiesFound": "Keine Aktivitäten gefunden",
+  "emptyFeedFollowing": "Folge Nutzern, um hier ihre Aktivitäten zu sehen.",
+  "emptyFeedGlobal": "Noch keine globalen Aktivitäten.",
+  "athlete": "Athlet",
+  "likesAndComments": "{likesCount} Likes • {repliesCount} Kommentare",
+  "@likesAndComments": {
+    "placeholders": {
+      "likesCount": {
+        "type": "int"
+      },
+      "repliesCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noCommentsYet": "Noch keine Kommentare. Schreibe den ersten Kommentar!",
+  "addComment": "Kommentar hinzufügen...",
+  "like": "Gefällt mir",
+  "comments": "Kommentare",
+  "summary": "Zusammenfassung",
+  "metricsAndDetails": "Metriken & Details",
+  "notes": "Notizen",
+  "avgHeartRate": "Ø Herzfrequenz",
+  "maxHeartRate": "Max. Herzfrequenz",
+  "avgCadence": "Ø Trittfrequenz",
+  "maxCadence": "Max. Trittfrequenz",
+  "avgPower": "Ø Leistung",
+  "maxPower": "Max. Leistung",
+  "speed": "Geschwindigkeit",
+  "elevation": "Höhe",
+  "heartRate": "Herzfrequenz",
+  "cadence": "Trittfrequenz",
+  "power": "Leistung",
+  "timeMin": "Zeit (min)",
+  "distKm": "Distanz (km)",
+  "noDataForMetric": "Keine Daten für {metricName}",
+  "@noDataForMetric": {
+    "placeholders": {
+      "metricName": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -74,16 +74,16 @@ class _HomeScreenState extends State<HomeScreen>
               listenable: widget.viewModel,
               builder: (context, _) {
                 return SegmentedButton<String>(
-                  segments: const [
+                  segments: [
                     ButtonSegment<String>(
                       value: 'following',
-                      label: Text('Following'),
-                      icon: Icon(Icons.people_outline, size: 18),
+                      label: Text(l10n?.following ?? 'Following'),
+                      icon: const Icon(Icons.people_outline, size: 18),
                     ),
                     ButtonSegment<String>(
                       value: 'global',
-                      label: Text('Global'),
-                      icon: Icon(Icons.public, size: 18),
+                      label: Text(l10n?.global ?? 'Global'),
+                      icon: const Icon(Icons.public, size: 18),
                     ),
                   ],
                   selected: {widget.viewModel.feedScope},
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen>
                         size: 48, color: colorScheme.error),
                     const SizedBox(height: 12),
                     Text(
-                      'Failed to load feed',
+                      l10n?.failedToLoadFeed ?? 'Failed to load feed',
                       style: theme.textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen>
                     FilledButton.icon(
                       onPressed: vm.loadInitialFeed,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Try Again'),
+                      label: Text(l10n?.tryAgain ?? 'Try Again'),
                     )
                   ],
                 ),
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   .withValues(alpha: 0.5)),
                           const SizedBox(height: 16),
                           Text(
-                            'No activities found',
+                            l10n?.noActivitiesFound ?? 'No activities found',
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
@@ -166,8 +166,10 @@ class _HomeScreenState extends State<HomeScreen>
                           const SizedBox(height: 8),
                           Text(
                             vm.feedScope == 'following'
-                                ? 'Follow users to see their activities here.'
-                                : 'No global activities yet.',
+                                ? (l10n?.emptyFeedFollowing ??
+                                    'Follow users to see their activities here.')
+                                : (l10n?.emptyFeedGlobal ??
+                                    'No global activities yet.'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
@@ -249,7 +251,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
     return '${minutes}m';
   }
 
-  String _formatAuthorName(Workout workout) {
+  String _formatAuthorName(Workout workout, BuildContext context) {
     final user = workout.user;
     if (user != null) {
       final name = user.name.trim();
@@ -262,7 +264,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
         return username;
       }
     }
-    return 'Athlete';
+    return AppLocalizations.of(context)?.athlete ?? 'Athlete';
   }
 
   String? _getAttachmentUrl(Workout workout) {
@@ -295,6 +297,8 @@ class _FeedPostItemState extends State<_FeedPostItem> {
 
     final authHeaders = widget.viewModel.authHeaders;
 
+    final l10n = AppLocalizations.of(context);
+
     return InkWell(
       onTap: workout.id != null
           ? () => context.push(Routes.workoutWithId(workout.id!))
@@ -319,7 +323,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                       : null,
                   child: avatarUrl == null
                       ? Text(
-                          _formatAuthorName(workout)
+                          _formatAuthorName(workout, context)
                               .characters
                               .first
                               .toUpperCase(),
@@ -336,7 +340,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _formatAuthorName(workout),
+                        _formatAuthorName(workout, context),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -499,7 +503,9 @@ class _FeedPostItemState extends State<_FeedPostItem> {
             Row(
               children: [
                 Text(
-                  '${workout.likesCount} likes • ${workout.repliesCount} comments',
+                  l10n?.likesAndComments(
+                          workout.likesCount, workout.repliesCount) ??
+                      '${workout.likesCount} likes • ${workout.repliesCount} comments',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
@@ -512,7 +518,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                     color: workout.likedByMe ? Colors.red : null,
                   ),
                   onPressed: () => widget.viewModel.toggleLike(workout),
-                  tooltip: 'Like',
+                  tooltip: l10n?.like ?? 'Like',
                 ),
                 IconButton(
                   icon: Icon(
@@ -522,7 +528,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                     color: _commentsExpanded ? colorScheme.primary : null,
                   ),
                   onPressed: _toggleComments,
-                  tooltip: 'Comments',
+                  tooltip: l10n?.comments ?? 'Comments',
                 ),
               ],
             ),
@@ -647,6 +653,8 @@ class _CommentSectionState extends State<_CommentSection> {
 
     final authHeaders = widget.viewModel.authHeaders;
 
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -665,7 +673,8 @@ class _CommentSectionState extends State<_CommentSection> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'No comments yet. Be the first to comment!',
+                l10n?.noCommentsYet ??
+                    'No comments yet. Be the first to comment!',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontStyle: FontStyle.italic,
@@ -745,7 +754,7 @@ class _CommentSectionState extends State<_CommentSection> {
                 child: TextField(
                   controller: _commentController,
                   decoration: InputDecoration(
-                    hintText: 'Add a comment...',
+                    hintText: l10n?.addComment ?? 'Add a comment...',
                     isDense: true,
                     filled: true,
                     fillColor: colorScheme.surface,

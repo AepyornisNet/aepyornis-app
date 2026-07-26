@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_tracker_app/domain/models/map_data_details/map_data_details.dart';
 import 'package:workout_tracker_app/domain/models/map_point/map_point.dart';
+import 'package:workout_tracker_app/l10n/app_localizations.dart';
 
 enum ChartMetricType { speed, elevation, heartRate, cadence, power }
 
@@ -92,18 +93,19 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
     }
   }
 
-  String _metricName(ChartMetricType type) {
+  String _metricName(ChartMetricType type, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     switch (type) {
       case ChartMetricType.speed:
-        return 'Speed';
+        return l10n?.speed ?? 'Speed';
       case ChartMetricType.elevation:
-        return 'Elevation';
+        return l10n?.elevation ?? 'Elevation';
       case ChartMetricType.heartRate:
-        return 'Heart Rate';
+        return l10n?.heartRate ?? 'Heart Rate';
       case ChartMetricType.cadence:
-        return 'Cadence';
+        return l10n?.cadence ?? 'Cadence';
       case ChartMetricType.power:
-        return 'Power';
+        return l10n?.power ?? 'Power';
     }
   }
 
@@ -154,6 +156,7 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final available = _availableMetrics();
     if (available.isEmpty) {
       return const SizedBox.shrink();
@@ -222,7 +225,7 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
                         size: 16,
                         color: isSelected ? Colors.white : chipColor,
                       ),
-                      label: Text(_metricName(type)),
+                      label: Text(_metricName(type, context)),
                       selected: isSelected,
                       selectedColor: chipColor,
                       labelStyle: TextStyle(
@@ -281,7 +284,8 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
               child: displaySpots.isEmpty
                   ? Center(
                       child: Text(
-                        'No data for ${_metricName(_selectedMetric)}',
+                        l10n?.noDataForMetric(_metricName(_selectedMetric, context)) ??
+                            'No data for ${_metricName(_selectedMetric, context)}',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     )
@@ -377,16 +381,16 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
               const SizedBox(height: 12),
               Center(
                 child: SegmentedButton<bool>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: false,
-                      label: Text('Time (min)'),
-                      icon: Icon(Icons.access_time, size: 16),
+                      label: Text(l10n?.timeMin ?? 'Time (min)'),
+                      icon: const Icon(Icons.access_time, size: 16),
                     ),
                     ButtonSegment(
                       value: true,
-                      label: Text('Dist (km)'),
-                      icon: Icon(Icons.straighten, size: 16),
+                      label: Text(l10n?.distKm ?? 'Dist (km)'),
+                      icon: const Icon(Icons.straighten, size: 16),
                     ),
                   ],
                   selected: {_useDistanceXAxis},

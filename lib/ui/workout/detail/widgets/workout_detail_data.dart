@@ -47,7 +47,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.averageHeartRate ?? 0) > 0) {
       highlightCards.add(_StatTile(
         icon: Icons.favorite,
-        label: 'Avg Heart Rate',
+        label: l10n.avgHeartRate,
         value: '${workout.averageHeartRate!.round()} bpm',
         color: Colors.red,
       ));
@@ -56,7 +56,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.averageCadence ?? 0) > 0) {
       highlightCards.add(_StatTile(
         icon: Icons.rotate_right,
-        label: 'Avg Cadence',
+        label: l10n.avgCadence,
         value: '${workout.averageCadence!.round()} rpm',
         color: Colors.orange,
       ));
@@ -138,7 +138,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.maxHeartRate ?? 0) > 0) {
       detailItems.add(_DetailRowItem(
         icon: Icons.favorite,
-        label: 'Max Heart Rate',
+        label: l10n.maxHeartRate,
         value: '${workout.maxHeartRate!.round()} bpm',
       ));
     }
@@ -146,7 +146,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.maxCadence ?? 0) > 0) {
       detailItems.add(_DetailRowItem(
         icon: Icons.rotate_right,
-        label: 'Max Cadence',
+        label: l10n.maxCadence,
         value: '${workout.maxCadence!.round()} rpm',
       ));
     }
@@ -154,7 +154,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.averagePower ?? 0) > 0) {
       detailItems.add(_DetailRowItem(
         icon: Icons.bolt,
-        label: 'Avg Power',
+        label: l10n.avgPower,
         value: '${workout.averagePower!.round()} W',
       ));
     }
@@ -162,7 +162,7 @@ class WorkoutDetailData extends StatelessWidget {
     if ((workout.maxPower ?? 0) > 0) {
       detailItems.add(_DetailRowItem(
         icon: Icons.bolt,
-        label: 'Max Power',
+        label: l10n.maxPower,
         value: '${workout.maxPower!.round()} W',
       ));
     }
@@ -199,7 +199,7 @@ class WorkoutDetailData extends StatelessWidget {
           // Highlight Stat Tiles Grid
           if (highlightCards.isNotEmpty) ...[
             Text(
-              'Summary',
+              l10n.summary,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -220,7 +220,7 @@ class WorkoutDetailData extends StatelessWidget {
           // Breakdown List Card
           if (detailItems.isNotEmpty) ...[
             Text(
-              'Metrics & Details',
+              l10n.metricsAndDetails,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -279,7 +279,7 @@ class WorkoutDetailData extends StatelessWidget {
           // Notes Section
           if (workout.notes.isNotEmpty) ...[
             Text(
-              'Notes',
+              l10n.notes,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

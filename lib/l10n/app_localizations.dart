@@ -427,6 +427,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPS Route'**
   String get hasGpsRoute;
+
+  /// No description provided for @workoutDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Detail'**
+  String get workoutDetail;
+
+  /// No description provided for @following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// No description provided for @global.
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get global;
+
+  /// No description provided for @failedToLoadFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load feed'**
+  String get failedToLoadFeed;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @noActivitiesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities found'**
+  String get noActivitiesFound;
+
+  /// No description provided for @emptyFeedFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow users to see their activities here.'**
+  String get emptyFeedFollowing;
+
+  /// No description provided for @emptyFeedGlobal.
+  ///
+  /// In en, this message translates to:
+  /// **'No global activities yet.'**
+  String get emptyFeedGlobal;
+
+  /// No description provided for @athlete.
+  ///
+  /// In en, this message translates to:
+  /// **'Athlete'**
+  String get athlete;
+
+  /// No description provided for @likesAndComments.
+  ///
+  /// In en, this message translates to:
+  /// **'{likesCount} likes • {repliesCount} comments'**
+  String likesAndComments(int likesCount, int repliesCount);
+
+  /// No description provided for @noCommentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet. Be the first to comment!'**
+  String get noCommentsYet;
+
+  /// No description provided for @addComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a comment...'**
+  String get addComment;
+
+  /// No description provided for @like.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get like;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summary;
+
+  /// No description provided for @metricsAndDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Metrics & Details'**
+  String get metricsAndDetails;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @avgHeartRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Heart Rate'**
+  String get avgHeartRate;
+
+  /// No description provided for @maxHeartRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Heart Rate'**
+  String get maxHeartRate;
+
+  /// No description provided for @avgCadence.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Cadence'**
+  String get avgCadence;
+
+  /// No description provided for @maxCadence.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Cadence'**
+  String get maxCadence;
+
+  /// No description provided for @avgPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Power'**
+  String get avgPower;
+
+  /// No description provided for @maxPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Power'**
+  String get maxPower;
+
+  /// No description provided for @speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get speed;
+
+  /// No description provided for @elevation.
+  ///
+  /// In en, this message translates to:
+  /// **'Elevation'**
+  String get elevation;
+
+  /// No description provided for @heartRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart Rate'**
+  String get heartRate;
+
+  /// No description provided for @cadence.
+  ///
+  /// In en, this message translates to:
+  /// **'Cadence'**
+  String get cadence;
+
+  /// No description provided for @power.
+  ///
+  /// In en, this message translates to:
+  /// **'Power'**
+  String get power;
+
+  /// No description provided for @timeMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Time (min)'**
+  String get timeMin;
+
+  /// No description provided for @distKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Dist (km)'**
+  String get distKm;
+
+  /// No description provided for @noDataForMetric.
+  ///
+  /// In en, this message translates to:
+  /// **'No data for {metricName}'**
+  String noDataForMetric(String metricName);
 }
 
 class _AppLocalizationsDelegate
