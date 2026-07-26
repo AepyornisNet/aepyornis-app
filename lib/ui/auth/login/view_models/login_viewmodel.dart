@@ -2,11 +2,22 @@ import 'package:result_dart/result_dart.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
 
+enum AuthMode { emailPassword, apiKey }
+
 class LoginData {
-  LoginData({required this.url, required this.apiKey});
+  LoginData({
+    required this.url,
+    this.email,
+    this.password,
+    this.apiKey,
+    this.authMode = AuthMode.emailPassword,
+  });
 
   final String url;
-  final String apiKey;
+  final String? email;
+  final String? password;
+  final String? apiKey;
+  final AuthMode authMode;
 }
 
 class LoginViewModel {
@@ -20,8 +31,17 @@ class LoginViewModel {
   late Command<LoginData, Result<void>?> loginApi;
 
   Future<Result<void>> _loginApi(LoginData data) async {
-    final result =
-        await _authRepository.loginApi(apiKey: data.apiKey, url: data.url);
-    return result;
+    if (data.authMode == AuthMode.emailPassword) {
+      return await _authRepository.loginEmailPassword(
+        url: data.url,
+        email: data.email ?? '',
+        password: data.password ?? '',
+      );
+    } else {
+      return await _authRepository.loginApi(
+        apiKey: data.apiKey ?? '',
+        url: data.url,
+      );
+    }
   }
 }

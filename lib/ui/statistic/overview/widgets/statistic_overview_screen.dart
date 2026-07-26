@@ -81,8 +81,10 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
                       : vm.errorMessage != null && vm.statistics == null
                           ? _buildErrorView(context, vm, l10n)
                           : vm.selectedTabIndex == 0
-                              ? _buildOverviewTab(context, vm, l10n, colorScheme)
-                              : _buildRecordsTab(context, vm, l10n, colorScheme),
+                              ? _buildOverviewTab(
+                                  context, vm, l10n, colorScheme)
+                              : _buildRecordsTab(
+                                  context, vm, l10n, colorScheme),
                 ),
               ],
             );
@@ -329,7 +331,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
               bucketKeys: aggregated.bucketKeys,
               seriesData: aggregated.distanceSeries,
               per: vm.per,
-              tooltipFormatter: (val) => '${(val / 1000).toStringAsFixed(2)} km',
+              tooltipFormatter: (val) =>
+                  '${(val / 1000).toStringAsFixed(2)} km',
               yAxisFormatter: (val) => '${(val / 1000).toStringAsFixed(0)} km',
               chartColor: Colors.green,
             ),
@@ -345,7 +348,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
               bucketKeys: aggregated.bucketKeys,
               seriesData: aggregated.speedSeries,
               per: vm.per,
-              tooltipFormatter: (val) => '${(val * 3.6).toStringAsFixed(1)} km/h',
+              tooltipFormatter: (val) =>
+                  '${(val * 3.6).toStringAsFixed(1)} km/h',
               yAxisFormatter: (val) => '${(val * 3.6).toStringAsFixed(0)} km/h',
               chartColor: Colors.blue,
             ),
@@ -361,7 +365,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
               bucketKeys: aggregated.bucketKeys,
               seriesData: aggregated.maxSpeedSeries,
               per: vm.per,
-              tooltipFormatter: (val) => '${(val * 3.6).toStringAsFixed(1)} km/h',
+              tooltipFormatter: (val) =>
+                  '${(val * 3.6).toStringAsFixed(1)} km/h',
               yAxisFormatter: (val) => '${(val * 3.6).toStringAsFixed(0)} km/h',
               chartColor: Colors.purple,
             ),
@@ -514,7 +519,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
     ColorScheme colorScheme,
   ) {
     final theme = Theme.of(context);
-    final workoutTypeStr = getLocalizedWorkoutTypeName(context, record.workoutType);
+    final workoutTypeStr =
+        getLocalizedWorkoutTypeName(context, record.workoutType);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -528,7 +534,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
             // Header: Activity Type
             Row(
               children: [
-                Icon(Icons.emoji_events, color: Colors.amber.shade700, size: 24),
+                Icon(Icons.emoji_events,
+                    color: Colors.amber.shade700, size: 24),
                 const SizedBox(width: 8),
                 Text(
                   workoutTypeStr.isNotEmpty ? workoutTypeStr : 'Activity',
@@ -569,7 +576,8 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
                 workoutId: record.maxSpeed!.workoutId,
               ),
 
-            if (record.averageSpeed != null && record.averageSpeed!.value != null)
+            if (record.averageSpeed != null &&
+                record.averageSpeed!.value != null)
               _RecordRow(
                 icon: Icons.speed,
                 label: l10n.average_speed,
@@ -938,8 +946,10 @@ class _StatisticChart extends StatelessWidget {
           gridData: const FlGridData(show: false),
           borderData: FlBorderData(show: false),
           titlesData: FlTitlesData(
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
@@ -983,8 +993,9 @@ class _StatisticChart extends StatelessWidget {
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
                   final idx = spot.x.toInt();
-                  final key =
-                      idx >= 0 && idx < bucketKeys.length ? bucketKeys[idx] : '';
+                  final key = idx >= 0 && idx < bucketKeys.length
+                      ? bucketKeys[idx]
+                      : '';
                   return LineTooltipItem(
                     '${_formatBucketLabel(key, per)}\n${tooltipFormatter(spot.y)}',
                     const TextStyle(
@@ -1035,8 +1046,10 @@ class _StatisticChart extends StatelessWidget {
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,

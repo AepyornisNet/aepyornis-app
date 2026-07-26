@@ -234,6 +234,45 @@ class ApiClient {
     }
   }
 
+  Future<Result<String>> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/auth/signin'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic> &&
+            decoded['results'] is Map<String, dynamic>) {
+          final results = decoded['results'] as Map<String, dynamic>;
+          final token = results['token'] as String?;
+          if (token != null && token.isNotEmpty) {
+            return Success(token);
+          }
+        }
+        return Failure(HttpException("Token missing in response"));
+      } else if (response.statusCode == 401) {
+        return Failure(HttpException("Invalid email or password"));
+      } else {
+        return Failure(
+          HttpException("Sign in failed (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   Future<Result<Workout>> uploadWorkoutFile({
     required List<int> bytes,
     required String filename,
@@ -410,7 +449,8 @@ class ApiClient {
     }
   }
 
-  Future<Result<WorkoutReply>> createReply(int workoutId, String content) async {
+  Future<Result<WorkoutReply>> createReply(
+      int workoutId, String content) async {
     try {
       final response = await http.post(
         _url('/api/v2/workouts/$workoutId/replies'),
@@ -454,8 +494,8 @@ class ApiClient {
       if (since != null && since.isNotEmpty) queryParams['since'] = since;
       if (per != null && per.isNotEmpty) queryParams['per'] = per;
 
-      final uri = _url('/api/v2/statistics')
-          .replace(queryParameters: queryParams.isNotEmpty ? queryParams : null);
+      final uri = _url('/api/v2/statistics').replace(
+          queryParameters: queryParams.isNotEmpty ? queryParams : null);
       final response = await http.get(uri, headers: await _headers());
 
       if (response.statusCode == 200) {
@@ -488,8 +528,8 @@ class ApiClient {
       final queryParams = <String, String>{};
       if (handle != null && handle.isNotEmpty) queryParams['handle'] = handle;
 
-      final uri = _url('/api/v2/records')
-          .replace(queryParameters: queryParams.isNotEmpty ? queryParams : null);
+      final uri = _url('/api/v2/records').replace(
+          queryParameters: queryParams.isNotEmpty ? queryParams : null);
       final response = await http.get(uri, headers: await _headers());
 
       if (response.statusCode == 200) {
@@ -570,7 +610,8 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final decoded = jsonDecode(utf8.decode(response.bodyBytes));
         if (decoded is Map<String, dynamic>) {
-          final apiResponse = ApiResponse.fromJson<List<Workout>, List<dynamic>>(
+          final apiResponse =
+              ApiResponse.fromJson<List<Workout>, List<dynamic>>(
             decoded,
             (results) => results
                 .map((e) => Workout.fromJson(e as Map<String, dynamic>))
@@ -623,7 +664,8 @@ class ApiClient {
         return Failure(HttpException("Invalid response payload"));
       } else {
         return Failure(
-          HttpException("Invalid response (${response.statusCode}): ${response.body}"),
+          HttpException(
+              "Invalid response (${response.statusCode}): ${response.body}"),
         );
       }
     } on Exception catch (e) {
@@ -638,7 +680,8 @@ class ApiClient {
       if (response.statusCode == 200) {
         final decoded = jsonDecode(utf8.decode(response.bodyBytes));
         if (decoded is Map<String, dynamic>) {
-          final apiResponse = ApiResponse.fromJson<List<Equipment>, List<dynamic>>(
+          final apiResponse =
+              ApiResponse.fromJson<List<Equipment>, List<dynamic>>(
             decoded,
             (results) => results
                 .map((e) => Equipment.fromJson(e as Map<String, dynamic>))

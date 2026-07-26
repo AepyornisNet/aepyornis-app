@@ -101,14 +101,38 @@ abstract class AppLocalizations {
   /// No description provided for @url.
   ///
   /// In en, this message translates to:
-  /// **'URL'**
+  /// **'Server URL'**
   String get url;
 
   /// No description provided for @apiKey.
   ///
   /// In en, this message translates to:
-  /// **'API-Key'**
+  /// **'API Key'**
   String get apiKey;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @loginWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email & Password'**
+  String get loginWithEmail;
+
+  /// No description provided for @loginWithApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'API Key'**
+  String get loginWithApiKey;
 
   /// No description provided for @login.
   ///

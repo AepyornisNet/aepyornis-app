@@ -81,7 +81,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green.shade800),
+                          Icon(Icons.check_circle,
+                              color: Colors.green.shade800),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -110,7 +111,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                           Expanded(
                             child: Text(
                               vm.errorMessage!,
-                              style: TextStyle(color: colorScheme.onErrorContainer),
+                              style: TextStyle(
+                                  color: colorScheme.onErrorContainer),
                             ),
                           ),
                         ],
@@ -333,9 +335,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
               // Workout Type Dropdown
               DropdownButtonFormField<String>(
-                initialValue: vm.manualWorkoutType.isEmpty
-                    ? null
-                    : vm.manualWorkoutType,
+                initialValue:
+                    vm.manualWorkoutType.isEmpty ? null : vm.manualWorkoutType,
                 decoration: InputDecoration(
                   labelText: l10n.workoutType,
                   hintText: l10n.selectWorkoutType,
@@ -359,9 +360,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                           );
                         }
                       },
-                validator: (val) => val == null || val.isEmpty
-                    ? l10n.selectWorkoutType
-                    : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? l10n.selectWorkoutType : null,
               ),
               const SizedBox(height: 16),
 
@@ -643,7 +643,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                   onPressed: vm.isLoading
                       ? null
                       : () async {
-                          if (_manualFormKey.currentState?.validate() ?? false) {
+                          if (_manualFormKey.currentState?.validate() ??
+                              false) {
                             final result = await vm.submitManualWorkout();
                             if (result.isSuccess() && context.mounted) {
                               final created = result.getOrThrow();

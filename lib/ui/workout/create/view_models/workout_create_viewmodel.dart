@@ -29,27 +29,141 @@ class WorkoutTypeOption {
 }
 
 const List<WorkoutTypeOption> kWorkoutTypes = [
-  WorkoutTypeOption(value: 'generic', name: 'Generic Activity', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'running', name: 'Running', location: true, distance: true, duration: true, pace: true),
-  WorkoutTypeOption(value: 'cycling', name: 'Cycling', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'swimming', name: 'Swimming', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'walking', name: 'Walking', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'hiking', name: 'Hiking', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'training', name: 'Training', location: false, distance: false, repetition: true, weight: true, duration: true),
-  WorkoutTypeOption(value: 'fitness_equipment', name: 'Fitness Equipment', location: false, distance: false, repetition: true, weight: true, duration: true),
-  WorkoutTypeOption(value: 'hiit', name: 'HIIT', location: false, distance: false, repetition: true, weight: true, duration: true),
-  WorkoutTypeOption(value: 'cross_country_skiing', name: 'Cross Country Skiing', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'alpine_skiing', name: 'Alpine Skiing', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'snowboarding', name: 'Snowboarding', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'rowing', name: 'Rowing', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'mountaineering', name: 'Mountaineering', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'e_biking', name: 'E-Biking', location: true, distance: true, duration: true),
-  WorkoutTypeOption(value: 'boxing', name: 'Boxing', location: true, distance: false, repetition: true, duration: true),
-  WorkoutTypeOption(value: 'dance', name: 'Dance', location: false, distance: false, duration: true),
-  WorkoutTypeOption(value: 'jump_rope', name: 'Jump Rope', location: false, distance: false, repetition: true, duration: true),
-  WorkoutTypeOption(value: 'mobility', name: 'Mobility', location: false, distance: false, duration: true),
-  WorkoutTypeOption(value: 'meditation', name: 'Meditation', location: false, distance: false, duration: true),
-  WorkoutTypeOption(value: 'other', name: 'Other', location: true, distance: true, duration: true),
+  WorkoutTypeOption(
+      value: 'generic',
+      name: 'Generic Activity',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'running',
+      name: 'Running',
+      location: true,
+      distance: true,
+      duration: true,
+      pace: true),
+  WorkoutTypeOption(
+      value: 'cycling',
+      name: 'Cycling',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'swimming',
+      name: 'Swimming',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'walking',
+      name: 'Walking',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'hiking',
+      name: 'Hiking',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'training',
+      name: 'Training',
+      location: false,
+      distance: false,
+      repetition: true,
+      weight: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'fitness_equipment',
+      name: 'Fitness Equipment',
+      location: false,
+      distance: false,
+      repetition: true,
+      weight: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'hiit',
+      name: 'HIIT',
+      location: false,
+      distance: false,
+      repetition: true,
+      weight: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'cross_country_skiing',
+      name: 'Cross Country Skiing',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'alpine_skiing',
+      name: 'Alpine Skiing',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'snowboarding',
+      name: 'Snowboarding',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'rowing',
+      name: 'Rowing',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'mountaineering',
+      name: 'Mountaineering',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'e_biking',
+      name: 'E-Biking',
+      location: true,
+      distance: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'boxing',
+      name: 'Boxing',
+      location: true,
+      distance: false,
+      repetition: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'dance',
+      name: 'Dance',
+      location: false,
+      distance: false,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'jump_rope',
+      name: 'Jump Rope',
+      location: false,
+      distance: false,
+      repetition: true,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'mobility',
+      name: 'Mobility',
+      location: false,
+      distance: false,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'meditation',
+      name: 'Meditation',
+      location: false,
+      distance: false,
+      duration: true),
+  WorkoutTypeOption(
+      value: 'other',
+      name: 'Other',
+      location: true,
+      distance: true,
+      duration: true),
 ];
 
 class WorkoutCreateViewModel extends ChangeNotifier {
@@ -240,10 +354,11 @@ class WorkoutCreateViewModel extends ChangeNotifier {
   void setManualWorkoutType(String type, [String? localizedTypeName]) {
     _manualWorkoutType = type;
     if (type.isNotEmpty) {
-      final typeLabel = (localizedTypeName != null && localizedTypeName.isNotEmpty)
-          ? localizedTypeName
-          : (type.replaceAll('-', ' ')[0].toUpperCase() +
-              type.replaceAll('-', ' ').substring(1));
+      final typeLabel =
+          (localizedTypeName != null && localizedTypeName.isNotEmpty)
+              ? localizedTypeName
+              : (type.replaceAll('-', ' ')[0].toUpperCase() +
+                  type.replaceAll('-', ' ').substring(1));
       final timeStr = DateFormat('yyyy-MM-dd HH:mm').format(_date);
       _name = '$typeLabel - $timeStr';
     }

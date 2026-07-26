@@ -37,8 +37,9 @@ List<SingleChildWidget> get providersRemote {
         create: (context) => WorkoutRepositoryRemote(apiClient: context.read())
             as WorkoutRepository),
     Provider(
-        create: (context) => StatisticsRepositoryRemote(apiClient: context.read())
-            as StatisticsRepository),
+        create: (context) =>
+            StatisticsRepositoryRemote(apiClient: context.read())
+                as StatisticsRepository),
     Provider(
         create: (context) => WorkoutListViewModel(
               workoutRepository: context.read(),

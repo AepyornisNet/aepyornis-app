@@ -284,7 +284,8 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
               child: displaySpots.isEmpty
                   ? Center(
                       child: Text(
-                        l10n?.noDataForMetric(_metricName(_selectedMetric, context)) ??
+                        l10n?.noDataForMetric(
+                                _metricName(_selectedMetric, context)) ??
                             'No data for ${_metricName(_selectedMetric, context)}',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),

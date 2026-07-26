@@ -106,7 +106,8 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
                     ),
                   )
                 : const Icon(Icons.sync_rounded),
-            label: Text(isSyncingAll ? l10n.syncingWorkout : l10n.syncAllWorkouts),
+            label:
+                Text(isSyncingAll ? l10n.syncingWorkout : l10n.syncAllWorkouts),
           );
         },
       ),

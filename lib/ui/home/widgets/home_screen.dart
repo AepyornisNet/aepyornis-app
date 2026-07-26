@@ -635,8 +635,7 @@ class _CommentSectionState extends State<_CommentSection> {
     final text = _commentController.text;
     if (text.trim().isEmpty) return;
 
-    final success =
-        await widget.viewModel.postReply(widget.workoutId, text);
+    final success = await widget.viewModel.postReply(widget.workoutId, text);
     if (success) {
       _commentController.clear();
     }
@@ -647,8 +646,10 @@ class _CommentSectionState extends State<_CommentSection> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final replies = widget.viewModel.workoutReplies[widget.workoutId] ?? [];
-    final isLoading = widget.viewModel.loadingReplies[widget.workoutId] ?? false;
-    final isReplying = widget.viewModel.replyingState[widget.workoutId] ?? false;
+    final isLoading =
+        widget.viewModel.loadingReplies[widget.workoutId] ?? false;
+    final isReplying =
+        widget.viewModel.replyingState[widget.workoutId] ?? false;
 
     final authHeaders = widget.viewModel.authHeaders;
 

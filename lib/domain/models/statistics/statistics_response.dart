@@ -55,7 +55,8 @@ abstract class WorkoutRecord with _$WorkoutRecord {
     @JsonKey(name: 'max_speed') RecordEntry? maxSpeed,
     RecordEntry? duration,
     @JsonKey(name: 'total_up') RecordEntry? totalUp,
-    @JsonKey(name: 'distance_records') List<DistanceRecordEntry>? distanceRecords,
+    @JsonKey(name: 'distance_records')
+    List<DistanceRecordEntry>? distanceRecords,
   }) = _WorkoutRecord;
 
   factory WorkoutRecord.fromJson(Map<String, dynamic> json) =>

@@ -9,10 +9,22 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get url => 'URL';
+  String get url => 'Server-URL';
 
   @override
   String get apiKey => 'API-Schlüssel';
+
+  @override
+  String get email => 'E-Mail';
+
+  @override
+  String get password => 'Passwort';
+
+  @override
+  String get loginWithEmail => 'E-Mail & Passwort';
+
+  @override
+  String get loginWithApiKey => 'API-Schlüssel';
 
   @override
   String get login => 'Anmelden';

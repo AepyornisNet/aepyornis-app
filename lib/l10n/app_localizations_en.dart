@@ -9,10 +9,22 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get url => 'URL';
+  String get url => 'Server URL';
 
   @override
-  String get apiKey => 'API-Key';
+  String get apiKey => 'API Key';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get loginWithEmail => 'Email & Password';
+
+  @override
+  String get loginWithApiKey => 'API Key';
 
   @override
   String get login => 'Login';

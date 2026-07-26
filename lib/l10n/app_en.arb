@@ -1,6 +1,10 @@
 {
-  "url": "URL",
-  "apiKey": "API-Key",
+  "url": "Server URL",
+  "apiKey": "API Key",
+  "email": "Email",
+  "password": "Password",
+  "loginWithEmail": "Email & Password",
+  "loginWithApiKey": "API Key",
   "login": "Login",
   "logout": "Logout",
   "home": "Home",

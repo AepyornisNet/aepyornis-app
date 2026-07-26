@@ -69,9 +69,44 @@ class AuthRepositoryRemote extends AuthRepository {
       _url = url;
       if (await _fetchUser()) {
         _isAuthenticated = true;
+        notifyListeners();
         return Success(0);
       } else {
         return Failure(Exception('Failed to authenticate'));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> loginEmailPassword({
+    required String url,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _sharedPreferencesService.setUrl(url);
+      _url = url;
+
+      final tokenResult =
+          await _apiClient.signIn(email: email, password: password);
+      if (tokenResult.isError()) {
+        return Failure(
+          tokenResult.exceptionOrNull() ?? Exception('Sign in failed'),
+        );
+      }
+
+      final token = tokenResult.getOrNull()!;
+      await _sharedPreferencesService.setApiKey(token);
+      _authToken = token;
+
+      if (await _fetchUser()) {
+        _isAuthenticated = true;
+        notifyListeners();
+        return Success(0);
+      } else {
+        return Failure(Exception('Failed to fetch user profile'));
       }
     } on Exception catch (e) {
       return Failure(e);
@@ -86,6 +121,8 @@ class AuthRepositoryRemote extends AuthRepository {
       _isAuthenticated = false;
       _authToken = null;
       _url = null;
+      _currentUser = null;
+      notifyListeners();
       return Success(0);
     } on Exception catch (e) {
       return Failure(e);
