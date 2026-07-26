@@ -16,19 +16,37 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: 3.44.8
 
-      - name: Build Android APK
-        uses: cedvdb/action-flutter-build-android@v1
-        with:
-          keystore-base64: ${{ secrets.ANDROID_RELEASE_KEY }}
-          keystore-password: "${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}"
-          build-cmd: flutter build apk --release
-          working-directory: ./
+      - name: Decode keystore and create jks and properties file for signing the app
+        shell: bash
+        run: |
+          echo "$KEYSTORE" | base64 --decode > app/keystore.jks
+          echo "storeFile=keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEYSTORE_KEY_PASSWORD }}
+        working-directory: ./android
+
+      - name: Build
+        run: flutter build apk --release
+        shell: bash
+        working-directory: ./
 
       - name: Prepare APK files for Release
         run: |
