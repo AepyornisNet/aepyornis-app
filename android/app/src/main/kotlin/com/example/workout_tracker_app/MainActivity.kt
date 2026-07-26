@@ -1,4 +1,4 @@
-package com.example.workout_tracker_app
+package org.aepyornis.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
