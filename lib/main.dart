@@ -20,7 +20,8 @@ import 'package:workout_tracker_app/ui/core/themes/theme.dart';
 
 void main() {
   Command.globalExceptionHandler = (error, stackTrace) {
-    debugPrint('[CommandError] ${error.commandName ?? 'unknown'}: ${error.error}');
+    debugPrint(
+        '[CommandError] ${error.commandName ?? 'unknown'}: ${error.error}');
   };
 
   Intl.defaultLocale = Platform.localeName;
@@ -110,8 +111,7 @@ Future<void> backgroundUpdateSteps() async {
     return;
   }
 
-  await MeasurementRepositoryRemote(apiClient: apiClient)
-      .upsertMeasurement(
+  await MeasurementRepositoryRemote(apiClient: apiClient).upsertMeasurement(
     date: metrics.date,
     steps: metrics.steps,
     weightKg: metrics.weightKg,

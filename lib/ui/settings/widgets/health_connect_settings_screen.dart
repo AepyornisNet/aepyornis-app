@@ -77,8 +77,7 @@ class _HealthConnectSettingsScreenState
 
     if (result.isSuccess()) {
       final count = result.getOrNull() ?? 0;
-      final message =
-          AppLocalizations.of(context)!.syncHealthSuccess(count);
+      final message = AppLocalizations.of(context)!.syncHealthSuccess(count);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
@@ -136,9 +135,10 @@ class _HealthConnectSettingsScreenState
                       Expanded(
                         child: Text(
                           healthTitle,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                     ],

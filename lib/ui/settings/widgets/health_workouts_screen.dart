@@ -82,8 +82,7 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
       floatingActionButton: ListenableBuilder(
         listenable: widget.viewModel,
         builder: (context, child) {
-          final hasUnsynced =
-              widget.viewModel.workouts.any((w) => !w.isSynced);
+          final hasUnsynced = widget.viewModel.workouts.any((w) => !w.isSynced);
           if (!hasUnsynced) {
             return const SizedBox.shrink();
           }
@@ -91,9 +90,8 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
           final isSyncingAll = widget.viewModel.syncAll.isExecuting.value;
 
           return FloatingActionButton.extended(
-            onPressed: isSyncingAll
-                ? null
-                : () => widget.viewModel.syncAll.execute(),
+            onPressed:
+                isSyncingAll ? null : () => widget.viewModel.syncAll.execute(),
             icon: isSyncingAll
                 ? const SizedBox(
                     width: 18,

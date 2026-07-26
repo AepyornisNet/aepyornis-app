@@ -43,11 +43,9 @@ abstract class Workout with _$Workout {
 
     /// The type of the workout
     required WorkoutType type,
-
     @JsonKey(name: 'locked') @Default(false) bool locked,
     @JsonKey(name: 'has_file') @Default(false) bool hasFile,
     @JsonKey(name: 'has_tracks') @Default(false) bool hasTracks,
-
     @JsonKey(name: 'address_string') String? addressString,
     @JsonKey(name: 'total_distance') @Default(0.0) double totalDistance,
     @JsonKey(name: 'total_duration') @Default(0) int totalDuration,
@@ -58,8 +56,8 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'total_down') @Default(0.0) double totalDown,
     @JsonKey(name: 'average_speed') @Default(0.0) double averageSpeed,
     @JsonKey(name: 'average_speed_no_pause')
-        @Default(0.0)
-        double averageSpeedNoPause,
+    @Default(0.0)
+    double averageSpeedNoPause,
     @JsonKey(name: 'max_speed') @Default(0.0) double maxSpeed,
     @JsonKey(name: 'min_elevation') @Default(0.0) double minElevation,
     @JsonKey(name: 'max_elevation') @Default(0.0) double maxElevation,
@@ -111,6 +109,35 @@ Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
   copyKey('max_power', 'maxPower');
   copyKey('custom_type', 'customType');
   copyKey('sub_type', 'subType');
+
+  if (normalized['map_data'] is Map<String, dynamic>) {
+    final mapData = Map<String, dynamic>.from(
+        normalized['map_data'] as Map<String, dynamic>);
+    if (!mapData.containsKey('details') && json.containsKey('records')) {
+      final records = json['records'];
+      if (records is Map<String, dynamic>) {
+        mapData['details'] =
+            records.containsKey('details') ? records['details'] : records;
+      }
+    }
+    if (!mapData.containsKey('extra_metrics') &&
+        json.containsKey('records') &&
+        json['records'] is Map<String, dynamic> &&
+        json['records'].containsKey('extra_metrics')) {
+      mapData['extra_metrics'] = json['records']['extra_metrics'];
+    }
+    normalized['map_data'] = mapData;
+  } else if (json.containsKey('records')) {
+    final records = json['records'];
+    if (records is Map<String, dynamic>) {
+      normalized['map_data'] = {
+        'details':
+            records.containsKey('details') ? records['details'] : records,
+        if (records.containsKey('extra_metrics'))
+          'extra_metrics': records['extra_metrics'],
+      };
+    }
+  }
 
   return normalized;
 }

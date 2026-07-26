@@ -47,7 +47,8 @@ class HealthConnectService {
     ];
 
     return candidates
-        .where((type) => type.supportedHealthPlatforms.contains(currentPlatform))
+        .where(
+            (type) => type.supportedHealthPlatforms.contains(currentPlatform))
         .map((type) => HealthDataPermission.read(type))
         .toList();
   }
@@ -251,7 +252,8 @@ class HealthConnectService {
     final Map<DateTime, int> result = {};
 
     try {
-      final request = HealthDataType.cyclingPedalingCadenceSeries.readInTimeRange(
+      final request =
+          HealthDataType.cyclingPedalingCadenceSeries.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );

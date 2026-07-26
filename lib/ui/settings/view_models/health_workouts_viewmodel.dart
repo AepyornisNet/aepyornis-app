@@ -137,8 +137,8 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
 
     try {
       final session = item.session;
-      final route =
-          item.route ?? await _healthConnectService.readExerciseRoute(session.id);
+      final route = item.route ??
+          await _healthConnectService.readExerciseRoute(session.id);
 
       final heartRates = await _healthConnectService.readHeartRates(
         session.startTime,

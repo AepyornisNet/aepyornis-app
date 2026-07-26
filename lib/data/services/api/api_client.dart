@@ -49,13 +49,12 @@ class ApiClient {
 
   Future<Result<List<Measurement>>> getDailyMeasurements() async {
     try {
-      final response =
-          await http.get(_url('/api/v2/measurements'), headers: await _headers());
+      final response = await http.get(_url('/api/v2/measurements'),
+          headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse =
             ApiResponse.fromJson<List<Measurement>, List<dynamic>>(
-          jsonDecode(utf8.decode(response.bodyBytes))
-              as Map<String, dynamic>,
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
           (results) => results
               .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
               .toList(),
@@ -103,10 +102,12 @@ class ApiClient {
     }
 
     try {
-      final response = await http.post(_url('/api/v2/measurements'), headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        ...await _headers(),
-      }, body: jsonEncode(payload));
+      final response = await http.post(_url('/api/v2/measurements'),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            ...await _headers(),
+          },
+          body: jsonEncode(payload));
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(0);
       } else {
@@ -163,7 +164,8 @@ class ApiClient {
 
   Future<Result<Workout>> getWorkout(int id) async {
     try {
-      final response = await http.get(_url('/api/v2/workouts/$id'), headers: await _headers());
+      final response = await http.get(_url('/api/v2/workouts/$id'),
+          headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
             jsonDecode(utf8.decode(response.bodyBytes)),
@@ -184,7 +186,8 @@ class ApiClient {
 
   Future<Result<User>> whoAmI() async {
     try {
-      final response = await http.get(_url('/api/v2/whoami'), headers: await _headers());
+      final response =
+          await http.get(_url('/api/v2/whoami'), headers: await _headers());
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse.fromJson<User, dynamic>(
             jsonDecode(utf8.decode(response.bodyBytes)),
@@ -245,7 +248,8 @@ class ApiClient {
           try {
             final data = apiResponse.getOrThrow();
             if (data is List && data.isNotEmpty) {
-              return Success(Workout.fromJson(data.first as Map<String, dynamic>));
+              return Success(
+                  Workout.fromJson(data.first as Map<String, dynamic>));
             } else if (data is Map<String, dynamic>) {
               return Success(Workout.fromJson(data));
             }
@@ -253,7 +257,8 @@ class ApiClient {
             return Failure(e);
           }
         } else if (decoded is List && decoded.isNotEmpty) {
-          return Success(Workout.fromJson(decoded.first as Map<String, dynamic>));
+          return Success(
+              Workout.fromJson(decoded.first as Map<String, dynamic>));
         }
         return Failure(HttpException('Unexpected response payload'));
       } else {
@@ -268,4 +273,3 @@ class ApiClient {
     }
   }
 }
-

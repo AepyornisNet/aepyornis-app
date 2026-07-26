@@ -13,13 +13,13 @@ class WorkoutListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       minTileHeight: 80,
-        leading: SizedBox(
-          width: 60,
-          height: 60,
-          child: Center(
-            child: Icon(workout.type.icon),
-          ),
+      leading: SizedBox(
+        width: 60,
+        height: 60,
+        child: Center(
+          child: Icon(workout.type.icon),
         ),
+      ),
       title: Text(workout.name),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.start,

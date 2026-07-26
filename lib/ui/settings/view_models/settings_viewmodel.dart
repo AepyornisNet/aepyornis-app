@@ -21,7 +21,8 @@ class SettingsViewModel {
         _measurementRepository = measurementRepository,
         _isoDateFormatter = DateFormat('yyyy-MM-dd') {
     logout = Command.createAsyncNoParam(_logout, initialValue: null);
-    connectHealth = Command.createAsyncNoParam(_connectHealth, initialValue: null);
+    connectHealth =
+        Command.createAsyncNoParam(_connectHealth, initialValue: null);
     syncHealthMeasurements =
         Command.createAsync(_syncHealthMeasurements, initialValue: null);
   }
