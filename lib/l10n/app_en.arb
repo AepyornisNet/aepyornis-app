@@ -29,13 +29,13 @@
   "total_repetitions": "Total repetitions",
   "total_weight": "Total weight",
   "steps": "Steps",
-  "connectHealth": "Connect Health Connect",
-  "connectHealthSuccess": "Health Connect access granted",
-  "connectHealthFailure": "Health Connect permission denied",
+  "connectHealth": "Connect Health",
+  "connectHealthSuccess": "Health access granted",
+  "connectHealthFailure": "Health permission denied",
   "syncHealthDaysLabel": "Days to sync",
-  "syncHealthDescription": "Number of recent days to import from Health Connect.",
+  "syncHealthDescription": "Number of recent days to import from health store.",
   "syncHealthButton": "Sync measurements",
-  "syncHealthSuccess": "Synced {count} day(s) from Health Connect",
+  "syncHealthSuccess": "Synced {count} day(s) from health store",
   "@syncHealthSuccess": {
     "placeholders": {
       "count": {
@@ -43,6 +43,14 @@
       }
     }
   },
-  "syncHealthFailure": "Health Connect sync failed",
-  "syncHealthInvalidDays": "Enter at least one day"
+  "syncHealthFailure": "Health sync failed",
+  "syncHealthInvalidDays": "Enter at least one day",
+  "healthConnect": "Health Connect",
+  "healthKit": "Apple Health",
+  "healthConnectSubtitle": "Configure step tracking and body measurements sync",
+  "aboutTitle": "About Workout Tracker",
+  "aboutSubtitle": "Version 1.0.0+1",
+  "sectionIntegrations": "Integrations",
+  "sectionGeneral": "General",
+  "sectionAccount": "Account"
 }

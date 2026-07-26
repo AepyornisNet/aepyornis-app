@@ -99,33 +99,57 @@ class AppLocalizationsDe extends AppLocalizations {
   String get steps => 'Steps';
 
   @override
-  String get connectHealth => 'Health Connect verbinden';
+  String get connectHealth => 'Health verbinden';
 
   @override
-  String get connectHealthSuccess => 'Health Connect Zugriff gewährt';
+  String get connectHealthSuccess => 'Zugriff gewährt';
 
   @override
-  String get connectHealthFailure => 'Health Connect Zugriff verweigert';
+  String get connectHealthFailure => 'Zugriff verweigert';
 
   @override
   String get syncHealthDaysLabel => 'Tage zum Synchronisieren';
 
   @override
   String get syncHealthDescription =>
-      'Anzahl der letzten Tage, die aus Health Connect importiert werden sollen.';
+      'Anzahl der letzten Tage, die importiert werden sollen.';
 
   @override
   String get syncHealthButton => 'Messungen synchronisieren';
 
   @override
   String syncHealthSuccess(int count) {
-    return '$count Tag(e) aus Health Connect importiert';
+    return '$count Tag(e) importiert';
   }
 
   @override
-  String get syncHealthFailure =>
-      'Health Connect Synchronisierung fehlgeschlagen';
+  String get syncHealthFailure => 'Synchronisierung fehlgeschlagen';
 
   @override
   String get syncHealthInvalidDays => 'Bitte mindestens einen Tag angeben';
+
+  @override
+  String get healthConnect => 'Health Connect';
+
+  @override
+  String get healthKit => 'Apple Health';
+
+  @override
+  String get healthConnectSubtitle =>
+      'Schritt- und Körperwert-Synchronisierung verwalten';
+
+  @override
+  String get aboutTitle => 'Über Workout Tracker';
+
+  @override
+  String get aboutSubtitle => 'Version 1.0.0+1';
+
+  @override
+  String get sectionIntegrations => 'Integrationen';
+
+  @override
+  String get sectionGeneral => 'Allgemein';
+
+  @override
+  String get sectionAccount => 'Konto';
 }

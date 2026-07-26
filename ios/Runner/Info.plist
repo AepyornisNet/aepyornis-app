@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We need access to your health data to track steps, weight, height, and resting heart rate.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We need permission to update your health records in Apple Health.</string>
 </dict>
 </plist>

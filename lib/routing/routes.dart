@@ -8,4 +8,6 @@ abstract final class Routes {
   static const record = '/record';
   static const stats = '/statistics';
   static const settings = '/settings';
+  static const settingsHealthRelative = 'health';
+  static const settingsHealth = '$settings/$settingsHealthRelative';
 }

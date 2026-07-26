@@ -7,6 +7,7 @@ import 'package:workout_tracker_app/ui/home/view_models/home_viewmodel.dart';
 import 'package:workout_tracker_app/ui/home/widgets/home_screen.dart';
 import 'package:workout_tracker_app/ui/recording/widgets/recording_screen.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.dart';
+import 'package:workout_tracker_app/ui/settings/widgets/health_connect_settings_screen.dart';
 import 'package:workout_tracker_app/ui/settings/widgets/settings_screen.dart';
 import 'package:workout_tracker_app/ui/statistic/overview/widgets/statistic_overview_screen.dart';
 import 'package:workout_tracker_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
@@ -92,17 +93,33 @@ final router = GoRouter(
         ]),
         StatefulShellBranch(routes: [
           GoRoute(
-              path: Routes.settings,
-              builder: (context, state) {
-                return SettingsScreen(
-                  viewModel: SettingsViewModel(
-                    authRepository: context.read(),
-                    sharedPreferencesService: context.read(),
-                    healthConnectService: context.read(),
-                    measurementRepository: context.read(),
-                  ),
-                );
-              }),
+            path: Routes.settings,
+            builder: (context, state) {
+              return SettingsScreen(
+                viewModel: SettingsViewModel(
+                  authRepository: context.read(),
+                  sharedPreferencesService: context.read(),
+                  healthConnectService: context.read(),
+                  measurementRepository: context.read(),
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: Routes.settingsHealthRelative,
+                builder: (context, state) {
+                  return HealthConnectSettingsScreen(
+                    viewModel: SettingsViewModel(
+                      authRepository: context.read(),
+                      sharedPreferencesService: context.read(),
+                      healthConnectService: context.read(),
+                      measurementRepository: context.read(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ]),
       ],
       builder: (context, state, navigationShell) {

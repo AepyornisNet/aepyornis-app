@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:result_dart/result_dart.dart';
-import 'package:workout_tracker_app/routing/routes.dart';
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
-
+import 'package:workout_tracker_app/routing/routes.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,166 +16,132 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late final TextEditingController _syncDaysController;
-
   @override
   void initState() {
     super.initState();
-    _syncDaysController = TextEditingController(text: '7');
-    widget.viewModel.logout.addListener(_onResult);
-    widget.viewModel.connectHealth.addListener(_onConnectResult);
-    widget.viewModel.syncHealthMeasurements.addListener(_onSyncResult);
+    widget.viewModel.logout.addListener(_onLogoutResult);
   }
 
   @override
   void didUpdateWidget(covariant SettingsScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    oldWidget.viewModel.logout.removeListener(_onResult);
-    oldWidget.viewModel.connectHealth.removeListener(_onConnectResult);
-    oldWidget.viewModel.syncHealthMeasurements.removeListener(_onSyncResult);
-    widget.viewModel.logout.addListener(_onResult);
-    widget.viewModel.connectHealth.addListener(_onConnectResult);
-    widget.viewModel.syncHealthMeasurements.addListener(_onSyncResult);
+    oldWidget.viewModel.logout.removeListener(_onLogoutResult);
+    widget.viewModel.logout.addListener(_onLogoutResult);
   }
 
   @override
   void dispose() {
-    widget.viewModel.logout.removeListener(_onResult);
-    widget.viewModel.connectHealth.removeListener(_onConnectResult);
-    widget.viewModel.syncHealthMeasurements.removeListener(_onSyncResult);
-    _syncDaysController.dispose();
+    widget.viewModel.logout.removeListener(_onLogoutResult);
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Settings'),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: () {
-                widget.viewModel.connectHealth.execute();
-              },
-              child: Text(AppLocalizations.of(context)!.connectHealth),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: _syncDaysController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText:
-                          AppLocalizations.of(context)!.syncHealthDaysLabel,
-                      helperText:
-                          AppLocalizations.of(context)!.syncHealthDescription,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ListenableBuilder(
-                    listenable: widget.viewModel.syncHealthMeasurements,
-                    builder: (context, child) {
-                      final syncing = widget
-                          .viewModel.syncHealthMeasurements.isExecuting.value;
-                      return FilledButton.tonal(
-                        onPressed: syncing ? null : _onSyncPressed,
-                        child: syncing
-                            ? const SizedBox(
-                                height: 16,
-                                width: 16,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : Text(AppLocalizations.of(context)!
-                                .syncHealthButton),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                widget.viewModel.logout.execute();
-              },
-              child: Text(AppLocalizations.of(context)!.logout),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _onResult() {
-    if (widget.viewModel.logout.value!.isSuccess()) {
+  void _onLogoutResult() {
+    if (widget.viewModel.logout.value?.isSuccess() ?? false) {
       widget.viewModel.logout.clearErrors();
       context.go(Routes.login);
     }
   }
 
-  void _onConnectResult() {
-    if (!mounted) {
-      return;
-    }
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final healthTitle = Platform.isIOS ? l10n.healthKit : l10n.healthConnect;
 
-    final granted = widget.viewModel.connectHealth.value;
-    if (granted == null) {
-      return;
-    }
-
-    final message = granted
-        ? AppLocalizations.of(context)!.connectHealthSuccess
-        : AppLocalizations.of(context)!.connectHealthFailure;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.settings),
+        centerTitle: false,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        children: [
+          _buildSectionHeader(context, l10n.sectionIntegrations),
+          const SizedBox(height: 6),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.favorite_rounded,
+                  color: colorScheme.onPrimaryContainer,
+                ),
+              ),
+              title: Text(healthTitle),
+              subtitle: Text(l10n.healthConnectSubtitle),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => context.push(Routes.settingsHealth),
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildSectionHeader(context, l10n.sectionGeneral),
+          const SizedBox(height: 6),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: colorScheme.tertiaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.info_outline_rounded,
+                  color: colorScheme.onTertiaryContainer,
+                ),
+              ),
+              title: Text(l10n.aboutTitle),
+              subtitle: Text(l10n.aboutSubtitle),
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildSectionHeader(context, l10n.sectionAccount),
+          const SizedBox(height: 6),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: colorScheme.errorContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.logout_rounded,
+                  color: colorScheme.onErrorContainer,
+                ),
+              ),
+              title: Text(
+                l10n.logout,
+                style: TextStyle(color: colorScheme.error),
+              ),
+              onTap: () => widget.viewModel.logout.execute(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  void _onSyncResult() {
-    if (!mounted) {
-      return;
-    }
-
-    final Result<int>? result = widget.viewModel.syncHealthMeasurements.value;
-    if (result == null) {
-      return;
-    }
-
-    if (result.isSuccess()) {
-      final count = result.getOrNull() ?? 0;
-        final message =
-          AppLocalizations.of(context)!.syncHealthSuccess(count);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.syncHealthFailure),
-        ),
-      );
-    }
-  }
-
-  void _onSyncPressed() {
-    final days = int.tryParse(_syncDaysController.text.trim()) ?? 0;
-    if (days <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.syncHealthInvalidDays),
-        ),
-      );
-      return;
-    }
-
-    widget.viewModel.syncHealthMeasurements.execute(days);
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4.0, bottom: 4.0),
+      child: Text(
+        title.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.1,
+            ),
+      ),
+    );
   }
 }

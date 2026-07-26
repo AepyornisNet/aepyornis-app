@@ -1,12 +1,12 @@
 {
   "apiKey": "API-Schlüssel",
-  "connectHealth": "Health Connect verbinden",
-  "connectHealthSuccess": "Health Connect Zugriff gewährt",
-  "connectHealthFailure": "Health Connect Zugriff verweigert",
+  "connectHealth": "Health verbinden",
+  "connectHealthSuccess": "Zugriff gewährt",
+  "connectHealthFailure": "Zugriff verweigert",
   "syncHealthDaysLabel": "Tage zum Synchronisieren",
-  "syncHealthDescription": "Anzahl der letzten Tage, die aus Health Connect importiert werden sollen.",
+  "syncHealthDescription": "Anzahl der letzten Tage, die importiert werden sollen.",
   "syncHealthButton": "Messungen synchronisieren",
-  "syncHealthSuccess": "{count} Tag(e) aus Health Connect importiert",
+  "syncHealthSuccess": "{count} Tag(e) importiert",
   "@syncHealthSuccess": {
     "placeholders": {
       "count": {
@@ -14,6 +14,14 @@
       }
     }
   },
-  "syncHealthFailure": "Health Connect Synchronisierung fehlgeschlagen",
-  "syncHealthInvalidDays": "Bitte mindestens einen Tag angeben"
+  "syncHealthFailure": "Synchronisierung fehlgeschlagen",
+  "syncHealthInvalidDays": "Bitte mindestens einen Tag angeben",
+  "healthConnect": "Health Connect",
+  "healthKit": "Apple Health",
+  "healthConnectSubtitle": "Schritt- und Körperwert-Synchronisierung verwalten",
+  "aboutTitle": "Über Workout Tracker",
+  "aboutSubtitle": "Version 1.0.0+1",
+  "sectionIntegrations": "Integrationen",
+  "sectionGeneral": "Allgemein",
+  "sectionAccount": "Konto"
 }

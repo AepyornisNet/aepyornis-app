@@ -15,7 +15,6 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap>
     with OSMMixinObserver {
   List<GeoPoint> workoutPath = [];
   MapController? mapController;
-  String? _roadKey;
   bool mapReady = false;
 
   @override
@@ -76,11 +75,7 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap>
       return;
     }
 
-    if (_roadKey != null) {
-      mapController!.removeRoad(roadKey: _roadKey!);
-    }
-
-    _roadKey = await mapController!.drawRoadManually(
+    await mapController!.drawRoadManually(
         workoutPath,
         RoadOption(
           roadColor: Colors.red,

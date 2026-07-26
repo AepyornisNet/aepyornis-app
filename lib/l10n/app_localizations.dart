@@ -281,19 +281,19 @@ abstract class AppLocalizations {
   /// No description provided for @connectHealth.
   ///
   /// In en, this message translates to:
-  /// **'Connect Health Connect'**
+  /// **'Connect Health'**
   String get connectHealth;
 
   /// No description provided for @connectHealthSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Health Connect access granted'**
+  /// **'Health access granted'**
   String get connectHealthSuccess;
 
   /// No description provided for @connectHealthFailure.
   ///
   /// In en, this message translates to:
-  /// **'Health Connect permission denied'**
+  /// **'Health permission denied'**
   String get connectHealthFailure;
 
   /// No description provided for @syncHealthDaysLabel.
@@ -305,7 +305,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncHealthDescription.
   ///
   /// In en, this message translates to:
-  /// **'Number of recent days to import from Health Connect.'**
+  /// **'Number of recent days to import from health store.'**
   String get syncHealthDescription;
 
   /// No description provided for @syncHealthButton.
@@ -317,13 +317,13 @@ abstract class AppLocalizations {
   /// No description provided for @syncHealthSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Synced {count} day(s) from Health Connect'**
+  /// **'Synced {count} day(s) from health store'**
   String syncHealthSuccess(int count);
 
   /// No description provided for @syncHealthFailure.
   ///
   /// In en, this message translates to:
-  /// **'Health Connect sync failed'**
+  /// **'Health sync failed'**
   String get syncHealthFailure;
 
   /// No description provided for @syncHealthInvalidDays.
@@ -331,6 +331,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter at least one day'**
   String get syncHealthInvalidDays;
+
+  /// No description provided for @healthConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect'**
+  String get healthConnect;
+
+  /// No description provided for @healthKit.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health'**
+  String get healthKit;
+
+  /// No description provided for @healthConnectSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure step tracking and body measurements sync'**
+  String get healthConnectSubtitle;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About Workout Tracker'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0.0+1'**
+  String get aboutSubtitle;
+
+  /// No description provided for @sectionIntegrations.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrations'**
+  String get sectionIntegrations;
+
+  /// No description provided for @sectionGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get sectionGeneral;
+
+  /// No description provided for @sectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get sectionAccount;
 }
 
 class _AppLocalizationsDelegate

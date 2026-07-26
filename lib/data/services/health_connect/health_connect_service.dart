@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:health/health.dart';
+import 'package:health_connector/health_connector.dart';
 
 class DailyHealthMetrics {
   const DailyHealthMetrics({
@@ -19,38 +19,45 @@ class DailyHealthMetrics {
 }
 
 class HealthConnectService {
-  HealthConnectService({Health? health}) : _health = health ?? Health();
+  HealthConnectService({HealthConnector? connector}) : _connector = connector;
 
-  final Health _health;
-  bool _configured = false;
+  HealthConnector? _connector;
 
-  static final List<HealthDataType> _requiredTypes = <HealthDataType>[
-    HealthDataType.STEPS,
-    HealthDataType.WEIGHT,
-    HealthDataType.HEIGHT,
-    HealthDataType.RESTING_HEART_RATE,
+  static final List<HealthDataPermission> _requiredPermissions =
+      <HealthDataPermission>[
+    HealthDataPermission.read(HealthDataType.steps),
+    HealthDataPermission.read(HealthDataType.weight),
+    HealthDataPermission.read(HealthDataType.height),
+    HealthDataPermission.read(HealthDataType.restingHeartRate),
   ];
-
-  static final List<HealthDataAccess> _requiredPermissions =
-      List<HealthDataAccess>.filled(
-          _requiredTypes.length, HealthDataAccess.READ);
 
   static const Duration _weightFallbackWindow = Duration(days: 30);
   static const Duration _heightFallbackWindow = Duration(days: 365);
   static const Duration _restingHeartRateFallbackWindow = Duration(days: 7);
 
-  Future<bool> isReady() async => Platform.isAndroid || Platform.isIOS;
-
-  Future<void> _ensureConfigured() async {
-    if (_configured) {
-      return;
+  Future<HealthConnector?> _ensureConnector() async {
+    if (_connector != null) {
+      return _connector;
     }
 
     try {
-      await _health.configure();
-      _configured = true;
+      _connector = await HealthConnector.create();
+      return _connector;
     } catch (_) {
-      // Swallow errors; downstream permission checks will fail gracefully.
+      return null;
+    }
+  }
+
+  Future<bool> isReady() async {
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return false;
+    }
+
+    try {
+      final status = await HealthConnector.getHealthPlatformStatus();
+      return status == HealthPlatformStatus.available;
+    } catch (_) {
+      return false;
     }
   }
 
@@ -59,15 +66,19 @@ class HealthConnectService {
       return false;
     }
 
-    await _ensureConfigured();
+    final connector = await _ensureConnector();
+    if (connector == null) {
+      return false;
+    }
 
     try {
-      final hasPermission = await _health.hasPermissions(
-        _requiredTypes,
-        permissions: _requiredPermissions,
-      );
-
-      return hasPermission ?? false;
+      for (final permission in _requiredPermissions) {
+        final status = await connector.getPermissionStatus(permission);
+        if (status != PermissionStatus.granted) {
+          return false;
+        }
+      }
+      return true;
     } catch (_) {
       return false;
     }
@@ -78,48 +89,46 @@ class HealthConnectService {
       return false;
     }
 
-    await _ensureConfigured();
-
-    final alreadyGranted = await hasPermissions();
-    if (alreadyGranted) {
-      return true;
+    final connector = await _ensureConnector();
+    if (connector == null) {
+      return false;
     }
 
     try {
-      return await _health.requestAuthorization(
-        _requiredTypes,
-        permissions: _requiredPermissions,
-      );
+      final results = await connector.requestPermissions(_requiredPermissions);
+      return results.every((result) => result.status == PermissionStatus.granted);
     } catch (_) {
       return false;
     }
   }
 
   Future<DailyHealthMetrics?> readDailyMetrics(DateTime date) async {
-    await _ensureConfigured();
+    final connector = await _ensureConnector();
+    if (connector == null) {
+      return null;
+    }
 
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
 
-    final steps = await _readSteps(startOfDay, endOfDay);
+    final steps = await _readSteps(connector, startOfDay, endOfDay);
 
-    final restingHeartRate = await _readLatestIntValue(
-      type: HealthDataType.RESTING_HEART_RATE,
-      start: startOfDay.subtract(_restingHeartRateFallbackWindow),
-      end: endOfDay,
+    final restingHeartRate = await _readRestingHeartRate(
+      connector,
+      startOfDay.subtract(_restingHeartRateFallbackWindow),
+      endOfDay,
     );
 
-    final weightKg = await _readLatestDoubleValue(
-      type: HealthDataType.WEIGHT,
-      start: startOfDay,
-      end: endOfDay,
-      fallback: _weightFallbackWindow,
+    final weightKg = await _readWeight(
+      connector,
+      startOfDay.subtract(_weightFallbackWindow),
+      endOfDay,
     );
 
-    final heightMeters = await _readLatestDoubleValue(
-      type: HealthDataType.HEIGHT,
-      start: endOfDay.subtract(_heightFallbackWindow),
-      end: endOfDay,
+    final heightMeters = await _readHeight(
+      connector,
+      endOfDay.subtract(_heightFallbackWindow),
+      endOfDay,
     );
 
     return DailyHealthMetrics(
@@ -131,87 +140,88 @@ class HealthConnectService {
     );
   }
 
-  Future<int> _readSteps(DateTime start, DateTime end) async {
+  Future<int> _readSteps(
+    HealthConnector connector,
+    DateTime start,
+    DateTime end,
+  ) async {
     try {
-      final totalSteps = await _health.getTotalStepsInInterval(start, end);
-      if (totalSteps == null) {
+      final request = HealthDataType.steps.aggregateSum(
+        startTime: start,
+        endTime: end,
+      );
+      final response = await connector.aggregate(request);
+      final stepsValue = response.value.toDouble();
+      if (stepsValue.isNaN || stepsValue.isInfinite) {
         return 0;
       }
-
-      final steps = totalSteps.toDouble();
-      if (steps.isNaN || steps.isInfinite) {
-        return 0;
-      }
-
-      return steps.round();
+      return stepsValue.round();
     } catch (_) {
       return 0;
     }
   }
 
-  Future<int?> _readLatestIntValue({
-    required HealthDataType type,
-    required DateTime start,
-    required DateTime end,
-    Duration? fallback,
-  }) async {
-    final value = await _readLatestDoubleValue(
-      type: type,
-      start: start,
-      end: end,
-      fallback: fallback,
-    );
-    return value?.round();
-  }
-
-  Future<double?> _readLatestDoubleValue({
-    required HealthDataType type,
-    required DateTime start,
-    required DateTime end,
-    Duration? fallback,
-  }) async {
-    var point = await _latestDataPoint(type: type, start: start, end: end);
-    if (point == null && fallback != null) {
-      point = await _latestDataPoint(
-        type: type,
-        start: end.subtract(fallback),
-        end: end,
-      );
-    }
-
-    final value = point?.value;
-    if (value is NumericHealthValue) {
-      final numericValue = value.numericValue.toDouble();
-      if (numericValue.isFinite) {
-        return numericValue;
-      }
-    }
-
-    return null;
-  }
-
-  Future<HealthDataPoint?> _latestDataPoint({
-    required HealthDataType type,
-    required DateTime start,
-    required DateTime end,
-  }) async {
+  Future<double?> _readWeight(
+    HealthConnector connector,
+    DateTime start,
+    DateTime end,
+  ) async {
     try {
-      final dataPoints = await _health.getHealthDataFromTypes(
-        types: [type],
+      final request = HealthDataType.weight.readInTimeRange(
         startTime: start,
         endTime: end,
       );
-      if (dataPoints.isEmpty) {
+      final response = await connector.readRecords(request);
+      final records = response.records;
+      if (records.isEmpty) {
         return null;
       }
+      records.sort((a, b) => b.time.compareTo(a.time));
+      return records.first.weight.inKilograms;
+    } catch (_) {
+      return null;
+    }
+  }
 
-      dataPoints.sort((a, b) {
-        final aDate = a.dateTo;
-        final bDate = b.dateTo;
-        return bDate.compareTo(aDate);
-      });
+  Future<double?> _readHeight(
+    HealthConnector connector,
+    DateTime start,
+    DateTime end,
+  ) async {
+    try {
+      final request = HealthDataType.height.readInTimeRange(
+        startTime: start,
+        endTime: end,
+      );
+      final response = await connector.readRecords(request);
+      final records = response.records;
+      if (records.isEmpty) {
+        return null;
+      }
+      records.sort((a, b) => b.time.compareTo(a.time));
+      return records.first.height.inMeters;
+    } catch (_) {
+      return null;
+    }
+  }
 
-      return dataPoints.first;
+  Future<int?> _readRestingHeartRate(
+    HealthConnector connector,
+    DateTime start,
+    DateTime end,
+  ) async {
+    try {
+      final request = HealthDataType.restingHeartRate.readInTimeRange(
+        startTime: start,
+        endTime: end,
+      );
+      final response = await connector.readRecords(request);
+      final records = response.records;
+      if (records.isEmpty) {
+        return null;
+      }
+      records.sort((a, b) => b.time.compareTo(a.time));
+      return records.first.rate.inPerMinute.round();
     } catch (_) {
       return null;
     }

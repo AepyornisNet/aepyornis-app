@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.workout_tracker_app"
     compileSdk = 36
+    compileSdkExtension = 19
     // ndkVersion = flutter.ndkVersion
     ndkVersion = "27.0.12077973"
 
