@@ -152,4 +152,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionAccount => 'Account';
+
+  @override
+  String get healthWorkouts => 'Health Workouts';
+
+  @override
+  String get healthWorkoutsSubtitle =>
+      'List and upload exercise sessions from health store';
+
+  @override
+  String get syncAllWorkouts => 'Sync All Unsynced';
+
+  @override
+  String get workoutSynced => 'Synced';
+
+  @override
+  String get syncWorkout => 'Sync';
+
+  @override
+  String get syncingWorkout => 'Syncing...';
+
+  @override
+  String get noWorkoutsFound => 'No exercise sessions found in health store';
+
+  @override
+  String get hasGpsRoute => 'GPS Route';
 }

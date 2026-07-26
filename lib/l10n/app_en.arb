@@ -52,5 +52,13 @@
   "aboutSubtitle": "Version 1.0.0+1",
   "sectionIntegrations": "Integrations",
   "sectionGeneral": "General",
-  "sectionAccount": "Account"
+  "sectionAccount": "Account",
+  "healthWorkouts": "Health Workouts",
+  "healthWorkoutsSubtitle": "List and upload exercise sessions from health store",
+  "syncAllWorkouts": "Sync All Unsynced",
+  "workoutSynced": "Synced",
+  "syncWorkout": "Sync",
+  "syncingWorkout": "Syncing...",
+  "noWorkoutsFound": "No exercise sessions found in health store",
+  "hasGpsRoute": "GPS Route"
 }

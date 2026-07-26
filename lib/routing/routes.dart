@@ -10,4 +10,7 @@ abstract final class Routes {
   static const settings = '/settings';
   static const settingsHealthRelative = 'health';
   static const settingsHealth = '$settings/$settingsHealthRelative';
+  static const settingsHealthWorkoutsRelative = 'workouts';
+  static const settingsHealthWorkouts =
+      '$settingsHealth/$settingsHealthWorkoutsRelative';
 }

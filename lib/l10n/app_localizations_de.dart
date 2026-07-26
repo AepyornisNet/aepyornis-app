@@ -152,4 +152,30 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sectionAccount => 'Konto';
+
+  @override
+  String get healthWorkouts => 'Health Workouts';
+
+  @override
+  String get healthWorkoutsSubtitle =>
+      'Trainingseinheiten anzeigen und hochladen';
+
+  @override
+  String get syncAllWorkouts => 'Alle synchronisieren';
+
+  @override
+  String get workoutSynced => 'Synchronisiert';
+
+  @override
+  String get syncWorkout => 'Synchronisieren';
+
+  @override
+  String get syncingWorkout => 'Synchronisiere...';
+
+  @override
+  String get noWorkoutsFound =>
+      'Keine Trainingseinheiten im Health-Speicher gefunden';
+
+  @override
+  String get hasGpsRoute => 'GPS Route';
 }

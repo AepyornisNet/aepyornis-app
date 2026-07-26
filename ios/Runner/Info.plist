@@ -46,8 +46,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>We need access to your health data to track steps, weight, height, and resting heart rate.</string>
+	<string>This app requires access to Apple Health to display and import your steps, body measurements, workout sessions, heart rate, cadence, power, and GPS exercise routes.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>We need permission to update your health records in Apple Health.</string>
+	<string>This app requires permission to save workout sessions and body measurements to Apple Health.</string>
 </dict>
 </plist>

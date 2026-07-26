@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
+import 'package:workout_tracker_app/routing/routes.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/settings_viewmodel.dart';
 
 class HealthConnectSettingsScreen extends StatefulWidget {
@@ -161,6 +163,28 @@ class _HealthConnectSettingsScreenState
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: colorScheme.secondaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.fitness_center_rounded,
+                  color: colorScheme.onSecondaryContainer,
+                ),
+              ),
+              title: Text(l10n.healthWorkouts),
+              subtitle: Text(l10n.healthWorkoutsSubtitle),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => context.push(Routes.settingsHealthWorkouts),
             ),
           ),
           const SizedBox(height: 20),

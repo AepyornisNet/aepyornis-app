@@ -379,6 +379,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get sectionAccount;
+
+  /// No description provided for @healthWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Workouts'**
+  String get healthWorkouts;
+
+  /// No description provided for @healthWorkoutsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List and upload exercise sessions from health store'**
+  String get healthWorkoutsSubtitle;
+
+  /// No description provided for @syncAllWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync All Unsynced'**
+  String get syncAllWorkouts;
+
+  /// No description provided for @workoutSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get workoutSynced;
+
+  /// No description provided for @syncWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncWorkout;
+
+  /// No description provided for @syncingWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing...'**
+  String get syncingWorkout;
+
+  /// No description provided for @noWorkoutsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercise sessions found in health store'**
+  String get noWorkoutsFound;
+
+  /// No description provided for @hasGpsRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS Route'**
+  String get hasGpsRoute;
 }
 
 class _AppLocalizationsDelegate

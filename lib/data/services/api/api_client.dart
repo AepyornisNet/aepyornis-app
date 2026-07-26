@@ -186,4 +186,55 @@ class ApiClient {
       return Failure(e);
     }
   }
+
+  Future<Result<Workout>> uploadWorkoutGpx({
+    required String gpxXml,
+    required String filename,
+    String? type,
+    String? notes,
+  }) async {
+    try {
+      final uri = _url('/api/v2/workouts');
+      final request = http.MultipartRequest('POST', uri);
+      final headers = await _headers();
+      request.headers.addAll(headers);
+
+      request.files.add(
+        http.MultipartFile.fromString(
+          'file',
+          gpxXml,
+          filename: filename,
+        ),
+      );
+
+      if (type != null) {
+        request.fields['type'] = type;
+      }
+      if (notes != null) {
+        request.fields['notes'] = notes;
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
+          jsonDecode(utf8.decode(response.bodyBytes)),
+          (json) => Workout.fromJson(json as Map<String, dynamic>),
+        );
+        try {
+          final data = apiResponse.getOrThrow();
+          return Success(data);
+        } on Exception catch (e) {
+          return Failure(e);
+        }
+      } else {
+        return Failure(
+          HttpException('Invalid response (${response.statusCode}): ${response.body}'),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 }
+

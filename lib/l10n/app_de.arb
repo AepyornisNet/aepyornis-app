@@ -23,5 +23,13 @@
   "aboutSubtitle": "Version 1.0.0+1",
   "sectionIntegrations": "Integrationen",
   "sectionGeneral": "Allgemein",
-  "sectionAccount": "Konto"
+  "sectionAccount": "Konto",
+  "healthWorkouts": "Health Workouts",
+  "healthWorkoutsSubtitle": "Trainingseinheiten anzeigen und hochladen",
+  "syncAllWorkouts": "Alle synchronisieren",
+  "workoutSynced": "Synchronisiert",
+  "syncWorkout": "Synchronisieren",
+  "syncingWorkout": "Synchronisiere...",
+  "noWorkoutsFound": "Keine Trainingseinheiten im Health-Speicher gefunden",
+  "hasGpsRoute": "GPS Route"
 }
