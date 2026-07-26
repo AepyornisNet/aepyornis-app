@@ -6,7 +6,7 @@ import 'package:health_connector/health_connector.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/repositories/workout/workout_repository.dart';
 import 'package:workout_tracker_app/data/services/api/api_client.dart';
-import 'package:workout_tracker_app/data/services/health_connect/gpx_exporter.dart';
+import 'package:workout_tracker_app/data/services/health_connect/fit_exporter.dart';
 import 'package:workout_tracker_app/data/services/health_connect/health_connect_service.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 
@@ -16,12 +16,14 @@ class HealthWorkoutItem {
     required this.isSynced,
     this.route,
     this.isSyncing = false,
+    this.errorMessage,
   });
 
   final ExerciseSessionRecord session;
   bool isSynced;
   ExerciseRoute? route;
   bool isSyncing;
+  String? errorMessage;
 
   String get title {
     if (session.title != null && session.title!.trim().isNotEmpty) {
@@ -83,12 +85,16 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
 
     for (final session in sessions) {
       final isAlreadySynced = _checkIsSynced(session, existingWorkouts);
+      if (isAlreadySynced) {
+        continue;
+      }
+
       final route = await _healthConnectService.readExerciseRoute(session.id);
 
       items.add(
         HealthWorkoutItem(
           session: session,
-          isSynced: isAlreadySynced,
+          isSynced: false,
           route: route,
         ),
       );
@@ -118,6 +124,7 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
     }
 
     item.isSyncing = true;
+    item.errorMessage = null;
     notifyListeners();
 
     try {
@@ -138,10 +145,11 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
         session.endTime,
       );
 
-      final gpxXml = GpxExporter.buildGpx(
+      final fitBytes = FitExporter.buildFit(
         title: item.title,
-        activityType: session.exerciseType.name,
+        exerciseType: session.exerciseType,
         startTime: session.startTime,
+        endTime: session.endTime,
         locations: route?.locations ?? [],
         heartRates: heartRates,
         cadences: cadences,
@@ -149,10 +157,10 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
       );
 
       final filename =
-          'workout_${session.startTime.millisecondsSinceEpoch}.gpx';
+          'workout_${session.startTime.millisecondsSinceEpoch}.fit';
 
-      final uploadResult = await _apiClient.uploadWorkoutGpx(
-        gpxXml: gpxXml,
+      final uploadResult = await _apiClient.uploadWorkoutFile(
+        bytes: fitBytes,
         filename: filename,
         type: session.exerciseType.name,
         notes: session.notes ?? '',
@@ -162,10 +170,17 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
         item.isSynced = true;
         item.isSyncing = false;
         notifyListeners();
+
+        await Future<void>.delayed(const Duration(milliseconds: 1200));
+        workouts.remove(item);
+        notifyListeners();
+
         unawaited(_workoutRepository.updateWorkouts());
         return Success(0);
       } else {
         item.isSyncing = false;
+        item.errorMessage =
+            uploadResult.exceptionOrNull()?.toString() ?? 'Upload failed';
         notifyListeners();
         return Failure(
           uploadResult.exceptionOrNull() ?? Exception('Upload failed'),
@@ -173,6 +188,7 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
       }
     } on Exception catch (e) {
       item.isSyncing = false;
+      item.errorMessage = e.toString();
       notifyListeners();
       return Failure(e);
     }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'package:result_dart/result_dart.dart';
 import 'package:workout_tracker_app/data/services/api/model/api_response/api_response.dart';
@@ -187,8 +188,8 @@ class ApiClient {
     }
   }
 
-  Future<Result<Workout>> uploadWorkoutGpx({
-    required String gpxXml,
+  Future<Result<Workout>> uploadWorkoutFile({
+    required List<int> bytes,
     required String filename,
     String? type,
     String? notes,
@@ -200,10 +201,11 @@ class ApiClient {
       request.headers.addAll(headers);
 
       request.files.add(
-        http.MultipartFile.fromString(
+        http.MultipartFile.fromBytes(
           'file',
-          gpxXml,
+          bytes,
           filename: filename,
+          contentType: MediaType('application', 'octet-stream'),
         ),
       );
 
@@ -217,19 +219,31 @@ class ApiClient {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
-          jsonDecode(utf8.decode(response.bodyBytes)),
-          (json) => Workout.fromJson(json as Map<String, dynamic>),
-        );
-        try {
-          final data = apiResponse.getOrThrow();
-          return Success(data);
-        } on Exception catch (e) {
-          return Failure(e);
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<Object, dynamic>(
+            decoded,
+            (raw) => raw as Object,
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            if (data is List && data.isNotEmpty) {
+              return Success(Workout.fromJson(data.first as Map<String, dynamic>));
+            } else if (data is Map<String, dynamic>) {
+              return Success(Workout.fromJson(data));
+            }
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List && decoded.isNotEmpty) {
+          return Success(Workout.fromJson(decoded.first as Map<String, dynamic>));
         }
+        return Failure(HttpException('Unexpected response payload'));
       } else {
         return Failure(
-          HttpException('Invalid response (${response.statusCode}): ${response.body}'),
+          HttpException(
+            'Invalid response (${response.statusCode}): ${response.body}',
+          ),
         );
       }
     } on Exception catch (e) {

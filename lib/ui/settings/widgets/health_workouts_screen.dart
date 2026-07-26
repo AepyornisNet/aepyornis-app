@@ -22,18 +22,22 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
     _dateFormat = DateFormat.yMMMd().add_jm();
     widget.viewModel.loadWorkouts.execute();
     widget.viewModel.syncAll.addListener(_onSyncAllResult);
+    widget.viewModel.syncWorkout.addListener(_onSyncWorkoutResult);
   }
 
   @override
   void didUpdateWidget(covariant HealthWorkoutsScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     oldWidget.viewModel.syncAll.removeListener(_onSyncAllResult);
+    oldWidget.viewModel.syncWorkout.removeListener(_onSyncWorkoutResult);
     widget.viewModel.syncAll.addListener(_onSyncAllResult);
+    widget.viewModel.syncWorkout.addListener(_onSyncWorkoutResult);
   }
 
   @override
   void dispose() {
     widget.viewModel.syncAll.removeListener(_onSyncAllResult);
+    widget.viewModel.syncWorkout.removeListener(_onSyncWorkoutResult);
     super.dispose();
   }
 
@@ -46,6 +50,22 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
       final count = res.getOrNull() ?? 0;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Successfully synced $count workout(s)')),
+      );
+    }
+  }
+
+  void _onSyncWorkoutResult() {
+    if (!mounted) {
+      return;
+    }
+    final res = widget.viewModel.syncWorkout.value;
+    if (res != null && res.isError()) {
+      final error = res.exceptionOrNull();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sync failed: ${error?.toString() ?? "Unknown error"}'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
       );
     }
   }
@@ -75,7 +95,7 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
         ],
       ),
       body: ListenableBuilder(
-        listenable: widget.viewModel.loadWorkouts,
+        listenable: widget.viewModel,
         builder: (context, child) {
           final isLoading = widget.viewModel.loadWorkouts.isExecuting.value;
           if (isLoading && widget.viewModel.workouts.isEmpty) {
@@ -110,9 +130,9 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
           child: Column(
             children: [
               Icon(
-                Icons.directions_run_outlined,
+                Icons.check_circle_outline_rounded,
                 size: 64,
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(height: 16),
               Text(
@@ -146,7 +166,7 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         child: Row(
           children: [
             Container(
@@ -165,11 +185,26 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item.title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          item.title,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                          overflow: TextOverflow.ellipsis,
                         ),
+                      ),
+                      if (item.hasRoute) ...[
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.route_rounded,
+                          size: 18,
+                          color: colorScheme.tertiary,
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -179,45 +214,11 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
                         ),
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        durationStr,
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                      if (item.hasRoute) ...[
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: colorScheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.map_rounded,
-                                size: 12,
-                                color: colorScheme.onTertiaryContainer,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                l10n.hasGpsRoute,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color: colorScheme.onTertiaryContainer,
-                                ),
-                              ),
-                            ],
-                          ),
+                  Text(
+                    durationStr,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
-                      ],
-                    ],
                   ),
                 ],
               ),
@@ -236,10 +237,13 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
     ColorScheme colorScheme,
   ) {
     if (item.isSyncing) {
-      return const SizedBox(
-        height: 24,
-        width: 24,
-        child: CircularProgressIndicator(strokeWidth: 2.5),
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator(strokeWidth: 2.5),
+        ),
       );
     }
 
@@ -269,6 +273,18 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
             ),
           ],
         ),
+      );
+    }
+
+    if (item.errorMessage != null) {
+      return OutlinedButton.icon(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.error,
+          side: BorderSide(color: colorScheme.error),
+        ),
+        onPressed: () => widget.viewModel.syncWorkout.execute(item),
+        icon: const Icon(Icons.error_outline_rounded, size: 16),
+        label: const Text('Retry'),
       );
     }
 

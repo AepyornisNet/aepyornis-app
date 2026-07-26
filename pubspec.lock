@@ -161,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  csv:
+    dependency: transitive
+    description:
+      name: csv
+      sha256: "63ed2871dd6471193dffc52c0e6c76fb86269c00244d244297abbb355c84a86e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -233,6 +241,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  fit_tool:
+    dependency: "direct main"
+    description:
+      name: fit_tool
+      sha256: "295cd90f6f6aa62de5a94c1906e1fcd0eeb6d04348537ce1a51789ffcc0aaef2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   fixnum:
     dependency: transitive
     description:
@@ -381,14 +397,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  gpx:
-    dependency: "direct main"
-    description:
-      name: gpx
-      sha256: "1ab97d83824ce5d853b98c3ad13867ffa7f0a7aa175babb4f5c3d038c156961c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.0"
   graphs:
     dependency: transitive
     description:
@@ -462,7 +470,7 @@ packages:
     source: hosted
     version: "3.2.2"
   http_parser:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http_parser
       sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
@@ -573,6 +581,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.1"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   logging:
     dependency: transitive
     description:
