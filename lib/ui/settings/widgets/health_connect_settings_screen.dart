@@ -213,7 +213,8 @@ class _HealthConnectSettingsScreenState
                   ),
                   const SizedBox(height: 12),
                   ListenableBuilder(
-                    listenable: widget.viewModel.syncHealthMeasurements,
+                    listenable:
+                        widget.viewModel.syncHealthMeasurements.isExecuting,
                     builder: (context, child) {
                       final syncing = widget
                           .viewModel.syncHealthMeasurements.isExecuting.value;
@@ -223,14 +224,18 @@ class _HealthConnectSettingsScreenState
                           onPressed: syncing ? null : _onSyncPressed,
                           icon: syncing
                               ? const SizedBox(
-                                  height: 16,
-                                  width: 16,
+                                  height: 18,
+                                  width: 18,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                   ),
                                 )
                               : const Icon(Icons.sync_rounded),
-                          label: Text(l10n.syncHealthButton),
+                          label: Text(
+                            syncing
+                                ? l10n.syncingWorkout
+                                : l10n.syncHealthButton,
+                          ),
                         ),
                       );
                     },

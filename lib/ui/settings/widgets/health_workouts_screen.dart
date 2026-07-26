@@ -81,7 +81,10 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
         title: Text(l10n.healthWorkouts),
       ),
       floatingActionButton: ListenableBuilder(
-        listenable: widget.viewModel,
+        listenable: Listenable.merge([
+          widget.viewModel,
+          widget.viewModel.syncAll.isExecuting,
+        ]),
         builder: (context, child) {
           final hasUnsynced = widget.viewModel.workouts.any((w) => !w.isSynced);
           if (!hasUnsynced) {
@@ -103,7 +106,7 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
                     ),
                   )
                 : const Icon(Icons.sync_rounded),
-            label: Text(l10n.syncAllWorkouts),
+            label: Text(isSyncingAll ? l10n.syncingWorkout : l10n.syncAllWorkouts),
           );
         },
       ),
