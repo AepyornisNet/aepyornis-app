@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_connector/health_connector.dart';
 import 'package:intl/intl.dart';
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
+import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
 import 'package:workout_tracker_app/ui/settings/view_models/health_workouts_viewmodel.dart';
 
 class HealthWorkoutsScreen extends StatefulWidget {
@@ -208,9 +209,7 @@ class _HealthWorkoutsScreenState extends State<HealthWorkoutsScreen> {
     AppLocalizations l10n,
     ColorScheme colorScheme,
   ) {
-    final minutes = item.duration.inMinutes;
-    final seconds = item.duration.inSeconds % 60;
-    final durationStr = '${minutes}m ${seconds}s';
+    final durationStr = formatWorkoutDuration(item.duration.inSeconds);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),

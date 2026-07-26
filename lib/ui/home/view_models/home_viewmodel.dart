@@ -35,6 +35,23 @@ class HomeViewModel extends ChangeNotifier {
 
   Map<String, String> get authHeaders => _apiClient.authHeaders;
 
+  bool isOwnWorkout(Workout workout) {
+    final current = _authRepository.currentUser;
+    if (current == null) return false;
+    if (workout.userID != null && current.id != null) {
+      return workout.userID == current.id;
+    }
+    if (workout.user != null &&
+        current.id != null &&
+        workout.user!.id != null) {
+      return workout.user!.id == current.id;
+    }
+    if (workout.user != null && current.username.isNotEmpty) {
+      return workout.user!.username == current.username;
+    }
+    return false;
+  }
+
   double savedScrollOffset = 0.0;
 
   String _feedScope = 'following'; // 'following' | 'global'

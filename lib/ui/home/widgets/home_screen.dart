@@ -5,6 +5,7 @@ import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 import 'package:workout_tracker_app/domain/models/workout_reply/workout_reply.dart';
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
 import 'package:workout_tracker_app/routing/routes.dart';
+import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
 import 'package:workout_tracker_app/ui/home/view_models/home_viewmodel.dart';
 import 'package:workout_tracker_app/ui/workout/detail/widgets/workout_detail_map.dart';
 
@@ -58,159 +59,160 @@ class _HomeScreenState extends State<HomeScreen>
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n?.home ?? 'Feed',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: false,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-            child: ListenableBuilder(
-              listenable: widget.viewModel,
-              builder: (context, _) {
-                return SegmentedButton<String>(
-                  segments: [
-                    ButtonSegment<String>(
-                      value: 'following',
-                      label: Text(l10n?.following ?? 'Following'),
-                      icon: const Icon(Icons.people_outline, size: 18),
-                    ),
-                    ButtonSegment<String>(
-                      value: 'global',
-                      label: Text(l10n?.global ?? 'Global'),
-                      icon: const Icon(Icons.public, size: 18),
-                    ),
-                  ],
-                  selected: {widget.viewModel.feedScope},
-                  onSelectionChanged: (Set<String> newSelection) {
-                    if (newSelection.isNotEmpty) {
-                      widget.viewModel.setFeedScope(newSelection.first);
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-      body: ListenableBuilder(
-        listenable: widget.viewModel,
-        builder: (context, _) {
-          final vm = widget.viewModel;
-
-          if (vm.isLoading && vm.workouts.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (vm.errorMessage != null && vm.workouts.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline,
-                        size: 48, color: colorScheme.error),
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n?.failedToLoadFeed ?? 'Failed to load feed',
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      vm.errorMessage!,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: colorScheme.onSurfaceVariant),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    FilledButton.icon(
-                      onPressed: vm.loadInitialFeed,
-                      icon: const Icon(Icons.refresh),
-                      label: Text(l10n?.tryAgain ?? 'Try Again'),
-                    )
-                  ],
-                ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: ListenableBuilder(
+                listenable: widget.viewModel,
+                builder: (context, _) {
+                  return SegmentedButton<String>(
+                    segments: [
+                      ButtonSegment<String>(
+                        value: 'following',
+                        label: Text(l10n?.following ?? 'Following'),
+                        icon: const Icon(Icons.people_outline, size: 18),
+                      ),
+                      ButtonSegment<String>(
+                        value: 'global',
+                        label: Text(l10n?.global ?? 'Global'),
+                        icon: const Icon(Icons.public, size: 18),
+                      ),
+                    ],
+                    selected: {widget.viewModel.feedScope},
+                    onSelectionChanged: (Set<String> newSelection) {
+                      if (newSelection.isNotEmpty) {
+                        widget.viewModel.setFeedScope(newSelection.first);
+                      }
+                    },
+                  );
+                },
               ),
-            );
-          }
+            ),
+            Expanded(
+              child: ListenableBuilder(
+                listenable: widget.viewModel,
+                builder: (context, _) {
+                  final vm = widget.viewModel;
 
-          if (vm.workouts.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: vm.loadInitialFeed,
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.fitness_center_outlined,
-                              size: 64,
-                              color: colorScheme.onSurfaceVariant
-                                  .withValues(alpha: 0.5)),
-                          const SizedBox(height: 16),
-                          Text(
-                            l10n?.noActivitiesFound ?? 'No activities found',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
+                  if (vm.isLoading && vm.workouts.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (vm.errorMessage != null && vm.workouts.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error_outline,
+                                size: 48, color: colorScheme.error),
+                            const SizedBox(height: 12),
+                            Text(
+                              l10n?.failedToLoadFeed ?? 'Failed to load feed',
+                              style: theme.textTheme.titleMedium,
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            vm.feedScope == 'following'
-                                ? (l10n?.emptyFeedFollowing ??
-                                    'Follow users to see their activities here.')
-                                : (l10n?.emptyFeedGlobal ??
-                                    'No global activities yet.'),
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
+                            const SizedBox(height: 8),
+                            Text(
+                              vm.errorMessage!,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            FilledButton.icon(
+                              onPressed: vm.loadInitialFeed,
+                              icon: const Icon(Icons.refresh),
+                              label: Text(l10n?.tryAgain ?? 'Try Again'),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (vm.workouts.isEmpty) {
+                    return RefreshIndicator(
+                      onRefresh: vm.loadInitialFeed,
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.fitness_center_outlined,
+                                      size: 64,
+                                      color: colorScheme.onSurfaceVariant
+                                          .withValues(alpha: 0.5)),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    l10n?.noActivitiesFound ??
+                                        'No activities found',
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    vm.feedScope == 'following'
+                                        ? (l10n?.emptyFeedFollowing ??
+                                            'Follow users to see their activities here.')
+                                        : (l10n?.emptyFeedGlobal ??
+                                            'No global activities yet.'),
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
+                    );
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: vm.loadInitialFeed,
+                    child: ListView.separated(
+                      key: const PageStorageKey('home_feed_list'),
+                      controller: _scrollController,
+                      padding: const EdgeInsets.only(top: 4, bottom: 24),
+                      itemCount:
+                          vm.workouts.length + (vm.isLoadingMore ? 1 : 0),
+                      separatorBuilder: (context, index) => Container(
+                        height: 8,
+                        color: colorScheme.surfaceContainerHighest
+                            .withValues(alpha: 0.3),
+                      ),
+                      itemBuilder: (context, index) {
+                        if (index == vm.workouts.length) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
+                        final workout = vm.workouts[index];
+                        return _FeedPostItem(
+                          workout: workout,
+                          viewModel: vm,
+                        );
+                      },
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return RefreshIndicator(
-            onRefresh: vm.loadInitialFeed,
-            child: ListView.separated(
-              key: const PageStorageKey('home_feed_list'),
-              controller: _scrollController,
-              padding: const EdgeInsets.only(top: 4, bottom: 24),
-              itemCount: vm.workouts.length + (vm.isLoadingMore ? 1 : 0),
-              separatorBuilder: (context, index) => Container(
-                height: 8,
-                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-              ),
-              itemBuilder: (context, index) {
-                if (index == vm.workouts.length) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Center(child: CircularProgressIndicator()),
                   );
-                }
-
-                final workout = vm.workouts[index];
-                return _FeedPostItem(
-                  workout: workout,
-                  viewModel: vm,
-                );
-              },
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
@@ -240,15 +242,6 @@ class _FeedPostItemState extends State<_FeedPostItem> {
     if (_commentsExpanded && widget.workout.id != null) {
       widget.viewModel.loadReplies(widget.workout.id!);
     }
-  }
-
-  String _formatDuration(int seconds) {
-    final hours = seconds ~/ 3600;
-    final minutes = (seconds % 3600) ~/ 60;
-    if (hours > 0) {
-      return '${hours}h ${minutes}m';
-    }
-    return '${minutes}m';
   }
 
   String _formatAuthorName(Workout workout, BuildContext context) {
@@ -298,6 +291,8 @@ class _FeedPostItemState extends State<_FeedPostItem> {
     final authHeaders = widget.viewModel.authHeaders;
 
     final l10n = AppLocalizations.of(context);
+
+    final isOwn = widget.viewModel.isOwnWorkout(workout);
 
     return InkWell(
       onTap: workout.id != null
@@ -360,55 +355,57 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                     ],
                   ),
                 ),
-                Text(
-                  DateFormat.yMMMd().format(workout.date.toLocal()),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      DateFormat.yMMMd().format(workout.date.toLocal()),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            colorScheme.primaryContainer.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(workout.type.icon,
+                              size: 14, color: colorScheme.primary),
+                          const SizedBox(width: 4),
+                          Text(
+                            workout.type.value.replaceAll('-', ' '),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
 
             const SizedBox(height: 12),
 
-            // Title & Activity Type Badge
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    workout.name,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(workout.type.icon,
-                          size: 16, color: colorScheme.primary),
-                      const SizedBox(width: 4),
-                      Text(
-                        workout.type.value.replaceAll('-', ' '),
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            // Title
+            Text(
+              workout.name,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.3,
+              ),
             ),
 
             const SizedBox(height: 12),
@@ -427,7 +424,7 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                 if (workout.totalDuration > 0)
                   _StatBadge(
                     icon: Icons.timer_outlined,
-                    value: _formatDuration(workout.totalDuration),
+                    value: formatWorkoutDuration(workout.totalDuration),
                   ),
                 if (workout.totalUp > 0)
                   _StatBadge(
@@ -512,14 +509,17 @@ class _FeedPostItemState extends State<_FeedPostItem> {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  icon: Icon(
-                    workout.likedByMe ? Icons.favorite : Icons.favorite_border,
-                    color: workout.likedByMe ? Colors.red : null,
+                if (!isOwn)
+                  IconButton(
+                    icon: Icon(
+                      workout.likedByMe
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: workout.likedByMe ? Colors.red : null,
+                    ),
+                    onPressed: () => widget.viewModel.toggleLike(workout),
+                    tooltip: l10n?.like ?? 'Like',
                   ),
-                  onPressed: () => widget.viewModel.toggleLike(workout),
-                  tooltip: l10n?.like ?? 'Like',
-                ),
                 IconButton(
                   icon: Icon(
                     _commentsExpanded

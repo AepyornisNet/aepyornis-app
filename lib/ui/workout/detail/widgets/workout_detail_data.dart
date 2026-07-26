@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:workout_tracker_app/domain/models/workout/workout.dart';
 import 'package:workout_tracker_app/l10n/app_localizations.dart';
+import 'package:workout_tracker_app/ui/core/utils/formatters.dart';
 
 class WorkoutDetailData extends StatelessWidget {
   const WorkoutDetailData(this.workout, {super.key});
@@ -388,19 +389,7 @@ extension on Color {
   }
 }
 
-String _formatDuration(int seconds) {
-  final duration = Duration(seconds: seconds);
-  final hours = duration.inHours;
-  final minutes = duration.inMinutes.remainder(60);
-  final secs = duration.inSeconds.remainder(60);
-  if (hours > 0) {
-    return '${hours}h ${minutes}m';
-  }
-  if (minutes > 0) {
-    return '${minutes}m ${secs}s';
-  }
-  return '${secs}s';
-}
+String _formatDuration(int seconds) => formatWorkoutDuration(seconds);
 
 class _DetailRowItem {
   const _DetailRowItem({
