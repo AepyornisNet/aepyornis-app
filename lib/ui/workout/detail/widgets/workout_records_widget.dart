@@ -102,7 +102,8 @@ class WorkoutRecordsWidget extends StatelessWidget {
       }
 
       if (minDuration != double.infinity && minDuration > 0) {
-        final actualDist = points[endIdx].totalDistance - points[startIdx].totalDistance;
+        final actualDist =
+            points[endIdx].totalDistance - points[startIdx].totalDistance;
         final speedKmh = (actualDist / 1000.0) / (minDuration / 3600.0);
 
         result.add(

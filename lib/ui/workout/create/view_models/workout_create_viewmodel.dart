@@ -555,7 +555,8 @@ class WorkoutCreateViewModel extends ChangeNotifier {
 
     final Result<Workout> result;
     if (_isEditMode && _editingWorkoutId != null) {
-      result = await _workoutRepository.updateWorkout(_editingWorkoutId!, payload);
+      result =
+          await _workoutRepository.updateWorkout(_editingWorkoutId!, payload);
     } else {
       result = await _workoutRepository.createWorkoutManual(payload);
     }

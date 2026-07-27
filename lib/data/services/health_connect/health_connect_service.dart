@@ -274,8 +274,7 @@ class HealthConnectService {
     final Map<DateTime, int> result = {};
 
     try {
-      var request =
-          HealthDataType.cyclingPedalingCadenceSeries.readInTimeRange(
+      var request = HealthDataType.cyclingPedalingCadenceSeries.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );

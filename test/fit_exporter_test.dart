@@ -60,7 +60,8 @@ void main() {
     }
   });
 
-  test('FitExporter includes total distance, calories, lap and session metrics', () {
+  test('FitExporter includes total distance, calories, lap and session metrics',
+      () {
     final startTime = DateTime(2026, 7, 27, 10, 0, 0);
     final endTime = DateTime(2026, 7, 27, 10, 30, 0);
 
@@ -142,7 +143,9 @@ void main() {
     expect(recordMessages.last.speed, greaterThan(0.0));
   });
 
-  test('FitExporter handles initial zero altitude gracefully without zero-elevation first entry', () {
+  test(
+      'FitExporter handles initial zero altitude gracefully without zero-elevation first entry',
+      () {
     final startTime = DateTime(2026, 7, 27, 10, 0, 0);
     final endTime = DateTime(2026, 7, 27, 10, 10, 0);
 
@@ -185,5 +188,3 @@ void main() {
     expect(recordMessages.first.altitude, closeTo(250.0, 0.1));
   });
 }
-
-

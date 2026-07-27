@@ -64,7 +64,8 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                     ),
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.more_vert),
-                    onSelected: (value) => _handleAction(context, value, workout),
+                    onSelected: (value) =>
+                        _handleAction(context, value, workout),
                     itemBuilder: (context) => [
                       const PopupMenuItem(
                         value: 'edit',
@@ -311,8 +312,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
         } else if (res.isError() && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content:
-                    Text('Failed to refresh: ${res.exceptionOrNull()}')),
+                content: Text('Failed to refresh: ${res.exceptionOrNull()}')),
           );
         }
         break;

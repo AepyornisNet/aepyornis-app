@@ -337,7 +337,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
               // Workout Type Dropdown
               DropdownButtonFormField<String>(
-                key: ValueKey('type_${vm.editingWorkoutId}_${vm.manualWorkoutType}'),
+                key: ValueKey(
+                    'type_${vm.editingWorkoutId}_${vm.manualWorkoutType}'),
                 initialValue:
                     vm.manualWorkoutType.isEmpty ? null : vm.manualWorkoutType,
                 decoration: InputDecoration(
@@ -372,7 +373,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Custom Type
                 if (vm.showCustomType) ...[
                   TextFormField(
-                    key: ValueKey('custom_${vm.editingWorkoutId}_${vm.customType}'),
+                    key: ValueKey(
+                        'custom_${vm.editingWorkoutId}_${vm.customType}'),
                     initialValue: vm.customType,
                     decoration: InputDecoration(
                       labelText: l10n.customType,
@@ -505,7 +507,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          key: ValueKey('dh_${vm.editingWorkoutId}_${vm.durationHours}'),
+                          key: ValueKey(
+                              'dh_${vm.editingWorkoutId}_${vm.durationHours}'),
                           initialValue: vm.durationHours.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
@@ -522,7 +525,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextFormField(
-                          key: ValueKey('dm_${vm.editingWorkoutId}_${vm.durationMinutes}'),
+                          key: ValueKey(
+                              'dm_${vm.editingWorkoutId}_${vm.durationMinutes}'),
                           initialValue: vm.durationMinutes.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
@@ -539,7 +543,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextFormField(
-                          key: ValueKey('ds_${vm.editingWorkoutId}_${vm.durationSeconds}'),
+                          key: ValueKey(
+                              'ds_${vm.editingWorkoutId}_${vm.durationSeconds}'),
                           initialValue: vm.durationSeconds.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
@@ -561,8 +566,10 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Distance (if supported)
                 if (vm.showDistance) ...[
                   TextFormField(
-                    key: ValueKey('dist_${vm.editingWorkoutId}_${vm.distanceKm}'),
-                    initialValue: vm.distanceKm > 0 ? vm.distanceKm.toString() : '0',
+                    key: ValueKey(
+                        'dist_${vm.editingWorkoutId}_${vm.distanceKm}'),
+                    initialValue:
+                        vm.distanceKm > 0 ? vm.distanceKm.toString() : '0',
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
@@ -582,8 +589,10 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Repetitions (if supported)
                 if (vm.showRepetitions) ...[
                   TextFormField(
-                    key: ValueKey('rep_${vm.editingWorkoutId}_${vm.repetitions}'),
-                    initialValue: vm.repetitions > 0 ? vm.repetitions.toString() : '0',
+                    key: ValueKey(
+                        'rep_${vm.editingWorkoutId}_${vm.repetitions}'),
+                    initialValue:
+                        vm.repetitions > 0 ? vm.repetitions.toString() : '0',
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.repetitions,
@@ -602,7 +611,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 if (vm.showWeight) ...[
                   TextFormField(
                     key: ValueKey('wt_${vm.editingWorkoutId}_${vm.weightKg}'),
-                    initialValue: vm.weightKg > 0 ? vm.weightKg.toString() : '0',
+                    initialValue:
+                        vm.weightKg > 0 ? vm.weightKg.toString() : '0',
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
@@ -647,7 +657,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
                 // Notes
                 TextFormField(
-                  key: ValueKey('notes_${vm.editingWorkoutId}_${vm.manualNotes}'),
+                  key: ValueKey(
+                      'notes_${vm.editingWorkoutId}_${vm.manualNotes}'),
                   initialValue: vm.manualNotes,
                   decoration: InputDecoration(
                     labelText: l10n.notes,
@@ -686,7 +697,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.check_rounded),
-                  label: Text(vm.isEditMode ? 'Save Changes' : l10n.createWorkout),
+                  label:
+                      Text(vm.isEditMode ? 'Save Changes' : l10n.createWorkout),
                 ),
               ],
             ],

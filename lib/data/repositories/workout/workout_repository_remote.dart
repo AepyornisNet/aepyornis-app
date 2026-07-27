@@ -156,7 +156,8 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
   }
 
   @override
-  Future<Result<Workout>> updateWorkout(int id, Map<String, dynamic> data) async {
+  Future<Result<Workout>> updateWorkout(
+      int id, Map<String, dynamic> data) async {
     final result = await _apiClient.updateWorkout(id, data);
     if (result.isSuccess()) {
       addWorkout(result.getOrThrow());

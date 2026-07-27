@@ -165,16 +165,15 @@ class FitExporter {
         ? (finalTotalDistance / durationInSeconds)
         : null;
 
-    final double? maxSpeed = locationSpeeds.isNotEmpty
-        ? locationSpeeds.reduce(math.max)
-        : avgSpeed;
+    final double? maxSpeed =
+        locationSpeeds.isNotEmpty ? locationSpeeds.reduce(math.max) : avgSpeed;
 
     int? avgHeartRate;
     int? maxHeartRate;
     if (hasHeartRates) {
-      avgHeartRate = (heartRates.values.reduce((a, b) => a + b) /
-              heartRates.length)
-          .round();
+      avgHeartRate =
+          (heartRates.values.reduce((a, b) => a + b) / heartRates.length)
+              .round();
       maxHeartRate = heartRates.values.reduce(math.max);
     }
 
@@ -383,7 +382,10 @@ class FitExporter {
       sessionMessage.startPositionLat = startPositionLat;
       sessionMessage.startPositionLong = startPositionLong;
     }
-    if (necLat != null && necLong != null && swcLat != null && swcLong != null) {
+    if (necLat != null &&
+        necLong != null &&
+        swcLat != null &&
+        swcLong != null) {
       sessionMessage.necLat = necLat;
       sessionMessage.necLong = necLong;
       sessionMessage.swcLat = swcLat;
@@ -581,5 +583,3 @@ class FitExporter {
     return closestValue;
   }
 }
-
-

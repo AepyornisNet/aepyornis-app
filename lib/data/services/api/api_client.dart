@@ -584,8 +584,8 @@ class ApiClient {
       if (response.statusCode == 200) {
         final decoded = jsonDecode(utf8.decode(response.bodyBytes));
         if (decoded is Map<String, dynamic>) {
-          final apiResponse = ApiResponse.fromJson<List<DistanceRecordEntry>,
-              List<dynamic>>(
+          final apiResponse =
+              ApiResponse.fromJson<List<DistanceRecordEntry>, List<dynamic>>(
             decoded,
             (results) => results
                 .map((e) =>

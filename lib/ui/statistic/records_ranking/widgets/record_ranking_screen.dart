@@ -95,7 +95,8 @@ class _RecordRankingScreenState extends State<RecordRankingScreen> {
 
           if (vm.entries.isEmpty) {
             return const Center(
-              child: Text('No record instances found for this target distance.'),
+              child:
+                  Text('No record instances found for this target distance.'),
             );
           }
 
@@ -118,7 +119,8 @@ class _RecordRankingScreenState extends State<RecordRankingScreen> {
                 if (speedKmh > 0 && speedKmh < 30) {
                   speedKmh = speedKmh * 3.6;
                 }
-                final distMeters = entry.distance ?? entry.targetDistance ?? 0.0;
+                final distMeters =
+                    entry.distance ?? entry.targetDistance ?? 0.0;
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12.0),
@@ -128,8 +130,8 @@ class _RecordRankingScreenState extends State<RecordRankingScreen> {
                   ),
                   child: InkWell(
                     onTap: entry.workoutId != null
-                        ? () => context
-                            .push(Routes.workoutWithId(entry.workoutId!))
+                        ? () =>
+                            context.push(Routes.workoutWithId(entry.workoutId!))
                         : null,
                     borderRadius: BorderRadius.circular(12),
                     child: Padding(

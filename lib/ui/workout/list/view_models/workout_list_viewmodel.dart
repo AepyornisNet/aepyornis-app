@@ -46,8 +46,7 @@ class WorkoutListViewModel extends ChangeNotifier {
     _currentPage = 1;
     _hasMorePages = true;
 
-    final result =
-        await _workoutRepository.getWorkoutsPage(page: 1, limit: 20);
+    final result = await _workoutRepository.getWorkoutsPage(page: 1, limit: 20);
     if (result.isError()) {
       if (_workoutRepository.cachedWorkouts != null &&
           _workoutRepository.cachedWorkouts!.isNotEmpty) {

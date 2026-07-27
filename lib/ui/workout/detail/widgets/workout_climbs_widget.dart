@@ -39,8 +39,7 @@ class WorkoutClimbsWidget extends StatelessWidget {
         final idx = (item['index'] as num?)?.toInt() ?? (result.length + 1);
         final typeStr = (item['type'] as String?) ?? 'climb';
         final isClimb = typeStr != 'descent';
-        final startDist =
-            (item['start_distance'] as num?)?.toDouble() ?? 0.0;
+        final startDist = (item['start_distance'] as num?)?.toDouble() ?? 0.0;
         final length = (item['length'] as num?)?.toDouble() ?? 0.0;
         final elevation = (item['elevation'] as num?)?.toDouble() ?? 0.0;
         var avgSlope = (item['avg_slope'] as num?)?.toDouble() ?? 0.0;
@@ -87,7 +86,8 @@ class WorkoutClimbsWidget extends StatelessWidget {
           segStartElev = pPrev.elevation;
         }
       } else {
-        final isSameDirection = isClimbing ? deltaElev >= -0.5 : deltaElev <= 0.5;
+        final isSameDirection =
+            isClimbing ? deltaElev >= -0.5 : deltaElev <= 0.5;
         if (!isSameDirection || i == points.length - 1) {
           final segEndDist = pCurr.totalDistance;
           final segEndElev = pCurr.elevation;
@@ -229,7 +229,9 @@ class WorkoutClimbsWidget extends StatelessWidget {
                                   : 'Descent ${c.index}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: c.isClimb ? Colors.green.shade800 : Colors.orange.shade800,
+                                color: c.isClimb
+                                    ? Colors.green.shade800
+                                    : Colors.orange.shade800,
                               ),
                             ),
                           ],
@@ -243,7 +245,8 @@ class WorkoutClimbsWidget extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
-                      DataCell(Text('${c.avgSlopePercent.toStringAsFixed(1)}%')),
+                      DataCell(
+                          Text('${c.avgSlopePercent.toStringAsFixed(1)}%')),
                       DataCell(
                         Container(
                           padding: const EdgeInsets.symmetric(

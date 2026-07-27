@@ -121,55 +121,55 @@ class WorkoutListTile extends StatelessWidget {
           ? null
           : PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert),
-        onSelected: (value) {
-          if (value == 'edit') {
-            onEdit?.call();
-          } else if (value == 'toggleLock') {
-            onToggleLock?.call();
-          } else if (value == 'delete') {
-            onDelete?.call();
-          }
-        },
-        itemBuilder: (context) => [
-          const PopupMenuItem(
-            value: 'edit',
-            child: Row(
-              children: [
-                Icon(Icons.edit_rounded, size: 20),
-                SizedBox(width: 12),
-                Text('Edit'),
-              ],
-            ),
-          ),
-          PopupMenuItem(
-            value: 'toggleLock',
-            child: Row(
-              children: [
-                Icon(
-                  workout.locked
-                      ? Icons.lock_open_rounded
-                      : Icons.lock_rounded,
-                  size: 20,
+              onSelected: (value) {
+                if (value == 'edit') {
+                  onEdit?.call();
+                } else if (value == 'toggleLock') {
+                  onToggleLock?.call();
+                } else if (value == 'delete') {
+                  onDelete?.call();
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(Icons.edit_rounded, size: 20),
+                      SizedBox(width: 12),
+                      Text('Edit'),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 12),
-                Text(workout.locked ? 'Unlock' : 'Lock'),
+                PopupMenuItem(
+                  value: 'toggleLock',
+                  child: Row(
+                    children: [
+                      Icon(
+                        workout.locked
+                            ? Icons.lock_open_rounded
+                            : Icons.lock_rounded,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(workout.locked ? 'Unlock' : 'Lock'),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete_outline_rounded,
+                          size: 20, color: Colors.red),
+                      SizedBox(width: 12),
+                      Text('Delete', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-          const PopupMenuDivider(),
-          const PopupMenuItem(
-            value: 'delete',
-            child: Row(
-              children: [
-                Icon(Icons.delete_outline_rounded,
-                    size: 20, color: Colors.red),
-                SizedBox(width: 12),
-                Text('Delete', style: TextStyle(color: Colors.red)),
-              ],
-            ),
-          ),
-        ],
-      ),
       onTap: () {
         context.push(Routes.workoutWithId(workout.id!));
       },

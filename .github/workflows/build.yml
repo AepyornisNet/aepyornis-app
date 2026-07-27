@@ -1,4 +1,4 @@
-name: "Build"
+name: "CI"
 
 on:
   pull_request:
@@ -9,29 +9,34 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build & Release
-    runs-on: macos-latest
+  analyze-and-test:
+    name: Analyze, Lint & Test
+    runs-on: ubuntu-latest
 
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.44.8
+          cache: true
 
-      - uses: cedvdb/action-flutter-build-android@v1
-        with:
-          keystore-base64: ${{ secrets.ANDROID_RELEASE_KEY }}
-          keystore-password: "${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}"
-          build-cmd: flutter build apk --release
-          working-directory: ./
+      - name: Install dependencies
+        run: flutter pub get
 
-      - name: Archive APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Check Formatting (Lint)
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run Tests
+        run: flutter test

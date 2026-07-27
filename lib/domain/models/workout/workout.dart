@@ -45,7 +45,6 @@ abstract class Workout with _$Workout {
     /// Optional custom workout type descriptors
     @JsonKey(name: 'custom_type') String? customType,
     @JsonKey(name: 'sub_type') String? subType,
-
     @JsonKey(name: 'type') required WorkoutType type,
     @JsonKey(name: 'visibility') String? visibility,
     @JsonKey(name: 'locked') @Default(false) bool locked,
@@ -75,7 +74,9 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'liked_by_me') @Default(false) bool likedByMe,
     @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'replies_count') @Default(0) int repliesCount,
-    @JsonKey(name: 'interval_bests') @Default([]) List<Map<String, dynamic>> intervalBests,
+    @JsonKey(name: 'interval_bests')
+    @Default([])
+    List<Map<String, dynamic>> intervalBests,
     @JsonKey(name: 'climbs') @Default([]) List<Map<String, dynamic>> climbs,
     @Default([]) List<WorkoutAttachment> attachments,
   }) = _Workout;

@@ -62,7 +62,8 @@ class _WorkoutListScreenState extends State<WorkoutListScreen> {
           listenable: widget.viewModel,
           builder: (context, child) {
             final workouts = widget.viewModel.workouts;
-            final isLoadingInitial = widget.viewModel.loadWorkouts.isExecuting.value;
+            final isLoadingInitial =
+                widget.viewModel.loadWorkouts.isExecuting.value;
 
             if (isLoadingInitial && workouts.isEmpty) {
               return const Center(child: CircularProgressIndicator());
