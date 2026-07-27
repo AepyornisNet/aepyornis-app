@@ -44,6 +44,9 @@ class HealthConnectService {
       HealthDataType.stepsCadenceSeries,
       HealthDataType.powerSeries,
       HealthDataType.cyclingPower,
+      HealthDataType.distance,
+      HealthDataType.activeEnergyBurned,
+      HealthDataType.totalEnergyBurned,
     ];
 
     return candidates
@@ -317,6 +320,75 @@ class HealthConnectService {
     } catch (_) {}
 
     return result;
+  }
+
+  Future<double?> readDistance(
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    final connector = await _ensureConnector();
+    if (connector == null) {
+      return null;
+    }
+
+    try {
+      final request = HealthDataType.distance.readInTimeRange(
+        startTime: startTime,
+        endTime: endTime,
+      );
+      final response = await connector.readRecords(request);
+      if (response.records.isNotEmpty) {
+        double total = 0;
+        for (final record in response.records) {
+          total += record.distance.inMeters;
+        }
+        return total;
+      }
+    } catch (_) {}
+
+    return null;
+  }
+
+  Future<int?> readCalories(
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    final connector = await _ensureConnector();
+    if (connector == null) {
+      return null;
+    }
+
+    try {
+      final request = HealthDataType.activeEnergyBurned.readInTimeRange(
+        startTime: startTime,
+        endTime: endTime,
+      );
+      final response = await connector.readRecords(request);
+      if (response.records.isNotEmpty) {
+        double total = 0;
+        for (final record in response.records) {
+          total += record.energy.inKilocalories;
+        }
+        return total.round();
+      }
+    } catch (_) {}
+
+    try {
+      final request = HealthDataType.totalEnergyBurned.readInTimeRange(
+        startTime: startTime,
+        endTime: endTime,
+      );
+      final response = await connector.readRecords(request);
+      if (response.records.isNotEmpty) {
+        double total = 0;
+        for (final record in response.records) {
+          total += record.energy.inKilocalories;
+        }
+        return total.round();
+      }
+    } catch (_) {}
+
+    return null;
   }
 
   Future<int> _readSteps(

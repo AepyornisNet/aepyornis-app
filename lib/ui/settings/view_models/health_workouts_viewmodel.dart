@@ -152,6 +152,29 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
         session.startTime,
         session.endTime,
       );
+      final totalDistance = await _healthConnectService.readDistance(
+        session.startTime,
+        session.endTime,
+      );
+      final totalCalories = await _healthConnectService.readCalories(
+        session.startTime,
+        session.endTime,
+      );
+
+      double? fallbackDistance = totalDistance;
+      if (fallbackDistance == null && session.lapEvents.isNotEmpty) {
+        double sum = 0;
+        bool hasDist = false;
+        for (final lap in session.lapEvents) {
+          if (lap.distance != null) {
+            sum += lap.distance!.inMeters;
+            hasDist = true;
+          }
+        }
+        if (hasDist) {
+          fallbackDistance = sum;
+        }
+      }
 
       final fitBytes = FitExporter.buildFit(
         title: item.title,
@@ -162,6 +185,8 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
         heartRates: heartRates,
         cadences: cadences,
         powers: powers,
+        totalDistance: fallbackDistance,
+        totalCalories: totalCalories,
       );
 
       final filename =
