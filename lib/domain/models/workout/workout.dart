@@ -75,6 +75,8 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'liked_by_me') @Default(false) bool likedByMe,
     @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'replies_count') @Default(0) int repliesCount,
+    @JsonKey(name: 'interval_bests') @Default([]) List<Map<String, dynamic>> intervalBests,
+    @JsonKey(name: 'climbs') @Default([]) List<Map<String, dynamic>> climbs,
     @Default([]) List<WorkoutAttachment> attachments,
   }) = _Workout;
 
@@ -135,6 +137,8 @@ Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
   copyKey('liked_by_me', 'likedByMe');
   copyKey('likes_count', 'likesCount');
   copyKey('replies_count', 'repliesCount');
+  copyKey('interval_bests', 'intervalBests');
+  copyKey('climbs', 'climbs');
 
   if (normalized['user'] == null ||
       normalized['user'] is! Map<String, dynamic>) {

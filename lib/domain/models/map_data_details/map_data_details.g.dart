@@ -16,6 +16,7 @@ _MapDataDetails _$MapDataDetailsFromJson(Map<String, dynamic> json) =>
               ?.map((e) => MapPoint.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      zoneRanges: json['zone_ranges'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$MapDataDetailsToJson(_MapDataDetails instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$MapDataDetailsToJson(_MapDataDetails instance) =>
       'updatedAt': instance.updatedAt,
       'mapDataID': instance.mapDataID,
       'points': instance.points,
+      'zone_ranges': instance.zoneRanges,
     };

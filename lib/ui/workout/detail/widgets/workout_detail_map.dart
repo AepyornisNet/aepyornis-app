@@ -110,7 +110,7 @@ class _WorkoutDetailMapState extends State<WorkoutDetailMap> {
                   Polyline(
                     points: _points,
                     strokeWidth: 4.5,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: const Color(0xFF0055FF),
                   ),
                 ],
               ),

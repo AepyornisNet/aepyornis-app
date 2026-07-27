@@ -18,6 +18,9 @@ abstract class MapDataDetails with _$MapDataDetails {
 
     /* The GPS points of the workout */
     @Default([]) List<MapPoint> points,
+
+    /* Zone ranges from API for heart-rate and power */
+    @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges,
   }) = _MapDataDetails;
 
   factory MapDataDetails.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +39,7 @@ Map<String, dynamic> _normalizeMapDataDetailsJson(Map<String, dynamic> json) {
   copyKey('createdAt', 'created_at');
   copyKey('updatedAt', 'updated_at');
   copyKey('mapDataID', 'map_data_id');
+  copyKey('zone_ranges', 'zoneRanges');
   normalized['mapDataID'] ??= 0;
 
   if (!normalized.containsKey('points')) {

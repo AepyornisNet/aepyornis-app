@@ -56,6 +56,14 @@ _Workout _$WorkoutFromJson(Map<String, dynamic> json) => _Workout(
       likedByMe: json['liked_by_me'] as bool? ?? false,
       likesCount: (json['likes_count'] as num?)?.toInt() ?? 0,
       repliesCount: (json['replies_count'] as num?)?.toInt() ?? 0,
+      intervalBests: (json['interval_bests'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          const [],
+      climbs: (json['climbs'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          const [],
       attachments: (json['attachments'] as List<dynamic>?)
               ?.map(
                   (e) => WorkoutAttachment.fromJson(e as Map<String, dynamic>))
@@ -105,5 +113,7 @@ Map<String, dynamic> _$WorkoutToJson(_Workout instance) => <String, dynamic>{
       'liked_by_me': instance.likedByMe,
       'likes_count': instance.likesCount,
       'replies_count': instance.repliesCount,
+      'interval_bests': instance.intervalBests,
+      'climbs': instance.climbs,
       'attachments': instance.attachments,
     };

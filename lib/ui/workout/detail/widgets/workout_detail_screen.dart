@@ -5,9 +5,12 @@ import 'package:aepyornis_app/domain/models/workout/workout.dart';
 import 'package:aepyornis_app/l10n/app_localizations.dart';
 import 'package:aepyornis_app/routing/routes.dart';
 import 'package:aepyornis_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_climbs_widget.dart';
 import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_chart.dart';
 import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_data.dart';
 import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_map.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_records_widget.dart';
+import 'package:aepyornis_app/ui/workout/detail/widgets/workout_zone_distribution_widget.dart';
 
 extension WorkoutGeoInfo on Workout {
   bool get hasGeoInfo {
@@ -212,6 +215,19 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                   // Time Series Chart (if available)
                   if (hasPoints) ...[
                     WorkoutDetailChart(workoutDetails: details),
+                    WorkoutZoneDistributionWidget(
+                      workoutDetails: details,
+                      maxHeartRate: workout.maxHeartRate,
+                      maxPower: workout.maxPower,
+                    ),
+                    WorkoutClimbsWidget(
+                      workout: workout,
+                      workoutDetails: details,
+                    ),
+                    WorkoutRecordsWidget(
+                      workout: workout,
+                      workoutDetails: details,
+                    ),
                   ],
                 ],
               ),
@@ -239,9 +255,22 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
             // Summary stats & breakdown details
             WorkoutDetailData(workout),
 
-            // Time series charts if available
+            // Time series charts & analytical components if available
             if (hasPoints) ...[
               WorkoutDetailChart(workoutDetails: details),
+              WorkoutZoneDistributionWidget(
+                workoutDetails: details,
+                maxHeartRate: workout.maxHeartRate,
+                maxPower: workout.maxPower,
+              ),
+              WorkoutClimbsWidget(
+                workout: workout,
+                workoutDetails: details,
+              ),
+              WorkoutRecordsWidget(
+                workout: workout,
+                workoutDetails: details,
+              ),
             ],
           ],
         ),

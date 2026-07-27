@@ -18,7 +18,9 @@ mixin _$MapDataDetails {
   String? get createdAt;
   String? get updatedAt; /* The ID of the map data these details belong to */
   int get mapDataID; /* The GPS points of the workout */
-  List<MapPoint> get points;
+  List<MapPoint> get points; /* Zone ranges from API for heart-rate and power */
+  @JsonKey(name: 'zone_ranges')
+  Map<String, dynamic>? get zoneRanges;
 
   /// Create a copy of MapDataDetails
   /// with the given fields replaced by the non-null parameter values.
@@ -43,17 +45,25 @@ mixin _$MapDataDetails {
                 other.updatedAt == updatedAt) &&
             (identical(other.mapDataID, mapDataID) ||
                 other.mapDataID == mapDataID) &&
-            const DeepCollectionEquality().equals(other.points, points));
+            const DeepCollectionEquality().equals(other.points, points) &&
+            const DeepCollectionEquality()
+                .equals(other.zoneRanges, zoneRanges));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt,
-      mapDataID, const DeepCollectionEquality().hash(points));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      createdAt,
+      updatedAt,
+      mapDataID,
+      const DeepCollectionEquality().hash(points),
+      const DeepCollectionEquality().hash(zoneRanges));
 
   @override
   String toString() {
-    return 'MapDataDetails(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, mapDataID: $mapDataID, points: $points)';
+    return 'MapDataDetails(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, mapDataID: $mapDataID, points: $points, zoneRanges: $zoneRanges)';
   }
 }
 
@@ -68,7 +78,8 @@ abstract mixin class $MapDataDetailsCopyWith<$Res> {
       String? createdAt,
       String? updatedAt,
       int mapDataID,
-      List<MapPoint> points});
+      List<MapPoint> points,
+      @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges});
 }
 
 /// @nodoc
@@ -89,6 +100,7 @@ class _$MapDataDetailsCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? mapDataID = null,
     Object? points = null,
+    Object? zoneRanges = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -111,6 +123,10 @@ class _$MapDataDetailsCopyWithImpl<$Res>
           ? _self.points
           : points // ignore: cast_nullable_to_non_nullable
               as List<MapPoint>,
+      zoneRanges: freezed == zoneRanges
+          ? _self.zoneRanges
+          : zoneRanges // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -208,8 +224,13 @@ extension MapDataDetailsPatterns on MapDataDetails {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int? id, String? createdAt, String? updatedAt,
-            int mapDataID, List<MapPoint> points)?
+    TResult Function(
+            int? id,
+            String? createdAt,
+            String? updatedAt,
+            int mapDataID,
+            List<MapPoint> points,
+            @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges)?
         $default, {
     required TResult orElse(),
   }) {
@@ -217,7 +238,7 @@ extension MapDataDetailsPatterns on MapDataDetails {
     switch (_that) {
       case _MapDataDetails() when $default != null:
         return $default(_that.id, _that.createdAt, _that.updatedAt,
-            _that.mapDataID, _that.points);
+            _that.mapDataID, _that.points, _that.zoneRanges);
       case _:
         return orElse();
     }
@@ -238,15 +259,20 @@ extension MapDataDetailsPatterns on MapDataDetails {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int? id, String? createdAt, String? updatedAt,
-            int mapDataID, List<MapPoint> points)
+    TResult Function(
+            int? id,
+            String? createdAt,
+            String? updatedAt,
+            int mapDataID,
+            List<MapPoint> points,
+            @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _MapDataDetails():
         return $default(_that.id, _that.createdAt, _that.updatedAt,
-            _that.mapDataID, _that.points);
+            _that.mapDataID, _that.points, _that.zoneRanges);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -266,15 +292,20 @@ extension MapDataDetailsPatterns on MapDataDetails {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int? id, String? createdAt, String? updatedAt,
-            int mapDataID, List<MapPoint> points)?
+    TResult? Function(
+            int? id,
+            String? createdAt,
+            String? updatedAt,
+            int mapDataID,
+            List<MapPoint> points,
+            @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _MapDataDetails() when $default != null:
         return $default(_that.id, _that.createdAt, _that.updatedAt,
-            _that.mapDataID, _that.points);
+            _that.mapDataID, _that.points, _that.zoneRanges);
       case _:
         return null;
     }
@@ -289,8 +320,10 @@ class _MapDataDetails implements MapDataDetails {
       this.createdAt,
       this.updatedAt,
       required this.mapDataID,
-      final List<MapPoint> points = const []})
-      : _points = points;
+      final List<MapPoint> points = const [],
+      @JsonKey(name: 'zone_ranges') final Map<String, dynamic>? zoneRanges})
+      : _points = points,
+        _zoneRanges = zoneRanges;
   factory _MapDataDetails.fromJson(Map<String, dynamic> json) =>
       _$MapDataDetailsFromJson(json);
 
@@ -312,6 +345,19 @@ class _MapDataDetails implements MapDataDetails {
     if (_points is EqualUnmodifiableListView) return _points;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_points);
+  }
+
+/* Zone ranges from API for heart-rate and power */
+  final Map<String, dynamic>? _zoneRanges;
+/* Zone ranges from API for heart-rate and power */
+  @override
+  @JsonKey(name: 'zone_ranges')
+  Map<String, dynamic>? get zoneRanges {
+    final value = _zoneRanges;
+    if (value == null) return null;
+    if (_zoneRanges is EqualUnmodifiableMapView) return _zoneRanges;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
   }
 
   /// Create a copy of MapDataDetails
@@ -341,17 +387,25 @@ class _MapDataDetails implements MapDataDetails {
                 other.updatedAt == updatedAt) &&
             (identical(other.mapDataID, mapDataID) ||
                 other.mapDataID == mapDataID) &&
-            const DeepCollectionEquality().equals(other._points, _points));
+            const DeepCollectionEquality().equals(other._points, _points) &&
+            const DeepCollectionEquality()
+                .equals(other._zoneRanges, _zoneRanges));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt,
-      mapDataID, const DeepCollectionEquality().hash(_points));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      createdAt,
+      updatedAt,
+      mapDataID,
+      const DeepCollectionEquality().hash(_points),
+      const DeepCollectionEquality().hash(_zoneRanges));
 
   @override
   String toString() {
-    return 'MapDataDetails(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, mapDataID: $mapDataID, points: $points)';
+    return 'MapDataDetails(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, mapDataID: $mapDataID, points: $points, zoneRanges: $zoneRanges)';
   }
 }
 
@@ -368,7 +422,8 @@ abstract mixin class _$MapDataDetailsCopyWith<$Res>
       String? createdAt,
       String? updatedAt,
       int mapDataID,
-      List<MapPoint> points});
+      List<MapPoint> points,
+      @JsonKey(name: 'zone_ranges') Map<String, dynamic>? zoneRanges});
 }
 
 /// @nodoc
@@ -389,6 +444,7 @@ class __$MapDataDetailsCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? mapDataID = null,
     Object? points = null,
+    Object? zoneRanges = freezed,
   }) {
     return _then(_MapDataDetails(
       id: freezed == id
@@ -411,6 +467,10 @@ class __$MapDataDetailsCopyWithImpl<$Res>
           ? _self._points
           : points // ignore: cast_nullable_to_non_nullable
               as List<MapPoint>,
+      zoneRanges: freezed == zoneRanges
+          ? _self._zoneRanges
+          : zoneRanges // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ));
   }
 }
