@@ -40,9 +40,10 @@ List<SingleChildWidget> get providersRemote {
         create: (context) =>
             StatisticsRepositoryRemote(apiClient: context.read())
                 as StatisticsRepository),
-    Provider(
+    ChangeNotifierProvider(
         create: (context) => WorkoutListViewModel(
               workoutRepository: context.read(),
+              authRepository: context.read(),
             )),
     ChangeNotifierProvider(
         create: (context) => HomeViewModel(

@@ -11,6 +11,9 @@ abstract class WorkoutRepository {
   // Returns all [Workout]s
   Future<Result<List<Workout>>> getAll();
 
+  // Fetches a single page of workouts for lazy loading
+  Future<Result<List<Workout>>> getWorkoutsPage({int page = 1, int limit = 20});
+
   // Returns all [Workout]s
   Future<Result<Workout>> getOne(int id);
 
@@ -48,4 +51,16 @@ abstract class WorkoutRepository {
 
   // Fetches available equipment
   Future<Result<List<Equipment>>> getEquipment();
+
+  // Updates an existing workout
+  Future<Result<Workout>> updateWorkout(int id, Map<String, dynamic> data);
+
+  // Deletes a workout
+  Future<Result<void>> deleteWorkout(int id);
+
+  // Toggles lock state for a workout
+  Future<Result<Workout>> toggleWorkoutLock(int id);
+
+  // Refreshes processing for a workout with file
+  Future<Result<void>> refreshWorkout(int id);
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:aepyornis_app/domain/models/workout/workout.dart';
 import 'package:aepyornis_app/l10n/app_localizations.dart';
+import 'package:aepyornis_app/routing/routes.dart';
 import 'package:aepyornis_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
 import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_chart.dart';
 import 'package:aepyornis_app/ui/workout/detail/widgets/workout_detail_data.dart';
@@ -43,15 +45,75 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
           ListenableBuilder(
             listenable: widget.viewModel.loadWorkout,
             builder: (context, child) {
-              if (widget.viewModel.workout?.publicUUID == null) {
+              final workout = widget.viewModel.workout;
+              if (workout == null || !widget.viewModel.isCurrentOwner) {
                 return const SizedBox.shrink();
               }
 
-              return IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () {
-                  // TODO: Implement share functionality
-                },
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (workout.locked)
+                    IconButton(
+                      icon: const Icon(Icons.lock_rounded, size: 20),
+                      tooltip: 'Locked',
+                      onPressed: () => _toggleLock(context),
+                    ),
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert),
+                    onSelected: (value) => _handleAction(context, value, workout),
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit_rounded, size: 20),
+                            SizedBox(width: 12),
+                            Text('Edit'),
+                          ],
+                        ),
+                      ),
+                      if (workout.hasFile)
+                        const PopupMenuItem(
+                          value: 'refresh',
+                          child: Row(
+                            children: [
+                              Icon(Icons.refresh_rounded, size: 20),
+                              SizedBox(width: 12),
+                              Text('Refresh'),
+                            ],
+                          ),
+                        ),
+                      PopupMenuItem(
+                        value: 'toggleLock',
+                        child: Row(
+                          children: [
+                            Icon(
+                              workout.locked
+                                  ? Icons.lock_open_rounded
+                                  : Icons.lock_rounded,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(workout.locked ? 'Unlock' : 'Lock'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuDivider(),
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete_outline_rounded,
+                                size: 20, color: Colors.red),
+                            SizedBox(width: 12),
+                            Text('Delete', style: TextStyle(color: Colors.red)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               );
             },
           ),
@@ -185,6 +247,91 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _toggleLock(BuildContext context) async {
+    final result = await widget.viewModel.toggleLock();
+    if (result.isSuccess() && context.mounted) {
+      final isLocked = result.getOrThrow().locked;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(isLocked ? 'Workout locked' : 'Workout unlocked'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleAction(
+      BuildContext context, String action, Workout workout) async {
+    switch (action) {
+      case 'edit':
+        if (workout.id != null) {
+          context.push(Routes.workoutEdit(workout.id!));
+        }
+        break;
+      case 'toggleLock':
+        await _toggleLock(context);
+        break;
+      case 'refresh':
+        final res = await widget.viewModel.refreshWorkout();
+        if (res.isSuccess() && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Workout refreshed')),
+          );
+        } else if (res.isError() && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text('Failed to refresh: ${res.exceptionOrNull()}')),
+          );
+        }
+        break;
+      case 'delete':
+        await _confirmAndDelete(context, workout);
+        break;
+    }
+  }
+
+  Future<void> _confirmAndDelete(BuildContext context, Workout workout) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Workout'),
+        content: Text(
+          'Are you sure you want to delete "${workout.name}"? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      final res = await widget.viewModel.deleteWorkout();
+      if (res.isSuccess() && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Workout deleted')),
+        );
+        context.go(Routes.workouts);
+      } else if (res.isError() && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete: ${res.exceptionOrNull()}'),
+          ),
+        );
+      }
+    }
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:result_dart/result_dart.dart';
+import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
 import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
 import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
 import 'package:aepyornis_app/domain/models/workout/workout.dart';
@@ -169,12 +170,21 @@ const List<WorkoutTypeOption> kWorkoutTypes = [
 class WorkoutCreateViewModel extends ChangeNotifier {
   WorkoutCreateViewModel({
     required WorkoutRepository workoutRepository,
-  }) : _workoutRepository = workoutRepository;
+    AuthRepository? authRepository,
+  })  : _workoutRepository = workoutRepository,
+        _authRepository = authRepository;
 
   final WorkoutRepository _workoutRepository;
+  final AuthRepository? _authRepository;
 
   int _selectedTabIndex = 0;
   int get selectedTabIndex => _selectedTabIndex;
+
+  bool _isEditMode = false;
+  bool get isEditMode => _isEditMode;
+
+  int? _editingWorkoutId;
+  int? get editingWorkoutId => _editingWorkoutId;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -275,6 +285,63 @@ class WorkoutCreateViewModel extends ChangeNotifier {
         notifyListeners();
       },
       (_) {},
+    );
+  }
+
+  Future<void> loadWorkoutForEdit(int id) async {
+    _isLoading = true;
+    _isEditMode = true;
+    _editingWorkoutId = id;
+    _selectedTabIndex = 1;
+    _errorMessage = null;
+    notifyListeners();
+
+    loadInitialData();
+
+    final result = await _workoutRepository.getOne(id);
+    _isLoading = false;
+
+    result.fold(
+      (workout) {
+        if (!workout.isOwnedBy(_authRepository?.currentUser)) {
+          _errorMessage = 'You cannot edit another user\'s workout';
+          notifyListeners();
+          return;
+        }
+
+        _manualWorkoutType = workout.type.value;
+        _name = workout.name;
+        _date = workout.date.toLocal();
+        _visibility = workout.visibility ?? '';
+        _location = workout.addressString ?? '';
+
+        final totalSecs = workout.totalDuration;
+        _durationHours = totalSecs ~/ 3600;
+        _durationMinutes = (totalSecs % 3600) ~/ 60;
+        _durationSeconds = totalSecs % 60;
+
+        _distanceKm =
+            workout.totalDistance > 0 ? workout.totalDistance / 1000.0 : 0.0;
+        _repetitions = workout.totalRepetitions;
+        _weightKg = workout.totalWeight;
+        _manualNotes = workout.notes;
+        _customType = workout.customType ?? '';
+
+        _selectedEquipmentIds.clear();
+        if (workout.equipment.isNotEmpty) {
+          for (final eq in workout.equipment) {
+            if (eq.id != null) {
+              _selectedEquipmentIds.add(eq.id!);
+            }
+          }
+        }
+
+        notifyListeners();
+      },
+      (error) {
+        _errorMessage = 'Failed to load workout for editing';
+        notifyListeners();
+      },
     );
   }
 
@@ -486,12 +553,19 @@ class WorkoutCreateViewModel extends ChangeNotifier {
       payload['custom_type'] = _customType;
     }
 
-    final result = await _workoutRepository.createWorkoutManual(payload);
+    final Result<Workout> result;
+    if (_isEditMode && _editingWorkoutId != null) {
+      result = await _workoutRepository.updateWorkout(_editingWorkoutId!, payload);
+    } else {
+      result = await _workoutRepository.createWorkoutManual(payload);
+    }
 
     _isLoading = false;
     result.fold(
       (workout) {
-        _successMessage = 'Workout created successfully';
+        _successMessage = _isEditMode
+            ? 'Workout updated successfully'
+            : 'Workout created successfully';
         notifyListeners();
       },
       (error) {

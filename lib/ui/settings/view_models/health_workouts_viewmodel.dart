@@ -77,11 +77,26 @@ class HealthWorkoutsViewModel extends ChangeNotifier {
     final startTime = DateTime.now().subtract(Duration(days: daysToLoad));
     final sessions =
         await _healthConnectService.readExerciseSessions(startTime: startTime);
-    List<Workout> existingWorkouts = [];
+    final existingWorkouts = <Workout>[];
 
     try {
-      final repoResult = await _workoutRepository.getAll();
-      existingWorkouts = repoResult.getOrDefault([]);
+      int page = 1;
+      bool hasMore = true;
+      while (hasMore) {
+        final repoResult =
+            await _workoutRepository.getWorkoutsPage(page: page, limit: 50);
+        final pageItems = repoResult.getOrDefault([]);
+        if (pageItems.isEmpty) {
+          break;
+        }
+        existingWorkouts.addAll(pageItems);
+        final oldestDate = pageItems.last.date;
+        if (oldestDate.isBefore(startTime) || pageItems.length < 50) {
+          hasMore = false;
+        } else {
+          page++;
+        }
+      }
     } catch (_) {}
 
     final items = <HealthWorkoutItem>[];

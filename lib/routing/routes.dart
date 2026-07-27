@@ -7,6 +7,7 @@ abstract final class Routes {
   static const workoutCreateRelative = 'new';
   static const workoutCreate = '$workouts/$workoutCreateRelative';
   static String workoutWithId(int id) => '$workouts/$id';
+  static String workoutEdit(int id) => '$workouts/$id/edit';
   static const record = '/record';
   static const stats = '/statistics';
   static const settings = '/settings';

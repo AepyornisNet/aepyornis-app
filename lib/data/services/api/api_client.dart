@@ -705,4 +705,109 @@ class ApiClient {
       return Failure(e);
     }
   }
+
+  Future<Result<Workout>> updateWorkout(
+      int id, Map<String, dynamic> data) async {
+    try {
+      final response = await http.put(
+        _url('/api/v2/workouts/$id'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          ...await _headers(),
+        },
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
+            decoded,
+            (json) => Workout.fromJson(json as Map<String, dynamic>),
+          );
+          try {
+            final workout = apiResponse.getOrThrow();
+            return Success(workout);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException("Invalid response payload"));
+      } else {
+        return Failure(
+          HttpException(
+              "Invalid response (${response.statusCode}): ${response.body}"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<void>> deleteWorkout(int id) async {
+    try {
+      final response = await http.delete(
+        _url('/api/v2/workouts/$id'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return Success(0);
+      } else {
+        return Failure(
+          HttpException("Failed to delete workout (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<Workout>> toggleWorkoutLock(int id) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/workouts/$id/toggle-lock'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<Workout, dynamic>(
+            decoded,
+            (json) => Workout.fromJson(json as Map<String, dynamic>),
+          );
+          try {
+            final workout = apiResponse.getOrThrow();
+            return Success(workout);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        }
+        return Failure(HttpException("Invalid response payload"));
+      } else {
+        return Failure(
+          HttpException(
+              "Invalid response (${response.statusCode}): ${response.body}"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<void>> refreshWorkout(int id) async {
+    try {
+      final response = await http.post(
+        _url('/api/v2/workouts/$id/refresh'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Success(0);
+      } else {
+        return Failure(
+          HttpException("Failed to refresh workout (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 }

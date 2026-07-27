@@ -24,13 +24,37 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
     DateTime? endDate,
   }) async {
     if (_cachedWorkouts == null) {
-      final result = await updateWorkouts();
+      final result = await getWorkoutsPage(page: 1, limit: 20);
       if (result.isError()) {
         return Failure(Exception('Failed to fetch workouts'));
       }
     }
 
     return Success(_cachedWorkouts!);
+  }
+
+  @override
+  Future<Result<List<Workout>>> getWorkoutsPage({
+    int page = 1,
+    int limit = 20,
+  }) async {
+    final result = await _apiClient.getWorkouts(page: page, limit: limit);
+    if (result.isSuccess()) {
+      final pageWorkouts = result.getOrThrow();
+      if (page == 1) {
+        _cachedWorkouts = List.from(pageWorkouts);
+      } else if (_cachedWorkouts != null) {
+        for (final w in pageWorkouts) {
+          final idx = _cachedWorkouts!.indexWhere((item) => item.id == w.id);
+          if (idx >= 0) {
+            _cachedWorkouts![idx] = w;
+          } else {
+            _cachedWorkouts!.add(w);
+          }
+        }
+      }
+    }
+    return result;
   }
 
   @override
@@ -46,34 +70,12 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
 
   @override
   Future<Result<void>> updateWorkouts() async {
-    final allWorkouts = <Workout>[];
-    int page = 1;
-    bool hasMore = true;
-
-    while (hasMore) {
-      final result = await _apiClient.getWorkouts(page: page);
-      if (result.isError()) {
-        if (allWorkouts.isNotEmpty) {
-          break;
-        }
-        return Failure(
-          result.exceptionOrNull() ?? Exception('Failed to fetch workouts'),
-        );
-      }
-      final pageWorkouts = result.getOrDefault([]);
-      if (pageWorkouts.isEmpty) {
-        hasMore = false;
-      } else {
-        allWorkouts.addAll(pageWorkouts);
-        if (pageWorkouts.length < 20) {
-          hasMore = false;
-        } else {
-          page++;
-        }
-      }
+    final result = await getWorkoutsPage(page: 1, limit: 20);
+    if (result.isError()) {
+      return Failure(
+        result.exceptionOrNull() ?? Exception('Failed to update workouts'),
+      );
     }
-
-    _cachedWorkouts = allWorkouts;
     return Success(0);
   }
 
@@ -151,5 +153,37 @@ class WorkoutRepositoryRemote implements WorkoutRepository {
   @override
   Future<Result<List<Equipment>>> getEquipment() {
     return _apiClient.getEquipment();
+  }
+
+  @override
+  Future<Result<Workout>> updateWorkout(int id, Map<String, dynamic> data) async {
+    final result = await _apiClient.updateWorkout(id, data);
+    if (result.isSuccess()) {
+      addWorkout(result.getOrThrow());
+    }
+    return result;
+  }
+
+  @override
+  Future<Result<void>> deleteWorkout(int id) async {
+    final result = await _apiClient.deleteWorkout(id);
+    if (result.isSuccess() && _cachedWorkouts != null) {
+      _cachedWorkouts!.removeWhere((w) => w.id == id);
+    }
+    return result;
+  }
+
+  @override
+  Future<Result<Workout>> toggleWorkoutLock(int id) async {
+    final result = await _apiClient.toggleWorkoutLock(id);
+    if (result.isSuccess()) {
+      addWorkout(result.getOrThrow());
+    }
+    return result;
+  }
+
+  @override
+  Future<Result<void>> refreshWorkout(int id) async {
+    return _apiClient.refreshWorkout(id);
   }
 }

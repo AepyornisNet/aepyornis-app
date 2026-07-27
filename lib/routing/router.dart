@@ -62,6 +62,7 @@ final router = GoRouter(
                   return WorkoutCreateScreen(
                     viewModel: WorkoutCreateViewModel(
                       workoutRepository: context.read(),
+                      authRepository: context.read(),
                     ),
                   );
                 },
@@ -72,6 +73,7 @@ final router = GoRouter(
                   final id = int.parse(state.pathParameters['id']!);
                   final workoutDetailViewModel = WorkoutDetailViewModel(
                     workoutRepository: context.read(),
+                    authRepository: context.read(),
                   );
 
                   workoutDetailViewModel.loadWorkout.execute(id);
@@ -80,6 +82,20 @@ final router = GoRouter(
                     viewModel: workoutDetailViewModel,
                   );
                 },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    builder: (context, state) {
+                      final id = int.parse(state.pathParameters['id']!);
+                      final vm = WorkoutCreateViewModel(
+                        workoutRepository: context.read(),
+                        authRepository: context.read(),
+                      );
+                      vm.loadWorkoutForEdit(id);
+                      return WorkoutCreateScreen(viewModel: vm);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

@@ -46,8 +46,8 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'custom_type') String? customType,
     @JsonKey(name: 'sub_type') String? subType,
 
-    /// The type of the workout
-    required WorkoutType type,
+    @JsonKey(name: 'type') required WorkoutType type,
+    @JsonKey(name: 'visibility') String? visibility,
     @JsonKey(name: 'locked') @Default(false) bool locked,
     @JsonKey(name: 'has_file') @Default(false) bool hasFile,
     @JsonKey(name: 'has_tracks') @Default(false) bool hasTracks,
@@ -80,6 +80,19 @@ abstract class Workout with _$Workout {
 
   factory Workout.fromJson(Map<String, dynamic> json) =>
       _$WorkoutFromJson(_normalizeWorkoutJson(json));
+}
+
+extension WorkoutOwnership on Workout {
+  bool isOwnedBy(User? currentUser) {
+    if (currentUser == null) return true;
+    final currentUserId = currentUser.id ?? currentUser.profile?.id;
+    if (currentUserId == null) return true;
+
+    final ownerId = userID ?? user?.id ?? user?.profile?.id;
+    if (ownerId == null) return true;
+
+    return ownerId == currentUserId;
+  }
 }
 
 Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
@@ -118,6 +131,7 @@ Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
   copyKey('max_power', 'maxPower');
   copyKey('custom_type', 'customType');
   copyKey('sub_type', 'subType');
+  copyKey('visibility', 'visibility');
   copyKey('liked_by_me', 'likedByMe');
   copyKey('likes_count', 'likesCount');
   copyKey('replies_count', 'repliesCount');

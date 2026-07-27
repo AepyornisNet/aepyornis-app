@@ -57,9 +57,10 @@ mixin _$Workout {
   String? get customType;
   @JsonKey(name: 'sub_type')
   String? get subType;
-
-  /// The type of the workout
+  @JsonKey(name: 'type')
   WorkoutType get type;
+  @JsonKey(name: 'visibility')
+  String? get visibility;
   @JsonKey(name: 'locked')
   bool get locked;
   @JsonKey(name: 'has_file')
@@ -146,6 +147,8 @@ mixin _$Workout {
                 other.customType == customType) &&
             (identical(other.subType, subType) || other.subType == subType) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.visibility, visibility) ||
+                other.visibility == visibility) &&
             (identical(other.locked, locked) || other.locked == locked) &&
             (identical(other.hasFile, hasFile) || other.hasFile == hasFile) &&
             (identical(other.hasTracks, hasTracks) ||
@@ -216,6 +219,7 @@ mixin _$Workout {
         customType,
         subType,
         type,
+        visibility,
         locked,
         hasFile,
         hasTracks,
@@ -246,7 +250,7 @@ mixin _$Workout {
 
   @override
   String toString() {
-    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, attachments: $attachments)';
+    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, attachments: $attachments)';
   }
 }
 
@@ -270,7 +274,8 @@ abstract mixin class $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'public_uuid') String? publicUUID,
       @JsonKey(name: 'custom_type') String? customType,
       @JsonKey(name: 'sub_type') String? subType,
-      WorkoutType type,
+      @JsonKey(name: 'type') WorkoutType type,
+      @JsonKey(name: 'visibility') String? visibility,
       @JsonKey(name: 'locked') bool locked,
       @JsonKey(name: 'has_file') bool hasFile,
       @JsonKey(name: 'has_tracks') bool hasTracks,
@@ -329,6 +334,7 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
     Object? customType = freezed,
     Object? subType = freezed,
     Object? type = null,
+    Object? visibility = freezed,
     Object? locked = null,
     Object? hasFile = null,
     Object? hasTracks = null,
@@ -417,6 +423,10 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as WorkoutType,
+      visibility: freezed == visibility
+          ? _self.visibility
+          : visibility // ignore: cast_nullable_to_non_nullable
+              as String?,
       locked: null == locked
           ? _self.locked
           : locked // ignore: cast_nullable_to_non_nullable
@@ -661,7 +671,8 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'public_uuid') String? publicUUID,
             @JsonKey(name: 'custom_type') String? customType,
             @JsonKey(name: 'sub_type') String? subType,
-            WorkoutType type,
+            @JsonKey(name: 'type') WorkoutType type,
+            @JsonKey(name: 'visibility') String? visibility,
             @JsonKey(name: 'locked') bool locked,
             @JsonKey(name: 'has_file') bool hasFile,
             @JsonKey(name: 'has_tracks') bool hasTracks,
@@ -710,6 +721,7 @@ extension WorkoutPatterns on Workout {
             _that.customType,
             _that.subType,
             _that.type,
+            _that.visibility,
             _that.locked,
             _that.hasFile,
             _that.hasTracks,
@@ -771,7 +783,8 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'public_uuid') String? publicUUID,
             @JsonKey(name: 'custom_type') String? customType,
             @JsonKey(name: 'sub_type') String? subType,
-            WorkoutType type,
+            @JsonKey(name: 'type') WorkoutType type,
+            @JsonKey(name: 'visibility') String? visibility,
             @JsonKey(name: 'locked') bool locked,
             @JsonKey(name: 'has_file') bool hasFile,
             @JsonKey(name: 'has_tracks') bool hasTracks,
@@ -819,6 +832,7 @@ extension WorkoutPatterns on Workout {
             _that.customType,
             _that.subType,
             _that.type,
+            _that.visibility,
             _that.locked,
             _that.hasFile,
             _that.hasTracks,
@@ -879,7 +893,8 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'public_uuid') String? publicUUID,
             @JsonKey(name: 'custom_type') String? customType,
             @JsonKey(name: 'sub_type') String? subType,
-            WorkoutType type,
+            @JsonKey(name: 'type') WorkoutType type,
+            @JsonKey(name: 'visibility') String? visibility,
             @JsonKey(name: 'locked') bool locked,
             @JsonKey(name: 'has_file') bool hasFile,
             @JsonKey(name: 'has_tracks') bool hasTracks,
@@ -927,6 +942,7 @@ extension WorkoutPatterns on Workout {
             _that.customType,
             _that.subType,
             _that.type,
+            _that.visibility,
             _that.locked,
             _that.hasFile,
             _that.hasTracks,
@@ -977,7 +993,8 @@ class _Workout implements Workout {
       @JsonKey(name: 'public_uuid') this.publicUUID,
       @JsonKey(name: 'custom_type') this.customType,
       @JsonKey(name: 'sub_type') this.subType,
-      required this.type,
+      @JsonKey(name: 'type') required this.type,
+      @JsonKey(name: 'visibility') this.visibility,
       @JsonKey(name: 'locked') this.locked = false,
       @JsonKey(name: 'has_file') this.hasFile = false,
       @JsonKey(name: 'has_tracks') this.hasTracks = false,
@@ -1074,10 +1091,12 @@ class _Workout implements Workout {
   @override
   @JsonKey(name: 'sub_type')
   final String? subType;
-
-  /// The type of the workout
   @override
+  @JsonKey(name: 'type')
   final WorkoutType type;
+  @override
+  @JsonKey(name: 'visibility')
+  final String? visibility;
   @override
   @JsonKey(name: 'locked')
   final bool locked;
@@ -1202,6 +1221,8 @@ class _Workout implements Workout {
                 other.customType == customType) &&
             (identical(other.subType, subType) || other.subType == subType) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.visibility, visibility) ||
+                other.visibility == visibility) &&
             (identical(other.locked, locked) || other.locked == locked) &&
             (identical(other.hasFile, hasFile) || other.hasFile == hasFile) &&
             (identical(other.hasTracks, hasTracks) ||
@@ -1272,6 +1293,7 @@ class _Workout implements Workout {
         customType,
         subType,
         type,
+        visibility,
         locked,
         hasFile,
         hasTracks,
@@ -1302,7 +1324,7 @@ class _Workout implements Workout {
 
   @override
   String toString() {
-    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, attachments: $attachments)';
+    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, attachments: $attachments)';
   }
 }
 
@@ -1327,7 +1349,8 @@ abstract mixin class _$WorkoutCopyWith<$Res> implements $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'public_uuid') String? publicUUID,
       @JsonKey(name: 'custom_type') String? customType,
       @JsonKey(name: 'sub_type') String? subType,
-      WorkoutType type,
+      @JsonKey(name: 'type') WorkoutType type,
+      @JsonKey(name: 'visibility') String? visibility,
       @JsonKey(name: 'locked') bool locked,
       @JsonKey(name: 'has_file') bool hasFile,
       @JsonKey(name: 'has_tracks') bool hasTracks,
@@ -1388,6 +1411,7 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
     Object? customType = freezed,
     Object? subType = freezed,
     Object? type = null,
+    Object? visibility = freezed,
     Object? locked = null,
     Object? hasFile = null,
     Object? hasTracks = null,
@@ -1476,6 +1500,10 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as WorkoutType,
+      visibility: freezed == visibility
+          ? _self.visibility
+          : visibility // ignore: cast_nullable_to_non_nullable
+              as String?,
       locked: null == locked
           ? _self.locked
           : locked // ignore: cast_nullable_to_non_nullable

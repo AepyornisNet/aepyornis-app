@@ -32,43 +32,45 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
     final colorScheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.addWorkout),
-      ),
-      body: SafeArea(
-        child: ListenableBuilder(
-          listenable: widget.viewModel,
-          builder: (context, _) {
-            final vm = widget.viewModel;
+    return ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, _) {
+        final vm = widget.viewModel;
 
-            return SingleChildScrollView(
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(vm.isEditMode ? 'Edit Workout' : l10n.addWorkout),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Mode Switcher
-                  SegmentedButton<int>(
-                    segments: [
-                      ButtonSegment<int>(
-                        value: 0,
-                        label: Text(l10n.useAFile),
-                        icon: const Icon(Icons.upload_file_rounded, size: 18),
-                      ),
-                      ButtonSegment<int>(
-                        value: 1,
-                        label: Text(l10n.manual),
-                        icon: const Icon(Icons.edit_note_rounded, size: 18),
-                      ),
-                    ],
-                    selected: {vm.selectedTabIndex},
-                    onSelectionChanged: (newSelection) {
-                      if (newSelection.isNotEmpty) {
-                        vm.setSelectedTab(newSelection.first);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                  // Mode Switcher (only shown when creating a new workout)
+                  if (!vm.isEditMode) ...[
+                    SegmentedButton<int>(
+                      segments: [
+                        ButtonSegment<int>(
+                          value: 0,
+                          label: Text(l10n.useAFile),
+                          icon: const Icon(Icons.upload_file_rounded, size: 18),
+                        ),
+                        ButtonSegment<int>(
+                          value: 1,
+                          label: Text(l10n.manual),
+                          icon: const Icon(Icons.edit_note_rounded, size: 18),
+                        ),
+                      ],
+                      selected: {vm.selectedTabIndex},
+                      onSelectionChanged: (newSelection) {
+                        if (newSelection.isNotEmpty) {
+                          vm.setSelectedTab(newSelection.first);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
 
                   // Messages Banners
                   if (vm.successMessage != null) ...[
@@ -122,16 +124,16 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                   ],
 
                   // Content based on selected tab
-                  if (vm.selectedTabIndex == 0)
+                  if (vm.selectedTabIndex == 0 && !vm.isEditMode)
                     _buildFileUploadTab(context, vm, l10n, colorScheme)
                   else
                     _buildManualFormTab(context, vm, l10n, colorScheme),
                 ],
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -326,7 +328,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                l10n.manual,
+                vm.isEditMode ? 'Edit Workout' : l10n.manual,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -335,6 +337,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
               // Workout Type Dropdown
               DropdownButtonFormField<String>(
+                key: ValueKey('type_${vm.editingWorkoutId}_${vm.manualWorkoutType}'),
                 initialValue:
                     vm.manualWorkoutType.isEmpty ? null : vm.manualWorkoutType,
                 decoration: InputDecoration(
@@ -369,6 +372,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Custom Type
                 if (vm.showCustomType) ...[
                   TextFormField(
+                    key: ValueKey('custom_${vm.editingWorkoutId}_${vm.customType}'),
+                    initialValue: vm.customType,
                     decoration: InputDecoration(
                       labelText: l10n.customType,
                       border: OutlineInputBorder(
@@ -383,6 +388,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
                 // Name
                 TextFormField(
+                  key: ValueKey('name_${vm.editingWorkoutId}_${vm.name}'),
                   initialValue: vm.name,
                   decoration: InputDecoration(
                     labelText: l10n.name,
@@ -441,6 +447,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
                 // Visibility Dropdown
                 DropdownButtonFormField<String>(
+                  key: ValueKey('vis_${vm.editingWorkoutId}_${vm.visibility}'),
                   initialValue: vm.visibility,
                   decoration: InputDecoration(
                     labelText: l10n.visibility,
@@ -473,6 +480,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Location (if supported)
                 if (vm.showLocation) ...[
                   TextFormField(
+                    key: ValueKey('loc_${vm.editingWorkoutId}_${vm.location}'),
+                    initialValue: vm.location,
                     decoration: InputDecoration(
                       labelText: l10n.location,
                       border: OutlineInputBorder(
@@ -496,6 +505,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          key: ValueKey('dh_${vm.editingWorkoutId}_${vm.durationHours}'),
+                          initialValue: vm.durationHours.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: l10n.durationHours,
@@ -511,6 +522,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextFormField(
+                          key: ValueKey('dm_${vm.editingWorkoutId}_${vm.durationMinutes}'),
+                          initialValue: vm.durationMinutes.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: l10n.durationMinutes,
@@ -526,6 +539,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextFormField(
+                          key: ValueKey('ds_${vm.editingWorkoutId}_${vm.durationSeconds}'),
+                          initialValue: vm.durationSeconds.toString(),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: l10n.durationSeconds,
@@ -546,6 +561,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Distance (if supported)
                 if (vm.showDistance) ...[
                   TextFormField(
+                    key: ValueKey('dist_${vm.editingWorkoutId}_${vm.distanceKm}'),
+                    initialValue: vm.distanceKm > 0 ? vm.distanceKm.toString() : '0',
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
@@ -565,6 +582,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Repetitions (if supported)
                 if (vm.showRepetitions) ...[
                   TextFormField(
+                    key: ValueKey('rep_${vm.editingWorkoutId}_${vm.repetitions}'),
+                    initialValue: vm.repetitions > 0 ? vm.repetitions.toString() : '0',
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.repetitions,
@@ -582,6 +601,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 // Weight (if supported)
                 if (vm.showWeight) ...[
                   TextFormField(
+                    key: ValueKey('wt_${vm.editingWorkoutId}_${vm.weightKg}'),
+                    initialValue: vm.weightKg > 0 ? vm.weightKg.toString() : '0',
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
@@ -626,6 +647,8 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
 
                 // Notes
                 TextFormField(
+                  key: ValueKey('notes_${vm.editingWorkoutId}_${vm.manualNotes}'),
+                  initialValue: vm.manualNotes,
                   decoration: InputDecoration(
                     labelText: l10n.notes,
                     border: OutlineInputBorder(
@@ -647,9 +670,9 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                               false) {
                             final result = await vm.submitManualWorkout();
                             if (result.isSuccess() && context.mounted) {
-                              final created = result.getOrThrow();
-                              if (created.id != null) {
-                                context.go(Routes.workoutWithId(created.id!));
+                              final updated = result.getOrThrow();
+                              if (updated.id != null) {
+                                context.go(Routes.workoutWithId(updated.id!));
                               } else {
                                 context.go(Routes.workouts);
                               }
@@ -663,7 +686,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.check_rounded),
-                  label: Text(l10n.createWorkout),
+                  label: Text(vm.isEditMode ? 'Save Changes' : l10n.createWorkout),
                 ),
               ],
             ],
