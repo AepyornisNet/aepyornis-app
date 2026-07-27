@@ -179,14 +179,21 @@ class HealthConnectService {
     final start = startTime ?? end.subtract(const Duration(days: 7));
 
     try {
-      final request = HealthDataType.exerciseSession.readInTimeRange(
+      var request = HealthDataType.exerciseSession.readInTimeRange(
         startTime: start,
         endTime: end,
       );
-      final response = await connector.readRecords(request);
-      final records = response.records;
-      records.sort((a, b) => b.startTime.compareTo(a.startTime));
-      return records;
+      final List<ExerciseSessionRecord> allRecords = [];
+      while (true) {
+        final response = await connector.readRecords(request);
+        allRecords.addAll(response.records);
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
+      }
+      allRecords.sort((a, b) => b.startTime.compareTo(a.startTime));
+      return allRecords;
     } catch (_) {
       return [];
     }
@@ -218,24 +225,36 @@ class HealthConnectService {
 
     try {
       if (Platform.isAndroid) {
-        final request = HealthDataType.heartRateSeries.readInTimeRange(
+        var request = HealthDataType.heartRateSeries.readInTimeRange(
           startTime: startTime,
           endTime: endTime,
         );
-        final response = await connector.readRecords(request);
-        for (final series in response.records) {
-          for (final sample in series.samples) {
-            result[sample.time] = sample.rate.inPerMinute.round();
+        while (true) {
+          final response = await connector.readRecords(request);
+          for (final series in response.records) {
+            for (final sample in series.samples) {
+              result[sample.time] = sample.rate.inPerMinute.round();
+            }
           }
+          if (response.nextPageRequest == null) {
+            break;
+          }
+          request = response.nextPageRequest!;
         }
       } else {
-        final request = HealthDataType.heartRate.readInTimeRange(
+        var request = HealthDataType.heartRate.readInTimeRange(
           startTime: startTime,
           endTime: endTime,
         );
-        final response = await connector.readRecords(request);
-        for (final record in response.records) {
-          result[record.time] = record.rate.inPerMinute.round();
+        while (true) {
+          final response = await connector.readRecords(request);
+          for (final record in response.records) {
+            result[record.time] = record.rate.inPerMinute.round();
+          }
+          if (response.nextPageRequest == null) {
+            break;
+          }
+          request = response.nextPageRequest!;
         }
       }
     } catch (_) {}
@@ -255,29 +274,41 @@ class HealthConnectService {
     final Map<DateTime, int> result = {};
 
     try {
-      final request =
+      var request =
           HealthDataType.cyclingPedalingCadenceSeries.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      for (final series in response.records) {
-        for (final sample in series.samples) {
-          result[sample.time] = sample.cadence.inPerMinute.round();
+      while (true) {
+        final response = await connector.readRecords(request);
+        for (final series in response.records) {
+          for (final sample in series.samples) {
+            result[sample.time] = sample.cadence.inPerMinute.round();
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
       }
     } catch (_) {}
 
     try {
-      final request = HealthDataType.stepsCadenceSeries.readInTimeRange(
+      var request = HealthDataType.stepsCadenceSeries.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      for (final series in response.records) {
-        for (final sample in series.samples) {
-          result[sample.time] = sample.cadence.inPerMinute.round();
+      while (true) {
+        final response = await connector.readRecords(request);
+        for (final series in response.records) {
+          for (final sample in series.samples) {
+            result[sample.time] = sample.cadence.inPerMinute.round();
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
       }
     } catch (_) {}
 
@@ -296,26 +327,38 @@ class HealthConnectService {
     final Map<DateTime, double> result = {};
 
     try {
-      final request = HealthDataType.powerSeries.readInTimeRange(
+      var request = HealthDataType.powerSeries.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      for (final series in response.records) {
-        for (final sample in series.samples) {
-          result[sample.time] = sample.power.inWatts;
+      while (true) {
+        final response = await connector.readRecords(request);
+        for (final series in response.records) {
+          for (final sample in series.samples) {
+            result[sample.time] = sample.power.inWatts;
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
       }
     } catch (_) {}
 
     try {
-      final request = HealthDataType.cyclingPower.readInTimeRange(
+      var request = HealthDataType.cyclingPower.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      for (final record in response.records) {
-        result[record.time] = record.power.inWatts;
+      while (true) {
+        final response = await connector.readRecords(request);
+        for (final record in response.records) {
+          result[record.time] = record.power.inWatts;
+        }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
       }
     } catch (_) {}
 
@@ -332,16 +375,26 @@ class HealthConnectService {
     }
 
     try {
-      final request = HealthDataType.distance.readInTimeRange(
+      var request = HealthDataType.distance.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      if (response.records.isNotEmpty) {
-        double total = 0;
-        for (final record in response.records) {
-          total += record.distance.inMeters;
+      double total = 0;
+      bool hasData = false;
+      while (true) {
+        final response = await connector.readRecords(request);
+        if (response.records.isNotEmpty) {
+          hasData = true;
+          for (final record in response.records) {
+            total += record.distance.inMeters;
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
+      }
+      if (hasData) {
         return total;
       }
     } catch (_) {}
@@ -359,31 +412,51 @@ class HealthConnectService {
     }
 
     try {
-      final request = HealthDataType.activeEnergyBurned.readInTimeRange(
+      var request = HealthDataType.activeEnergyBurned.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      if (response.records.isNotEmpty) {
-        double total = 0;
-        for (final record in response.records) {
-          total += record.energy.inKilocalories;
+      double total = 0;
+      bool hasData = false;
+      while (true) {
+        final response = await connector.readRecords(request);
+        if (response.records.isNotEmpty) {
+          hasData = true;
+          for (final record in response.records) {
+            total += record.energy.inKilocalories;
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
+      }
+      if (hasData) {
         return total.round();
       }
     } catch (_) {}
 
     try {
-      final request = HealthDataType.totalEnergyBurned.readInTimeRange(
+      var request = HealthDataType.totalEnergyBurned.readInTimeRange(
         startTime: startTime,
         endTime: endTime,
       );
-      final response = await connector.readRecords(request);
-      if (response.records.isNotEmpty) {
-        double total = 0;
-        for (final record in response.records) {
-          total += record.energy.inKilocalories;
+      double total = 0;
+      bool hasData = false;
+      while (true) {
+        final response = await connector.readRecords(request);
+        if (response.records.isNotEmpty) {
+          hasData = true;
+          for (final record in response.records) {
+            total += record.energy.inKilocalories;
+          }
         }
+        if (response.nextPageRequest == null) {
+          break;
+        }
+        request = response.nextPageRequest!;
+      }
+      if (hasData) {
         return total.round();
       }
     } catch (_) {}
