@@ -12,6 +12,8 @@ import 'package:aepyornis_app/ui/settings/widgets/health_workouts_screen.dart';
 import 'package:aepyornis_app/ui/settings/widgets/settings_screen.dart';
 import 'package:aepyornis_app/ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
 import 'package:aepyornis_app/ui/statistic/overview/widgets/statistic_overview_screen.dart';
+import 'package:aepyornis_app/ui/statistic/records_ranking/view_models/record_ranking_viewmodel.dart';
+import 'package:aepyornis_app/ui/statistic/records_ranking/widgets/record_ranking_screen.dart';
 import 'package:aepyornis_app/ui/workout/create/view_models/workout_create_viewmodel.dart';
 import 'package:aepyornis_app/ui/workout/create/widgets/workout_create_screen.dart';
 import 'package:aepyornis_app/ui/workout/detail/view_models/workout_detail_viewmodel.dart';
@@ -102,12 +104,31 @@ final router = GoRouter(
         ]),
         StatefulShellBranch(routes: [
           GoRoute(
-              path: Routes.stats,
-              builder: (context, state) {
-                return StatisticOverviewScreen(
-                  viewModel: context.read<StatisticOverviewViewModel>(),
-                );
-              }),
+            path: Routes.stats,
+            builder: (context, state) {
+              return StatisticOverviewScreen(
+                viewModel: context.read<StatisticOverviewViewModel>(),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: Routes.statisticRecordRankingRelative,
+                builder: (context, state) {
+                  final workoutType = state.pathParameters['workoutType'] ?? '';
+                  final rawLabel = state.pathParameters['label'] ?? '';
+                  final label = Uri.decodeComponent(rawLabel);
+
+                  return RecordRankingScreen(
+                    viewModel: RecordRankingViewModel(
+                      statisticsRepository: context.read(),
+                      workoutType: workoutType,
+                      label: label,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

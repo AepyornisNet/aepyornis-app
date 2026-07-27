@@ -10,6 +10,9 @@ abstract final class Routes {
   static String workoutEdit(int id) => '$workouts/$id/edit';
   static const record = '/record';
   static const stats = '/statistics';
+  static const statisticRecordRankingRelative = 'records/:workoutType/:label';
+  static String statisticRecordRanking(String workoutType, String label) =>
+      '$stats/records/$workoutType/${Uri.encodeComponent(label)}';
   static const settings = '/settings';
   static const settingsHealthRelative = 'health';
   static const settingsHealth = '$settings/$settingsHealthRelative';

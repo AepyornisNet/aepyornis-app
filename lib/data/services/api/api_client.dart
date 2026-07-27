@@ -565,6 +565,57 @@ class ApiClient {
     }
   }
 
+  Future<Result<List<DistanceRecordEntry>>> getDistanceRecordRanking({
+    required String workoutType,
+    required String label,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    try {
+      final baseUri = _url('/api/v2/records/ranking');
+      final queryParams = Map<String, String>.from(baseUri.queryParameters);
+      queryParams['workout_type'] = workoutType;
+      queryParams['label'] = label;
+      queryParams['page'] = page.toString();
+      queryParams['per_page'] = perPage.toString();
+      final uri = baseUri.replace(queryParameters: queryParams);
+
+      final response = await http.get(uri, headers: await _headers());
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse = ApiResponse.fromJson<List<DistanceRecordEntry>,
+              List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) =>
+                    DistanceRecordEntry.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) =>
+                  DistanceRecordEntry.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
+        }
+        return Failure(HttpException("Invalid response structure"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   Future<Result<List<Workout>>> uploadWorkoutFiles({
     required List<PlatformFile> files,
     String? type,

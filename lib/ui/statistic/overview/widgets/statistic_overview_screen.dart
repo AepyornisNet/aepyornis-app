@@ -609,15 +609,23 @@ class _StatisticOverviewScreenState extends State<StatisticOverviewScreen> {
               ),
               const SizedBox(height: 8),
               ...record.distanceRecords!.map((dr) {
+                final drLabel = dr.label ??
+                    '${((dr.targetDistance ?? 0) / 1000).toStringAsFixed(0)}k';
                 return _RecordRow(
                   icon: Icons.flag_outlined,
-                  label: dr.label ??
-                      '${((dr.targetDistance ?? 0) / 1000).toStringAsFixed(0)}k',
+                  label: drLabel,
                   value: dr.durationSeconds != null
                       ? formatWorkoutDuration(dr.durationSeconds!.toInt())
                       : '-',
                   date: dr.date,
-                  workoutId: dr.workoutId,
+                  onTap: (record.workoutType != null && drLabel.isNotEmpty)
+                      ? () => context.push(
+                            Routes.statisticRecordRanking(
+                              record.workoutType!,
+                              drLabel,
+                            ),
+                          )
+                      : null,
                 );
               }),
             ],
@@ -827,6 +835,7 @@ class _RecordRow extends StatelessWidget {
     required this.value,
     this.date,
     this.workoutId,
+    this.onTap,
   });
 
   final IconData icon;
@@ -834,6 +843,7 @@ class _RecordRow extends StatelessWidget {
   final String value;
   final String? date;
   final int? workoutId;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -848,7 +858,11 @@ class _RecordRow extends StatelessWidget {
       }
     }
 
-    final isClickable = workoutId != null;
+    final handleTap = onTap ??
+        (workoutId != null
+            ? () => context.push(Routes.workoutWithId(workoutId!))
+            : null);
+    final isClickable = handleTap != null;
 
     Widget content = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
@@ -859,7 +873,9 @@ class _RecordRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Column(
@@ -891,7 +907,7 @@ class _RecordRow extends StatelessWidget {
 
     if (isClickable) {
       return InkWell(
-        onTap: () => context.push(Routes.workoutWithId(workoutId!)),
+        onTap: handleTap,
         borderRadius: BorderRadius.circular(8),
         child: content,
       );

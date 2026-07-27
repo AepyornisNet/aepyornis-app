@@ -24,4 +24,19 @@ class StatisticsRepositoryRemote implements StatisticsRepository {
   }) {
     return _apiClient.getRecords(handle: handle);
   }
+
+  @override
+  Future<Result<List<DistanceRecordEntry>>> getDistanceRecordRanking({
+    required String workoutType,
+    required String label,
+    int page = 1,
+    int perPage = 20,
+  }) {
+    return _apiClient.getDistanceRecordRanking(
+      workoutType: workoutType,
+      label: label,
+      page: page,
+      perPage: perPage,
+    );
+  }
 }

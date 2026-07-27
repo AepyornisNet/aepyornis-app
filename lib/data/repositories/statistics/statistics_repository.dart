@@ -10,4 +10,11 @@ abstract class StatisticsRepository {
   Future<Result<List<WorkoutRecord>>> getRecords({
     String? handle,
   });
+
+  Future<Result<List<DistanceRecordEntry>>> getDistanceRecordRanking({
+    required String workoutType,
+    required String label,
+    int page = 1,
+    int perPage = 20,
+  });
 }
