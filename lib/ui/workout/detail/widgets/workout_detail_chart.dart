@@ -195,8 +195,17 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
     if (minVal == double.infinity) minVal = 0.0;
     if (maxVal == -double.infinity) maxVal = 0.0;
 
+    // Sort by X coordinate and ensure strictly increasing X values to eliminate backward loops/circles
+    spots.sort((a, b) => a.x.compareTo(b.x));
+    final cleanSpots = <FlSpot>[];
+    for (final spot in spots) {
+      if (cleanSpots.isEmpty || spot.x > cleanSpots.last.x) {
+        cleanSpots.add(spot);
+      }
+    }
+
     // Downsample spots if too large (e.g. > 250 points) for slick performance
-    final displaySpots = _downsampleSpots(spots, targetCount: 250);
+    final displaySpots = _downsampleSpots(cleanSpots, targetCount: 250);
 
     final color = _metricColor(_selectedMetric);
     final unit = _metricUnit(_selectedMetric);
@@ -364,6 +373,7 @@ class _WorkoutDetailChartState extends State<WorkoutDetailChart> {
                           LineChartBarData(
                             spots: displaySpots,
                             isCurved: true,
+                            preventCurveOverShooting: true,
                             barWidth: 2.5,
                             color: color,
                             dotData: const FlDotData(show: false),
