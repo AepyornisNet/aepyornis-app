@@ -9,7 +9,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -30,6 +30,67 @@
             <!-- Intention to show permissions rationale for Health Connect -->
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+            <!-- Receive sharing intent filters for supported workout files -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/fit" />
+                <data android:mimeType="application/gpx+xml" />
+                <data android:mimeType="application/vnd.garmin.tcx+xml" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="application/x-zip-compressed" />
+                <data android:scheme="file" android:pathPattern=".*\\.fit" />
+                <data android:scheme="file" android:pathPattern=".*\\.FIT" />
+                <data android:scheme="file" android:pathPattern=".*\\.ftb" />
+                <data android:scheme="file" android:pathPattern=".*\\.FTB" />
+                <data android:scheme="file" android:pathPattern=".*\\.gpx" />
+                <data android:scheme="file" android:pathPattern=".*\\.GPX" />
+                <data android:scheme="file" android:pathPattern=".*\\.tcx" />
+                <data android:scheme="file" android:pathPattern=".*\\.TCX" />
+                <data android:scheme="file" android:pathPattern=".*\\.zip" />
+                <data android:scheme="file" android:pathPattern=".*\\.ZIP" />
+                <data android:scheme="content" android:pathPattern=".*\\.fit" />
+                <data android:scheme="content" android:pathPattern=".*\\.FIT" />
+                <data android:scheme="content" android:pathPattern=".*\\.ftb" />
+                <data android:scheme="content" android:pathPattern=".*\\.FTB" />
+                <data android:scheme="content" android:pathPattern=".*\\.gpx" />
+                <data android:scheme="content" android:pathPattern=".*\\.GPX" />
+                <data android:scheme="content" android:pathPattern=".*\\.tcx" />
+                <data android:scheme="content" android:pathPattern=".*\\.TCX" />
+                <data android:scheme="content" android:pathPattern=".*\\.zip" />
+                <data android:scheme="content" android:pathPattern=".*\\.ZIP" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/fit" />
+                <data android:mimeType="application/gpx+xml" />
+                <data android:mimeType="application/vnd.garmin.tcx+xml" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="application/x-zip-compressed" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/fit" />
+                <data android:mimeType="application/gpx+xml" />
+                <data android:mimeType="application/vnd.garmin.tcx+xml" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="application/x-zip-compressed" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.fit" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.FIT" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.ftb" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.FTB" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.gpx" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.GPX" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.tcx" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.TCX" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.zip" />
+                <data android:mimeType="*/*" android:pathPattern=".*\\.ZIP" />
             </intent-filter>
         </activity>
         <activity-alias

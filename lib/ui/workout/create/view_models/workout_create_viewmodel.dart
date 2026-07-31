@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:aepyornis_app/data/repositories/auth/auth_repository.dart';
 import 'package:aepyornis_app/data/repositories/workout/workout_repository.dart';
+import 'package:aepyornis_app/data/services/share_intent_service.dart';
 import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
 import 'package:aepyornis_app/domain/models/workout/workout.dart';
 
@@ -168,14 +169,28 @@ const List<WorkoutTypeOption> kWorkoutTypes = [
 ];
 
 class WorkoutCreateViewModel extends ChangeNotifier {
+  static const List<String> supportedExtensions = [
+    'fit',
+    'ftb',
+    'gpx',
+    'tcx',
+    'zip',
+  ];
+
   WorkoutCreateViewModel({
     required WorkoutRepository workoutRepository,
     AuthRepository? authRepository,
+    ShareIntentService? shareIntentService,
   })  : _workoutRepository = workoutRepository,
-        _authRepository = authRepository;
+        _authRepository = authRepository,
+        _shareIntentService = shareIntentService {
+    _shareIntentService?.addListener(_onShareIntentChanged);
+    _checkAndProcessShareIntent();
+  }
 
   final WorkoutRepository _workoutRepository;
   final AuthRepository? _authRepository;
+  final ShareIntentService? _shareIntentService;
 
   int _selectedTabIndex = 0;
   int get selectedTabIndex => _selectedTabIndex;
@@ -345,6 +360,25 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     );
   }
 
+  void _onShareIntentChanged() {
+    _checkAndProcessShareIntent();
+  }
+
+  void _checkAndProcessShareIntent() {
+    if (_shareIntentService != null && _shareIntentService.hasNewFiles) {
+      final sharedFiles = _shareIntentService.consumePendingFiles();
+      addFiles(sharedFiles);
+    }
+  }
+
+  static bool isSupportedFile(PlatformFile file) {
+    final ext = file.extension?.toLowerCase() ??
+        (file.name.contains('.')
+            ? file.name.split('.').last.toLowerCase()
+            : '');
+    return supportedExtensions.contains(ext);
+  }
+
   // File Upload Handlers
   void setFileUploadType(String type) {
     _fileUploadType = type;
@@ -356,18 +390,38 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addFiles(List<PlatformFile> files) {
+    if (files.isEmpty) return;
+
+    final validFiles = files.where(isSupportedFile).toList();
+    final invalidCount = files.length - validFiles.length;
+
+    if (validFiles.isNotEmpty) {
+      _selectedFiles = [..._selectedFiles, ...validFiles];
+      if (invalidCount > 0) {
+        _errorMessage =
+            'Some files were ignored. Only supported file types (.fit, .ftb, .gpx, .tcx, .zip) can be chosen.';
+      } else {
+        _errorMessage = null;
+      }
+    } else {
+      _errorMessage =
+          'Unsupported file type. Only supported file types (.fit, .ftb, .gpx, .tcx, .zip) can be chosen.';
+    }
+    _selectedTabIndex = 0;
+    notifyListeners();
+  }
+
   Future<void> pickFiles() async {
     try {
       final result = await FilePicker.pickFiles(
         allowMultiple: true,
         type: FileType.custom,
-        allowedExtensions: ['fit', 'ftb', 'gpx', 'tcx', 'zip'],
+        allowedExtensions: supportedExtensions,
       );
 
       if (result != null && result.files.isNotEmpty) {
-        _selectedFiles = [..._selectedFiles, ...result.files];
-        _errorMessage = null;
-        notifyListeners();
+        addFiles(result.files);
       }
     } catch (e) {
       _errorMessage = 'Failed to pick files: $e';
@@ -576,5 +630,11 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     );
 
     return result;
+  }
+
+  @override
+  void dispose() {
+    _shareIntentService?.removeListener(_onShareIntentChanged);
+    super.dispose();
   }
 }

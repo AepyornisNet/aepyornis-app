@@ -22,6 +22,7 @@ import 'package:aepyornis_app/ui/workout/list/view_models/workout_list_viewmodel
 import 'package:aepyornis_app/ui/workout/list/widgets/workout_list_screen.dart';
 
 import '../data/repositories/auth/auth_repository.dart';
+import '../data/services/share_intent_service.dart';
 import '../ui/auth/login/widgets/login_screen.dart';
 import 'routes.dart';
 
@@ -65,6 +66,7 @@ final router = GoRouter(
                     viewModel: WorkoutCreateViewModel(
                       workoutRepository: context.read(),
                       authRepository: context.read(),
+                      shareIntentService: context.read(),
                     ),
                   );
                 },
@@ -92,6 +94,7 @@ final router = GoRouter(
                       final vm = WorkoutCreateViewModel(
                         workoutRepository: context.read(),
                         authRepository: context.read(),
+                        shareIntentService: context.read(),
                       );
                       vm.loadWorkoutForEdit(id);
                       return WorkoutCreateScreen(viewModel: vm);
@@ -176,11 +179,60 @@ final router = GoRouter(
         ]),
       ],
       builder: (context, state, navigationShell) {
-        return MainScaffold(navigationShell);
+        return ShareIntentListener(
+          child: MainScaffold(navigationShell),
+        );
       },
     ),
   ],
 );
+
+class ShareIntentListener extends StatefulWidget {
+  final Widget child;
+
+  const ShareIntentListener({super.key, required this.child});
+
+  @override
+  State<ShareIntentListener> createState() => _ShareIntentListenerState();
+}
+
+class _ShareIntentListenerState extends State<ShareIntentListener> {
+  ShareIntentService? _shareIntentService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final service = context.read<ShareIntentService>();
+    if (_shareIntentService != service) {
+      _shareIntentService?.removeListener(_onShareIntent);
+      _shareIntentService = service;
+      _shareIntentService?.addListener(_onShareIntent);
+      _onShareIntent();
+    }
+  }
+
+  void _onShareIntent() {
+    final service = _shareIntentService;
+    if (service != null && service.hasNewFiles) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          GoRouter.of(context).go(Routes.workoutCreate);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _shareIntentService?.removeListener(_onShareIntent);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
 
 Future<String?> _redirect(BuildContext context, GoRouterState state) async {
   final loggedIn = await context.read<AuthRepository>().isAuthenticated;
