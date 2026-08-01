@@ -248,13 +248,10 @@ class _FeedPostItemState extends State<_FeedPostItem> {
     if (user != null) {
       final name = user.name.trim();
       if (name.isNotEmpty) return name;
+      final handle = user.handle.trim();
+      if (handle.isNotEmpty) return handle;
       final username = user.username.trim();
-      if (username.isNotEmpty) {
-        if (user.domain != null && user.domain!.isNotEmpty) {
-          return '$username@${user.domain}';
-        }
-        return username;
-      }
+      if (username.isNotEmpty) return username;
     }
     return AppLocalizations.of(context)?.athlete ?? 'Athlete';
   }

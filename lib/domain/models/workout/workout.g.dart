@@ -13,7 +13,7 @@ _Workout _$WorkoutFromJson(Map<String, dynamic> json) => _Workout(
       userID: (json['user_id'] as num?)?.toInt(),
       user: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : UserSummary.fromJson(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
       dirty: json['dirty'] as bool?,
       equipment: (json['equipment'] as List<dynamic>?)
@@ -56,6 +56,10 @@ _Workout _$WorkoutFromJson(Map<String, dynamic> json) => _Workout(
       likedByMe: json['liked_by_me'] as bool? ?? false,
       likesCount: (json['likes_count'] as num?)?.toInt() ?? 0,
       repliesCount: (json['replies_count'] as num?)?.toInt() ?? 0,
+      recentLikes: (json['recent_likes'] as List<dynamic>?)
+              ?.map((e) => WorkoutLike.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       intervalBests: (json['interval_bests'] as List<dynamic>?)
               ?.map((e) => e as Map<String, dynamic>)
               .toList() ??
@@ -113,6 +117,7 @@ Map<String, dynamic> _$WorkoutToJson(_Workout instance) => <String, dynamic>{
       'liked_by_me': instance.likedByMe,
       'likes_count': instance.likesCount,
       'replies_count': instance.repliesCount,
+      'recent_likes': instance.recentLikes,
       'interval_bests': instance.intervalBests,
       'climbs': instance.climbs,
       'attachments': instance.attachments,

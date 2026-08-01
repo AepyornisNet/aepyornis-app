@@ -26,7 +26,7 @@ mixin _$Workout {
   int? get userID;
 
   /// The owner user of the workout
-  User? get user;
+  UserSummary? get user;
 
   /// The timestamp the workout was recorded
   DateTime get date;
@@ -111,6 +111,8 @@ mixin _$Workout {
   int get likesCount;
   @JsonKey(name: 'replies_count')
   int get repliesCount;
+  @JsonKey(name: 'recent_likes')
+  List<WorkoutLike> get recentLikes;
   @JsonKey(name: 'interval_bests')
   List<Map<String, dynamic>> get intervalBests;
   @JsonKey(name: 'climbs')
@@ -201,6 +203,8 @@ mixin _$Workout {
             (identical(other.repliesCount, repliesCount) ||
                 other.repliesCount == repliesCount) &&
             const DeepCollectionEquality()
+                .equals(other.recentLikes, recentLikes) &&
+            const DeepCollectionEquality()
                 .equals(other.intervalBests, intervalBests) &&
             const DeepCollectionEquality().equals(other.climbs, climbs) &&
             const DeepCollectionEquality()
@@ -252,6 +256,7 @@ mixin _$Workout {
         likedByMe,
         likesCount,
         repliesCount,
+        const DeepCollectionEquality().hash(recentLikes),
         const DeepCollectionEquality().hash(intervalBests),
         const DeepCollectionEquality().hash(climbs),
         const DeepCollectionEquality().hash(attachments)
@@ -259,7 +264,7 @@ mixin _$Workout {
 
   @override
   String toString() {
-    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, intervalBests: $intervalBests, climbs: $climbs, attachments: $attachments)';
+    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, recentLikes: $recentLikes, intervalBests: $intervalBests, climbs: $climbs, attachments: $attachments)';
   }
 }
 
@@ -273,7 +278,7 @@ abstract mixin class $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'user_id') int? userID,
-      User? user,
+      UserSummary? user,
       DateTime date,
       bool? dirty,
       @JsonKey(name: 'equipment') List<Equipment> equipment,
@@ -310,11 +315,12 @@ abstract mixin class $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'liked_by_me') bool likedByMe,
       @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'replies_count') int repliesCount,
+      @JsonKey(name: 'recent_likes') List<WorkoutLike> recentLikes,
       @JsonKey(name: 'interval_bests') List<Map<String, dynamic>> intervalBests,
       @JsonKey(name: 'climbs') List<Map<String, dynamic>> climbs,
       List<WorkoutAttachment> attachments});
 
-  $UserCopyWith<$Res>? get user;
+  $UserSummaryCopyWith<$Res>? get user;
   $MapDataCopyWith<$Res>? get data;
 }
 
@@ -371,6 +377,7 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
     Object? likedByMe = null,
     Object? likesCount = null,
     Object? repliesCount = null,
+    Object? recentLikes = null,
     Object? intervalBests = null,
     Object? climbs = null,
     Object? attachments = null,
@@ -395,7 +402,7 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
       user: freezed == user
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+              as UserSummary?,
       date: null == date
           ? _self.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -540,6 +547,10 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
           ? _self.repliesCount
           : repliesCount // ignore: cast_nullable_to_non_nullable
               as int,
+      recentLikes: null == recentLikes
+          ? _self.recentLikes
+          : recentLikes // ignore: cast_nullable_to_non_nullable
+              as List<WorkoutLike>,
       intervalBests: null == intervalBests
           ? _self.intervalBests
           : intervalBests // ignore: cast_nullable_to_non_nullable
@@ -559,12 +570,12 @@ class _$WorkoutCopyWithImpl<$Res> implements $WorkoutCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res>? get user {
+  $UserSummaryCopyWith<$Res>? get user {
     if (_self.user == null) {
       return null;
     }
 
-    return $UserCopyWith<$Res>(_self.user!, (value) {
+    return $UserSummaryCopyWith<$Res>(_self.user!, (value) {
       return _then(_self.copyWith(user: value));
     });
   }
@@ -682,7 +693,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'created_at') String? createdAt,
             @JsonKey(name: 'updated_at') String? updatedAt,
             @JsonKey(name: 'user_id') int? userID,
-            User? user,
+            UserSummary? user,
             DateTime date,
             bool? dirty,
             @JsonKey(name: 'equipment') List<Equipment> equipment,
@@ -719,6 +730,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'liked_by_me') bool likedByMe,
             @JsonKey(name: 'likes_count') int likesCount,
             @JsonKey(name: 'replies_count') int repliesCount,
+            @JsonKey(name: 'recent_likes') List<WorkoutLike> recentLikes,
             @JsonKey(name: 'interval_bests')
             List<Map<String, dynamic>> intervalBests,
             @JsonKey(name: 'climbs') List<Map<String, dynamic>> climbs,
@@ -771,6 +783,7 @@ extension WorkoutPatterns on Workout {
             _that.likedByMe,
             _that.likesCount,
             _that.repliesCount,
+            _that.recentLikes,
             _that.intervalBests,
             _that.climbs,
             _that.attachments);
@@ -799,7 +812,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'created_at') String? createdAt,
             @JsonKey(name: 'updated_at') String? updatedAt,
             @JsonKey(name: 'user_id') int? userID,
-            User? user,
+            UserSummary? user,
             DateTime date,
             bool? dirty,
             @JsonKey(name: 'equipment') List<Equipment> equipment,
@@ -836,6 +849,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'liked_by_me') bool likedByMe,
             @JsonKey(name: 'likes_count') int likesCount,
             @JsonKey(name: 'replies_count') int repliesCount,
+            @JsonKey(name: 'recent_likes') List<WorkoutLike> recentLikes,
             @JsonKey(name: 'interval_bests')
             List<Map<String, dynamic>> intervalBests,
             @JsonKey(name: 'climbs') List<Map<String, dynamic>> climbs,
@@ -887,6 +901,7 @@ extension WorkoutPatterns on Workout {
             _that.likedByMe,
             _that.likesCount,
             _that.repliesCount,
+            _that.recentLikes,
             _that.intervalBests,
             _that.climbs,
             _that.attachments);
@@ -914,7 +929,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'created_at') String? createdAt,
             @JsonKey(name: 'updated_at') String? updatedAt,
             @JsonKey(name: 'user_id') int? userID,
-            User? user,
+            UserSummary? user,
             DateTime date,
             bool? dirty,
             @JsonKey(name: 'equipment') List<Equipment> equipment,
@@ -951,6 +966,7 @@ extension WorkoutPatterns on Workout {
             @JsonKey(name: 'liked_by_me') bool likedByMe,
             @JsonKey(name: 'likes_count') int likesCount,
             @JsonKey(name: 'replies_count') int repliesCount,
+            @JsonKey(name: 'recent_likes') List<WorkoutLike> recentLikes,
             @JsonKey(name: 'interval_bests')
             List<Map<String, dynamic>> intervalBests,
             @JsonKey(name: 'climbs') List<Map<String, dynamic>> climbs,
@@ -1002,6 +1018,7 @@ extension WorkoutPatterns on Workout {
             _that.likedByMe,
             _that.likesCount,
             _that.repliesCount,
+            _that.recentLikes,
             _that.intervalBests,
             _that.climbs,
             _that.attachments);
@@ -1056,12 +1073,15 @@ class _Workout implements Workout {
       @JsonKey(name: 'liked_by_me') this.likedByMe = false,
       @JsonKey(name: 'likes_count') this.likesCount = 0,
       @JsonKey(name: 'replies_count') this.repliesCount = 0,
+      @JsonKey(name: 'recent_likes')
+      final List<WorkoutLike> recentLikes = const [],
       @JsonKey(name: 'interval_bests')
       final List<Map<String, dynamic>> intervalBests = const [],
       @JsonKey(name: 'climbs')
       final List<Map<String, dynamic>> climbs = const [],
       final List<WorkoutAttachment> attachments = const []})
       : _equipment = equipment,
+        _recentLikes = recentLikes,
         _intervalBests = intervalBests,
         _climbs = climbs,
         _attachments = attachments;
@@ -1085,7 +1105,7 @@ class _Workout implements Workout {
 
   /// The owner user of the workout
   @override
-  final User? user;
+  final UserSummary? user;
 
   /// The timestamp the workout was recorded
   @override
@@ -1214,6 +1234,15 @@ class _Workout implements Workout {
   @override
   @JsonKey(name: 'replies_count')
   final int repliesCount;
+  final List<WorkoutLike> _recentLikes;
+  @override
+  @JsonKey(name: 'recent_likes')
+  List<WorkoutLike> get recentLikes {
+    if (_recentLikes is EqualUnmodifiableListView) return _recentLikes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_recentLikes);
+  }
+
   final List<Map<String, dynamic>> _intervalBests;
   @override
   @JsonKey(name: 'interval_bests')
@@ -1331,6 +1360,8 @@ class _Workout implements Workout {
             (identical(other.repliesCount, repliesCount) ||
                 other.repliesCount == repliesCount) &&
             const DeepCollectionEquality()
+                .equals(other._recentLikes, _recentLikes) &&
+            const DeepCollectionEquality()
                 .equals(other._intervalBests, _intervalBests) &&
             const DeepCollectionEquality().equals(other._climbs, _climbs) &&
             const DeepCollectionEquality()
@@ -1382,6 +1413,7 @@ class _Workout implements Workout {
         likedByMe,
         likesCount,
         repliesCount,
+        const DeepCollectionEquality().hash(_recentLikes),
         const DeepCollectionEquality().hash(_intervalBests),
         const DeepCollectionEquality().hash(_climbs),
         const DeepCollectionEquality().hash(_attachments)
@@ -1389,7 +1421,7 @@ class _Workout implements Workout {
 
   @override
   String toString() {
-    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, intervalBests: $intervalBests, climbs: $climbs, attachments: $attachments)';
+    return 'Workout(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, userID: $userID, user: $user, date: $date, dirty: $dirty, equipment: $equipment, data: $data, name: $name, notes: $notes, publicUUID: $publicUUID, customType: $customType, subType: $subType, type: $type, visibility: $visibility, locked: $locked, hasFile: $hasFile, hasTracks: $hasTracks, addressString: $addressString, totalDistance: $totalDistance, totalDuration: $totalDuration, pauseDuration: $pauseDuration, totalWeight: $totalWeight, totalRepetitions: $totalRepetitions, totalUp: $totalUp, totalDown: $totalDown, averageSpeed: $averageSpeed, averageSpeedNoPause: $averageSpeedNoPause, maxSpeed: $maxSpeed, minElevation: $minElevation, maxElevation: $maxElevation, averageCadence: $averageCadence, maxCadence: $maxCadence, averageHeartRate: $averageHeartRate, maxHeartRate: $maxHeartRate, averagePower: $averagePower, maxPower: $maxPower, likedByMe: $likedByMe, likesCount: $likesCount, repliesCount: $repliesCount, recentLikes: $recentLikes, intervalBests: $intervalBests, climbs: $climbs, attachments: $attachments)';
   }
 }
 
@@ -1404,7 +1436,7 @@ abstract mixin class _$WorkoutCopyWith<$Res> implements $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'user_id') int? userID,
-      User? user,
+      UserSummary? user,
       DateTime date,
       bool? dirty,
       @JsonKey(name: 'equipment') List<Equipment> equipment,
@@ -1441,12 +1473,13 @@ abstract mixin class _$WorkoutCopyWith<$Res> implements $WorkoutCopyWith<$Res> {
       @JsonKey(name: 'liked_by_me') bool likedByMe,
       @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'replies_count') int repliesCount,
+      @JsonKey(name: 'recent_likes') List<WorkoutLike> recentLikes,
       @JsonKey(name: 'interval_bests') List<Map<String, dynamic>> intervalBests,
       @JsonKey(name: 'climbs') List<Map<String, dynamic>> climbs,
       List<WorkoutAttachment> attachments});
 
   @override
-  $UserCopyWith<$Res>? get user;
+  $UserSummaryCopyWith<$Res>? get user;
   @override
   $MapDataCopyWith<$Res>? get data;
 }
@@ -1504,6 +1537,7 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
     Object? likedByMe = null,
     Object? likesCount = null,
     Object? repliesCount = null,
+    Object? recentLikes = null,
     Object? intervalBests = null,
     Object? climbs = null,
     Object? attachments = null,
@@ -1528,7 +1562,7 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
       user: freezed == user
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+              as UserSummary?,
       date: null == date
           ? _self.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -1673,6 +1707,10 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
           ? _self.repliesCount
           : repliesCount // ignore: cast_nullable_to_non_nullable
               as int,
+      recentLikes: null == recentLikes
+          ? _self._recentLikes
+          : recentLikes // ignore: cast_nullable_to_non_nullable
+              as List<WorkoutLike>,
       intervalBests: null == intervalBests
           ? _self._intervalBests
           : intervalBests // ignore: cast_nullable_to_non_nullable
@@ -1692,12 +1730,12 @@ class __$WorkoutCopyWithImpl<$Res> implements _$WorkoutCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res>? get user {
+  $UserSummaryCopyWith<$Res>? get user {
     if (_self.user == null) {
       return null;
     }
 
-    return $UserCopyWith<$Res>(_self.user!, (value) {
+    return $UserSummaryCopyWith<$Res>(_self.user!, (value) {
       return _then(_self.copyWith(user: value));
     });
   }

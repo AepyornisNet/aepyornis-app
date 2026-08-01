@@ -2,7 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
 import 'package:aepyornis_app/domain/models/map_data/map_data.dart';
 import 'package:aepyornis_app/domain/models/user/user.dart';
+import 'package:aepyornis_app/domain/models/user_summary/user_summary.dart';
 import 'package:aepyornis_app/domain/models/workout_attachment/workout_attachment.dart';
+import 'package:aepyornis_app/domain/models/workout_like/workout_like.dart';
 import 'package:aepyornis_app/domain/models/workout_type/workout_type.dart';
 
 part 'workout.freezed.dart';
@@ -19,7 +21,7 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'user_id') int? userID,
 
     /// The owner user of the workout
-    User? user,
+    UserSummary? user,
 
     /// The timestamp the workout was recorded
     required DateTime date,
@@ -74,6 +76,7 @@ abstract class Workout with _$Workout {
     @JsonKey(name: 'liked_by_me') @Default(false) bool likedByMe,
     @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'replies_count') @Default(0) int repliesCount,
+    @JsonKey(name: 'recent_likes') @Default([]) List<WorkoutLike> recentLikes,
     @JsonKey(name: 'interval_bests')
     @Default([])
     List<Map<String, dynamic>> intervalBests,
@@ -91,7 +94,7 @@ extension WorkoutOwnership on Workout {
     final currentUserId = currentUser.id ?? currentUser.profile?.id;
     if (currentUserId == null) return true;
 
-    final ownerId = userID ?? user?.id ?? user?.profile?.id;
+    final ownerId = userID ?? user?.id;
     if (ownerId == null) return true;
 
     return ownerId == currentUserId;
@@ -138,6 +141,7 @@ Map<String, dynamic> _normalizeWorkoutJson(Map<String, dynamic> json) {
   copyKey('liked_by_me', 'likedByMe');
   copyKey('likes_count', 'likesCount');
   copyKey('replies_count', 'repliesCount');
+  copyKey('recent_likes', 'recentLikes');
   copyKey('interval_bests', 'intervalBests');
   copyKey('climbs', 'climbs');
 

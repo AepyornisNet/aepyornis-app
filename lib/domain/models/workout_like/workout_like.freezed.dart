@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'workout_reply.dart';
+part of 'workout_like.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,10 +13,8 @@ part of 'workout_reply.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$WorkoutReply {
+mixin _$WorkoutLike {
   int get id;
-  @JsonKey(name: 'object_iri')
-  String? get objectIri;
   @JsonKey(name: 'user_id')
   int? get userId;
   UserSummary? get user;
@@ -26,31 +24,25 @@ mixin _$WorkoutReply {
   String? get actorName;
   @JsonKey(name: 'avatar_url')
   String? get avatarUrl;
-  String get content;
   @JsonKey(name: 'created_at')
   String? get createdAt;
-  @JsonKey(name: 'published_at')
-  String? get publishedAt;
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $WorkoutReplyCopyWith<WorkoutReply> get copyWith =>
-      _$WorkoutReplyCopyWithImpl<WorkoutReply>(
-          this as WorkoutReply, _$identity);
+  $WorkoutLikeCopyWith<WorkoutLike> get copyWith =>
+      _$WorkoutLikeCopyWithImpl<WorkoutLike>(this as WorkoutLike, _$identity);
 
-  /// Serializes this WorkoutReply to a JSON map.
+  /// Serializes this WorkoutLike to a JSON map.
   Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is WorkoutReply &&
+            other is WorkoutLike &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.objectIri, objectIri) ||
-                other.objectIri == objectIri) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.actorIri, actorIri) ||
@@ -59,77 +51,64 @@ mixin _$WorkoutReply {
                 other.actorName == actorName) &&
             (identical(other.avatarUrl, avatarUrl) ||
                 other.avatarUrl == avatarUrl) &&
-            (identical(other.content, content) || other.content == content) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.publishedAt, publishedAt) ||
-                other.publishedAt == publishedAt));
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, objectIri, userId, user,
-      actorIri, actorName, avatarUrl, content, createdAt, publishedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, userId, user, actorIri, actorName, avatarUrl, createdAt);
 
   @override
   String toString() {
-    return 'WorkoutReply(id: $id, objectIri: $objectIri, userId: $userId, user: $user, actorIri: $actorIri, actorName: $actorName, avatarUrl: $avatarUrl, content: $content, createdAt: $createdAt, publishedAt: $publishedAt)';
+    return 'WorkoutLike(id: $id, userId: $userId, user: $user, actorIri: $actorIri, actorName: $actorName, avatarUrl: $avatarUrl, createdAt: $createdAt)';
   }
 }
 
 /// @nodoc
-abstract mixin class $WorkoutReplyCopyWith<$Res> {
-  factory $WorkoutReplyCopyWith(
-          WorkoutReply value, $Res Function(WorkoutReply) _then) =
-      _$WorkoutReplyCopyWithImpl;
+abstract mixin class $WorkoutLikeCopyWith<$Res> {
+  factory $WorkoutLikeCopyWith(
+          WorkoutLike value, $Res Function(WorkoutLike) _then) =
+      _$WorkoutLikeCopyWithImpl;
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'object_iri') String? objectIri,
       @JsonKey(name: 'user_id') int? userId,
       UserSummary? user,
       @JsonKey(name: 'actor_iri') String? actorIri,
       @JsonKey(name: 'actor_name') String? actorName,
       @JsonKey(name: 'avatar_url') String? avatarUrl,
-      String content,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'published_at') String? publishedAt});
+      @JsonKey(name: 'created_at') String? createdAt});
 
   $UserSummaryCopyWith<$Res>? get user;
 }
 
 /// @nodoc
-class _$WorkoutReplyCopyWithImpl<$Res> implements $WorkoutReplyCopyWith<$Res> {
-  _$WorkoutReplyCopyWithImpl(this._self, this._then);
+class _$WorkoutLikeCopyWithImpl<$Res> implements $WorkoutLikeCopyWith<$Res> {
+  _$WorkoutLikeCopyWithImpl(this._self, this._then);
 
-  final WorkoutReply _self;
-  final $Res Function(WorkoutReply) _then;
+  final WorkoutLike _self;
+  final $Res Function(WorkoutLike) _then;
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? objectIri = freezed,
     Object? userId = freezed,
     Object? user = freezed,
     Object? actorIri = freezed,
     Object? actorName = freezed,
     Object? avatarUrl = freezed,
-    Object? content = null,
     Object? createdAt = freezed,
-    Object? publishedAt = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      objectIri: freezed == objectIri
-          ? _self.objectIri
-          : objectIri // ignore: cast_nullable_to_non_nullable
-              as String?,
       userId: freezed == userId
           ? _self.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -150,22 +129,14 @@ class _$WorkoutReplyCopyWithImpl<$Res> implements $WorkoutReplyCopyWith<$Res> {
           ? _self.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       createdAt: freezed == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishedAt: freezed == publishedAt
-          ? _self.publishedAt
-          : publishedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -180,8 +151,8 @@ class _$WorkoutReplyCopyWithImpl<$Res> implements $WorkoutReplyCopyWith<$Res> {
   }
 }
 
-/// Adds pattern-matching-related methods to [WorkoutReply].
-extension WorkoutReplyPatterns on WorkoutReply {
+/// Adds pattern-matching-related methods to [WorkoutLike].
+extension WorkoutLikePatterns on WorkoutLike {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -196,12 +167,12 @@ extension WorkoutReplyPatterns on WorkoutReply {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_WorkoutReply value)? $default, {
+    TResult Function(_WorkoutLike value)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply() when $default != null:
+      case _WorkoutLike() when $default != null:
         return $default(_that);
       case _:
         return orElse();
@@ -223,11 +194,11 @@ extension WorkoutReplyPatterns on WorkoutReply {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_WorkoutReply value) $default,
+    TResult Function(_WorkoutLike value) $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply():
+      case _WorkoutLike():
         return $default(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -248,11 +219,11 @@ extension WorkoutReplyPatterns on WorkoutReply {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_WorkoutReply value)? $default,
+    TResult? Function(_WorkoutLike value)? $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply() when $default != null:
+      case _WorkoutLike() when $default != null:
         return $default(_that);
       case _:
         return null;
@@ -275,32 +246,20 @@ extension WorkoutReplyPatterns on WorkoutReply {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             int id,
-            @JsonKey(name: 'object_iri') String? objectIri,
             @JsonKey(name: 'user_id') int? userId,
             UserSummary? user,
             @JsonKey(name: 'actor_iri') String? actorIri,
             @JsonKey(name: 'actor_name') String? actorName,
             @JsonKey(name: 'avatar_url') String? avatarUrl,
-            String content,
-            @JsonKey(name: 'created_at') String? createdAt,
-            @JsonKey(name: 'published_at') String? publishedAt)?
+            @JsonKey(name: 'created_at') String? createdAt)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply() when $default != null:
-        return $default(
-            _that.id,
-            _that.objectIri,
-            _that.userId,
-            _that.user,
-            _that.actorIri,
-            _that.actorName,
-            _that.avatarUrl,
-            _that.content,
-            _that.createdAt,
-            _that.publishedAt);
+      case _WorkoutLike() when $default != null:
+        return $default(_that.id, _that.userId, _that.user, _that.actorIri,
+            _that.actorName, _that.avatarUrl, _that.createdAt);
       case _:
         return orElse();
     }
@@ -323,31 +282,19 @@ extension WorkoutReplyPatterns on WorkoutReply {
   TResult when<TResult extends Object?>(
     TResult Function(
             int id,
-            @JsonKey(name: 'object_iri') String? objectIri,
             @JsonKey(name: 'user_id') int? userId,
             UserSummary? user,
             @JsonKey(name: 'actor_iri') String? actorIri,
             @JsonKey(name: 'actor_name') String? actorName,
             @JsonKey(name: 'avatar_url') String? avatarUrl,
-            String content,
-            @JsonKey(name: 'created_at') String? createdAt,
-            @JsonKey(name: 'published_at') String? publishedAt)
+            @JsonKey(name: 'created_at') String? createdAt)
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply():
-        return $default(
-            _that.id,
-            _that.objectIri,
-            _that.userId,
-            _that.user,
-            _that.actorIri,
-            _that.actorName,
-            _that.avatarUrl,
-            _that.content,
-            _that.createdAt,
-            _that.publishedAt);
+      case _WorkoutLike():
+        return $default(_that.id, _that.userId, _that.user, _that.actorIri,
+            _that.actorName, _that.avatarUrl, _that.createdAt);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -369,31 +316,19 @@ extension WorkoutReplyPatterns on WorkoutReply {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             int id,
-            @JsonKey(name: 'object_iri') String? objectIri,
             @JsonKey(name: 'user_id') int? userId,
             UserSummary? user,
             @JsonKey(name: 'actor_iri') String? actorIri,
             @JsonKey(name: 'actor_name') String? actorName,
             @JsonKey(name: 'avatar_url') String? avatarUrl,
-            String content,
-            @JsonKey(name: 'created_at') String? createdAt,
-            @JsonKey(name: 'published_at') String? publishedAt)?
+            @JsonKey(name: 'created_at') String? createdAt)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkoutReply() when $default != null:
-        return $default(
-            _that.id,
-            _that.objectIri,
-            _that.userId,
-            _that.user,
-            _that.actorIri,
-            _that.actorName,
-            _that.avatarUrl,
-            _that.content,
-            _that.createdAt,
-            _that.publishedAt);
+      case _WorkoutLike() when $default != null:
+        return $default(_that.id, _that.userId, _that.user, _that.actorIri,
+            _that.actorName, _that.avatarUrl, _that.createdAt);
       case _:
         return null;
     }
@@ -402,26 +337,20 @@ extension WorkoutReplyPatterns on WorkoutReply {
 
 /// @nodoc
 @JsonSerializable()
-class _WorkoutReply implements WorkoutReply {
-  const _WorkoutReply(
+class _WorkoutLike implements WorkoutLike {
+  const _WorkoutLike(
       {required this.id,
-      @JsonKey(name: 'object_iri') this.objectIri,
       @JsonKey(name: 'user_id') this.userId,
       this.user,
       @JsonKey(name: 'actor_iri') this.actorIri,
       @JsonKey(name: 'actor_name') this.actorName,
       @JsonKey(name: 'avatar_url') this.avatarUrl,
-      required this.content,
-      @JsonKey(name: 'created_at') this.createdAt,
-      @JsonKey(name: 'published_at') this.publishedAt});
-  factory _WorkoutReply.fromJson(Map<String, dynamic> json) =>
-      _$WorkoutReplyFromJson(json);
+      @JsonKey(name: 'created_at') this.createdAt});
+  factory _WorkoutLike.fromJson(Map<String, dynamic> json) =>
+      _$WorkoutLikeFromJson(json);
 
   @override
   final int id;
-  @override
-  @JsonKey(name: 'object_iri')
-  final String? objectIri;
   @override
   @JsonKey(name: 'user_id')
   final int? userId;
@@ -437,25 +366,20 @@ class _WorkoutReply implements WorkoutReply {
   @JsonKey(name: 'avatar_url')
   final String? avatarUrl;
   @override
-  final String content;
-  @override
   @JsonKey(name: 'created_at')
   final String? createdAt;
-  @override
-  @JsonKey(name: 'published_at')
-  final String? publishedAt;
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$WorkoutReplyCopyWith<_WorkoutReply> get copyWith =>
-      __$WorkoutReplyCopyWithImpl<_WorkoutReply>(this, _$identity);
+  _$WorkoutLikeCopyWith<_WorkoutLike> get copyWith =>
+      __$WorkoutLikeCopyWithImpl<_WorkoutLike>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$WorkoutReplyToJson(
+    return _$WorkoutLikeToJson(
       this,
     );
   }
@@ -464,10 +388,8 @@ class _WorkoutReply implements WorkoutReply {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WorkoutReply &&
+            other is _WorkoutLike &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.objectIri, objectIri) ||
-                other.objectIri == objectIri) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.actorIri, actorIri) ||
@@ -476,81 +398,67 @@ class _WorkoutReply implements WorkoutReply {
                 other.actorName == actorName) &&
             (identical(other.avatarUrl, avatarUrl) ||
                 other.avatarUrl == avatarUrl) &&
-            (identical(other.content, content) || other.content == content) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.publishedAt, publishedAt) ||
-                other.publishedAt == publishedAt));
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, objectIri, userId, user,
-      actorIri, actorName, avatarUrl, content, createdAt, publishedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, userId, user, actorIri, actorName, avatarUrl, createdAt);
 
   @override
   String toString() {
-    return 'WorkoutReply(id: $id, objectIri: $objectIri, userId: $userId, user: $user, actorIri: $actorIri, actorName: $actorName, avatarUrl: $avatarUrl, content: $content, createdAt: $createdAt, publishedAt: $publishedAt)';
+    return 'WorkoutLike(id: $id, userId: $userId, user: $user, actorIri: $actorIri, actorName: $actorName, avatarUrl: $avatarUrl, createdAt: $createdAt)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$WorkoutReplyCopyWith<$Res>
-    implements $WorkoutReplyCopyWith<$Res> {
-  factory _$WorkoutReplyCopyWith(
-          _WorkoutReply value, $Res Function(_WorkoutReply) _then) =
-      __$WorkoutReplyCopyWithImpl;
+abstract mixin class _$WorkoutLikeCopyWith<$Res>
+    implements $WorkoutLikeCopyWith<$Res> {
+  factory _$WorkoutLikeCopyWith(
+          _WorkoutLike value, $Res Function(_WorkoutLike) _then) =
+      __$WorkoutLikeCopyWithImpl;
   @override
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'object_iri') String? objectIri,
       @JsonKey(name: 'user_id') int? userId,
       UserSummary? user,
       @JsonKey(name: 'actor_iri') String? actorIri,
       @JsonKey(name: 'actor_name') String? actorName,
       @JsonKey(name: 'avatar_url') String? avatarUrl,
-      String content,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'published_at') String? publishedAt});
+      @JsonKey(name: 'created_at') String? createdAt});
 
   @override
   $UserSummaryCopyWith<$Res>? get user;
 }
 
 /// @nodoc
-class __$WorkoutReplyCopyWithImpl<$Res>
-    implements _$WorkoutReplyCopyWith<$Res> {
-  __$WorkoutReplyCopyWithImpl(this._self, this._then);
+class __$WorkoutLikeCopyWithImpl<$Res> implements _$WorkoutLikeCopyWith<$Res> {
+  __$WorkoutLikeCopyWithImpl(this._self, this._then);
 
-  final _WorkoutReply _self;
-  final $Res Function(_WorkoutReply) _then;
+  final _WorkoutLike _self;
+  final $Res Function(_WorkoutLike) _then;
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
-    Object? objectIri = freezed,
     Object? userId = freezed,
     Object? user = freezed,
     Object? actorIri = freezed,
     Object? actorName = freezed,
     Object? avatarUrl = freezed,
-    Object? content = null,
     Object? createdAt = freezed,
-    Object? publishedAt = freezed,
   }) {
-    return _then(_WorkoutReply(
+    return _then(_WorkoutLike(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      objectIri: freezed == objectIri
-          ? _self.objectIri
-          : objectIri // ignore: cast_nullable_to_non_nullable
-              as String?,
       userId: freezed == userId
           ? _self.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -571,22 +479,14 @@ class __$WorkoutReplyCopyWithImpl<$Res>
           ? _self.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       createdAt: freezed == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishedAt: freezed == publishedAt
-          ? _self.publishedAt
-          : publishedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 
-  /// Create a copy of WorkoutReply
+  /// Create a copy of WorkoutLike
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
