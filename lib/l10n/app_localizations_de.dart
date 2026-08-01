@@ -421,4 +421,271 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get date => 'Datum';
+
+  @override
+  String get all => 'Alle';
+
+  @override
+  String get workoutTypeGeneric => 'Allgemeine Aktivität';
+
+  @override
+  String get workoutTypeRunning => 'Laufen';
+
+  @override
+  String get workoutTypeCycling => 'Radsport';
+
+  @override
+  String get workoutTypeTransition => 'Wechselzone';
+
+  @override
+  String get workoutTypeFitnessEquipment => 'Fitnessgeräte';
+
+  @override
+  String get workoutTypeSwimming => 'Schwimmen';
+
+  @override
+  String get workoutTypeBasketball => 'Basketball';
+
+  @override
+  String get workoutTypeSoccer => 'Fußball';
+
+  @override
+  String get workoutTypeTennis => 'Tennis';
+
+  @override
+  String get workoutTypeAmericanFootball => 'American Football';
+
+  @override
+  String get workoutTypeTraining => 'Krafttraining';
+
+  @override
+  String get workoutTypeWalking => 'Gehen';
+
+  @override
+  String get workoutTypeCrossCountrySkiing => 'Langlauf';
+
+  @override
+  String get workoutTypeAlpineSkiing => 'Ski Alpin';
+
+  @override
+  String get workoutTypeSnowboarding => 'Snowboarden';
+
+  @override
+  String get workoutTypeRowing => 'Rudern';
+
+  @override
+  String get workoutTypeMountaineering => 'Bergsteigen';
+
+  @override
+  String get workoutTypeHiking => 'Wandern';
+
+  @override
+  String get workoutTypeMultisport => 'Multisport';
+
+  @override
+  String get workoutTypePaddling => 'Paddeln';
+
+  @override
+  String get workoutTypeFlying => 'Fliegen';
+
+  @override
+  String get workoutTypeEBiking => 'E-Bike';
+
+  @override
+  String get workoutTypeMotorcycling => 'Motorradfahren';
+
+  @override
+  String get workoutTypeBoating => 'Bootfahren';
+
+  @override
+  String get workoutTypeDriving => 'Fahren';
+
+  @override
+  String get workoutTypeGolf => 'Golf';
+
+  @override
+  String get workoutTypeHangGliding => 'Drachenfliegen';
+
+  @override
+  String get workoutTypeHorsebackRiding => 'Reiten';
+
+  @override
+  String get workoutTypeHunting => 'Jagen';
+
+  @override
+  String get workoutTypeFishing => 'Angeln';
+
+  @override
+  String get workoutTypeInlineSkating => 'Inlineskaten';
+
+  @override
+  String get workoutTypeRockClimbing => 'Klettern';
+
+  @override
+  String get workoutTypeSailing => 'Segeln';
+
+  @override
+  String get workoutTypeIceSkating => 'Schlittschuhlaufen';
+
+  @override
+  String get workoutTypeSkyDiving => 'Fallschirmspringen';
+
+  @override
+  String get workoutTypeSnowshoeing => 'Schneeschuhwandern';
+
+  @override
+  String get workoutTypeSnowmobiling => 'Schneemobil';
+
+  @override
+  String get workoutTypeStandUpPaddleboarding => 'Stand-Up-Paddling';
+
+  @override
+  String get workoutTypeSurfing => 'Surfen';
+
+  @override
+  String get workoutTypeWakeboarding => 'Wakeboarden';
+
+  @override
+  String get workoutTypeWaterSkiing => 'Wasserski';
+
+  @override
+  String get workoutTypeKayaking => 'Kajakfahren';
+
+  @override
+  String get workoutTypeRafting => 'Rafting';
+
+  @override
+  String get workoutTypeWindsurfing => 'Windsurfen';
+
+  @override
+  String get workoutTypeKitesurfing => 'Kitesurfen';
+
+  @override
+  String get workoutTypeTactical => 'Taktik';
+
+  @override
+  String get workoutTypeJumpmaster => 'Jumpmaster';
+
+  @override
+  String get workoutTypeBoxing => 'Boxen';
+
+  @override
+  String get workoutTypeFloorClimbing => 'Treppensteigen';
+
+  @override
+  String get workoutTypeBaseball => 'Baseball';
+
+  @override
+  String get workoutTypeDiving => 'Tauchen';
+
+  @override
+  String get workoutTypeShooting => 'Sportschießen';
+
+  @override
+  String get workoutTypeWinterSport => 'Wintersport';
+
+  @override
+  String get workoutTypeGrinding => 'Grinding';
+
+  @override
+  String get workoutTypeHiit => 'HIIT';
+
+  @override
+  String get workoutTypeVideoGaming => 'E-Sport';
+
+  @override
+  String get workoutTypeRacket => 'Racketsport';
+
+  @override
+  String get workoutTypeWheelchairPushWalk => 'Rollstuhl Gehen';
+
+  @override
+  String get workoutTypeWheelchairPushRun => 'Rollstuhl Laufen';
+
+  @override
+  String get workoutTypeMeditation => 'Meditation';
+
+  @override
+  String get workoutTypeParaSport => 'Parasport';
+
+  @override
+  String get workoutTypeDiscGolf => 'Disc-Golf';
+
+  @override
+  String get workoutTypeTeamSport => 'Teamsport';
+
+  @override
+  String get workoutTypeCricket => 'Cricket';
+
+  @override
+  String get workoutTypeRugby => 'Rugby';
+
+  @override
+  String get workoutTypeHockey => 'Hockey';
+
+  @override
+  String get workoutTypeLacrosse => 'Lacrosse';
+
+  @override
+  String get workoutTypeVolleyball => 'Volleyball';
+
+  @override
+  String get workoutTypeWaterTubing => 'Water-Tubing';
+
+  @override
+  String get workoutTypeWakesurfing => 'Wakesurfen';
+
+  @override
+  String get workoutTypeWaterSport => 'Wassersport';
+
+  @override
+  String get workoutTypeArchery => 'Bogenschießen';
+
+  @override
+  String get workoutTypeMixedMartialArts => 'MMA';
+
+  @override
+  String get workoutTypeMotorSports => 'Motorsport';
+
+  @override
+  String get workoutTypeSnorkeling => 'Schnorcheln';
+
+  @override
+  String get workoutTypeDance => 'Tanzen';
+
+  @override
+  String get workoutTypeJumpRope => 'Seilspringen';
+
+  @override
+  String get workoutTypeMobility => 'Mobilität';
+
+  @override
+  String get workoutTypeGeocaching => 'Geocaching';
+
+  @override
+  String get workoutTypeCanoeing => 'Canoeing';
+
+  @override
+  String get workoutTypeIndoorHandCycling => 'Indoor Hand Cycling';
+
+  @override
+  String get workoutTypeOverland => 'Overland';
+
+  @override
+  String get workoutTypeTrollingMotor => 'Trolling Motor';
+
+  @override
+  String get workoutTypeObstacle => 'Obstacle Course';
+
+  @override
+  String get workoutTypeVirtualActivity => 'Virtual Activity';
+
+  @override
+  String get workoutTypeExpedition => 'Expedition';
+
+  @override
+  String get workoutTypeUltra => 'Ultramarathon';
+
+  @override
+  String get workoutTypeAll => 'All Sports';
 }

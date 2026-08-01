@@ -69,7 +69,8 @@ void main() {
       expect(vm.errorMessage, contains('Some files were ignored'));
     });
 
-    test('addFiles rejects completely unsupported files with error message', () {
+    test('addFiles rejects completely unsupported files with error message',
+        () {
       final vm = WorkoutCreateViewModel(
         workoutRepository: DummyWorkoutRepository(),
       );

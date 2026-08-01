@@ -418,4 +418,271 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get date => 'Date';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get workoutTypeGeneric => 'Generic Activity';
+
+  @override
+  String get workoutTypeRunning => 'Running';
+
+  @override
+  String get workoutTypeCycling => 'Cycling';
+
+  @override
+  String get workoutTypeTransition => 'Multisport Transition';
+
+  @override
+  String get workoutTypeFitnessEquipment => 'Fitness Equipment';
+
+  @override
+  String get workoutTypeSwimming => 'Swimming';
+
+  @override
+  String get workoutTypeBasketball => 'Basketball';
+
+  @override
+  String get workoutTypeSoccer => 'Soccer';
+
+  @override
+  String get workoutTypeTennis => 'Tennis';
+
+  @override
+  String get workoutTypeAmericanFootball => 'American Football';
+
+  @override
+  String get workoutTypeTraining => 'Training';
+
+  @override
+  String get workoutTypeWalking => 'Walking';
+
+  @override
+  String get workoutTypeCrossCountrySkiing => 'Cross Country Skiing';
+
+  @override
+  String get workoutTypeAlpineSkiing => 'Alpine Skiing';
+
+  @override
+  String get workoutTypeSnowboarding => 'Snowboarding';
+
+  @override
+  String get workoutTypeRowing => 'Rowing';
+
+  @override
+  String get workoutTypeMountaineering => 'Mountaineering';
+
+  @override
+  String get workoutTypeHiking => 'Hiking';
+
+  @override
+  String get workoutTypeMultisport => 'Multisport';
+
+  @override
+  String get workoutTypePaddling => 'Paddling';
+
+  @override
+  String get workoutTypeFlying => 'Flying';
+
+  @override
+  String get workoutTypeEBiking => 'E-Biking';
+
+  @override
+  String get workoutTypeMotorcycling => 'Motorcycling';
+
+  @override
+  String get workoutTypeBoating => 'Boating';
+
+  @override
+  String get workoutTypeDriving => 'Driving';
+
+  @override
+  String get workoutTypeGolf => 'Golf';
+
+  @override
+  String get workoutTypeHangGliding => 'Hang Gliding';
+
+  @override
+  String get workoutTypeHorsebackRiding => 'Horseback Riding';
+
+  @override
+  String get workoutTypeHunting => 'Hunting';
+
+  @override
+  String get workoutTypeFishing => 'Fishing';
+
+  @override
+  String get workoutTypeInlineSkating => 'Inline Skating';
+
+  @override
+  String get workoutTypeRockClimbing => 'Rock Climbing';
+
+  @override
+  String get workoutTypeSailing => 'Sailing';
+
+  @override
+  String get workoutTypeIceSkating => 'Ice Skating';
+
+  @override
+  String get workoutTypeSkyDiving => 'Sky Diving';
+
+  @override
+  String get workoutTypeSnowshoeing => 'Snowshoeing';
+
+  @override
+  String get workoutTypeSnowmobiling => 'Snowmobiling';
+
+  @override
+  String get workoutTypeStandUpPaddleboarding => 'Stand Up Paddleboarding';
+
+  @override
+  String get workoutTypeSurfing => 'Surfing';
+
+  @override
+  String get workoutTypeWakeboarding => 'Wakeboarding';
+
+  @override
+  String get workoutTypeWaterSkiing => 'Water Skiing';
+
+  @override
+  String get workoutTypeKayaking => 'Kayaking';
+
+  @override
+  String get workoutTypeRafting => 'Rafting';
+
+  @override
+  String get workoutTypeWindsurfing => 'Windsurfing';
+
+  @override
+  String get workoutTypeKitesurfing => 'Kitesurfing';
+
+  @override
+  String get workoutTypeTactical => 'Tactical';
+
+  @override
+  String get workoutTypeJumpmaster => 'Jumpmaster';
+
+  @override
+  String get workoutTypeBoxing => 'Boxing';
+
+  @override
+  String get workoutTypeFloorClimbing => 'Floor Climbing';
+
+  @override
+  String get workoutTypeBaseball => 'Baseball';
+
+  @override
+  String get workoutTypeDiving => 'Diving';
+
+  @override
+  String get workoutTypeShooting => 'Sport Shooting';
+
+  @override
+  String get workoutTypeWinterSport => 'Winter Sport';
+
+  @override
+  String get workoutTypeGrinding => 'Grinding';
+
+  @override
+  String get workoutTypeHiit => 'HIIT';
+
+  @override
+  String get workoutTypeVideoGaming => 'Video Gaming';
+
+  @override
+  String get workoutTypeRacket => 'Racket Sport';
+
+  @override
+  String get workoutTypeWheelchairPushWalk => 'Wheelchair Push Walk';
+
+  @override
+  String get workoutTypeWheelchairPushRun => 'Wheelchair Push Run';
+
+  @override
+  String get workoutTypeMeditation => 'Meditation';
+
+  @override
+  String get workoutTypeParaSport => 'Para Sport';
+
+  @override
+  String get workoutTypeDiscGolf => 'Disc Golf';
+
+  @override
+  String get workoutTypeTeamSport => 'Team Sport';
+
+  @override
+  String get workoutTypeCricket => 'Cricket';
+
+  @override
+  String get workoutTypeRugby => 'Rugby';
+
+  @override
+  String get workoutTypeHockey => 'Hockey';
+
+  @override
+  String get workoutTypeLacrosse => 'Lacrosse';
+
+  @override
+  String get workoutTypeVolleyball => 'Volleyball';
+
+  @override
+  String get workoutTypeWaterTubing => 'Water Tubing';
+
+  @override
+  String get workoutTypeWakesurfing => 'Wakesurfing';
+
+  @override
+  String get workoutTypeWaterSport => 'Water Sport';
+
+  @override
+  String get workoutTypeArchery => 'Archery';
+
+  @override
+  String get workoutTypeMixedMartialArts => 'Mixed Martial Arts';
+
+  @override
+  String get workoutTypeMotorSports => 'Motor Sports';
+
+  @override
+  String get workoutTypeSnorkeling => 'Snorkeling';
+
+  @override
+  String get workoutTypeDance => 'Dance';
+
+  @override
+  String get workoutTypeJumpRope => 'Jump Rope';
+
+  @override
+  String get workoutTypeMobility => 'Mobility';
+
+  @override
+  String get workoutTypeGeocaching => 'Geocaching';
+
+  @override
+  String get workoutTypeCanoeing => 'Canoeing';
+
+  @override
+  String get workoutTypeIndoorHandCycling => 'Indoor Hand Cycling';
+
+  @override
+  String get workoutTypeOverland => 'Overland';
+
+  @override
+  String get workoutTypeTrollingMotor => 'Trolling Motor';
+
+  @override
+  String get workoutTypeObstacle => 'Obstacle Course';
+
+  @override
+  String get workoutTypeVirtualActivity => 'Virtual Activity';
+
+  @override
+  String get workoutTypeExpedition => 'Expedition';
+
+  @override
+  String get workoutTypeUltra => 'Ultramarathon';
+
+  @override
+  String get workoutTypeAll => 'All Sports';
 }
