@@ -67,25 +67,43 @@ class _HomeScreenState extends State<HomeScreen>
               child: ListenableBuilder(
                 listenable: widget.viewModel,
                 builder: (context, _) {
-                  return SegmentedButton<String>(
-                    segments: [
-                      ButtonSegment<String>(
-                        value: 'following',
-                        label: Text(l10n?.following ?? 'Following'),
-                        icon: const Icon(Icons.people_outline, size: 18),
+                  final unreadCount = widget.viewModel.unreadNotificationsCount;
+                  return Row(
+                    children: [
+                      SegmentedButton<String>(
+                        segments: [
+                          ButtonSegment<String>(
+                            value: 'following',
+                            label: Text(l10n?.following ?? 'Following'),
+                            icon: const Icon(Icons.people_outline, size: 18),
+                          ),
+                          ButtonSegment<String>(
+                            value: 'global',
+                            label: Text(l10n?.global ?? 'Global'),
+                            icon: const Icon(Icons.public, size: 18),
+                          ),
+                        ],
+                        selected: {widget.viewModel.feedScope},
+                        onSelectionChanged: (Set<String> newSelection) {
+                          if (newSelection.isNotEmpty) {
+                            widget.viewModel.setFeedScope(newSelection.first);
+                          }
+                        },
                       ),
-                      ButtonSegment<String>(
-                        value: 'global',
-                        label: Text(l10n?.global ?? 'Global'),
-                        icon: const Icon(Icons.public, size: 18),
+                      const Spacer(),
+                      IconButton(
+                        icon: Badge(
+                          isLabelVisible: unreadCount > 0,
+                          label: Text('$unreadCount'),
+                          child: const Icon(Icons.notifications_outlined),
+                        ),
+                        tooltip: l10n?.notifications ?? 'Notifications',
+                        onPressed: () async {
+                          await context.push(Routes.notifications);
+                          widget.viewModel.loadUnreadNotificationsCount();
+                        },
                       ),
                     ],
-                    selected: {widget.viewModel.feedScope},
-                    onSelectionChanged: (Set<String> newSelection) {
-                      if (newSelection.isNotEmpty) {
-                        widget.viewModel.setFeedScope(newSelection.first);
-                      }
-                    },
                   );
                 },
               ),

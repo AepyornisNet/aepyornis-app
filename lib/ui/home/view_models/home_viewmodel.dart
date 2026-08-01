@@ -91,6 +91,20 @@ class HomeViewModel extends ChangeNotifier {
     await loadInitialFeed();
   }
 
+  int _unreadNotificationsCount = 0;
+  int get unreadNotificationsCount => _unreadNotificationsCount;
+
+  Future<void> loadUnreadNotificationsCount() async {
+    final result = await _apiClient.getNotifications();
+    result.fold(
+      (list) {
+        _unreadNotificationsCount = list.length;
+        notifyListeners();
+      },
+      (error) {},
+    );
+  }
+
   Future<void> loadInitialFeed() async {
     _isLoading = true;
     _errorMessage = null;
@@ -98,6 +112,8 @@ class HomeViewModel extends ChangeNotifier {
     _hasMore = true;
     savedScrollOffset = 0.0;
     notifyListeners();
+
+    loadUnreadNotificationsCount();
 
     final result = await _workoutRepository.getRecentWorkouts(
       limit: 10,

@@ -8,6 +8,7 @@ import 'package:result_dart/result_dart.dart';
 import 'package:aepyornis_app/data/services/api/model/api_response/api_response.dart';
 import 'package:aepyornis_app/domain/models/equipment/equipment.dart';
 import 'package:aepyornis_app/domain/models/measurement/measurement.dart';
+import 'package:aepyornis_app/domain/models/notification/app_notification.dart';
 import 'package:aepyornis_app/domain/models/statistics/statistics_response.dart';
 import 'package:aepyornis_app/domain/models/user/user.dart';
 import 'package:aepyornis_app/domain/models/workout/workout.dart';
@@ -855,6 +856,72 @@ class ApiClient {
       } else {
         return Failure(
           HttpException("Failed to refresh workout (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<AppNotification>>> getNotifications() async {
+    try {
+      final response = await http.get(
+        _url('/api/v2/notifications'),
+        headers: await _headers(),
+      );
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is Map<String, dynamic>) {
+          final apiResponse =
+              ApiResponse.fromJson<List<AppNotification>, List<dynamic>>(
+            decoded,
+            (results) => results
+                .map((e) => AppNotification.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
+          try {
+            final data = apiResponse.getOrThrow();
+            return Success(data);
+          } on Exception catch (e) {
+            return Failure(e);
+          }
+        } else if (decoded is List) {
+          final list = decoded
+              .map((e) => AppNotification.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Success(list);
+        }
+        return Failure(HttpException("Invalid response"));
+      } else {
+        return Failure(
+          HttpException("Invalid response (${response.statusCode})"),
+        );
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<void>> markNotificationsAsRead([List<int>? ids]) async {
+    try {
+      final payload = <String, dynamic>{};
+      if (ids != null && ids.isNotEmpty) {
+        payload['ids'] = ids;
+      }
+      final response = await http.post(
+        _url('/api/v2/notifications/read'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          ...await _headers(),
+        },
+        body: jsonEncode(payload),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Success(0);
+      } else {
+        return Failure(
+          HttpException(
+              "Failed to mark notifications as read (${response.statusCode})"),
         );
       }
     } on Exception catch (e) {

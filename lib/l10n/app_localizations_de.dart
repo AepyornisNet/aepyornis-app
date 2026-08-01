@@ -688,4 +688,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get workoutTypeAll => 'All Sports';
+
+  @override
+  String get notifications => 'Benachrichtigungen';
+
+  @override
+  String get markAllAsRead => 'Alle als gelesen markieren';
+
+  @override
+  String get noNotifications => 'Keine Benachrichtigungen';
+
+  @override
+  String get noNotificationsDescription => 'Du bist auf dem neuesten Stand!';
 }

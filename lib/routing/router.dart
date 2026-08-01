@@ -5,6 +5,8 @@ import 'package:aepyornis_app/ui/auth/login/view_models/login_viewmodel.dart';
 import 'package:aepyornis_app/ui/core/ui/main_scaffold.dart';
 import 'package:aepyornis_app/ui/home/view_models/home_viewmodel.dart';
 import 'package:aepyornis_app/ui/home/widgets/home_screen.dart';
+import 'package:aepyornis_app/ui/notification/view_models/notification_viewmodel.dart';
+import 'package:aepyornis_app/ui/notification/widgets/notification_screen.dart';
 import 'package:aepyornis_app/ui/settings/view_models/health_workouts_viewmodel.dart';
 import 'package:aepyornis_app/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:aepyornis_app/ui/settings/widgets/health_connect_settings_screen.dart';
@@ -26,8 +28,10 @@ import '../data/services/share_intent_service.dart';
 import '../ui/auth/login/widgets/login_screen.dart';
 import 'routes.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final router = GoRouter(
-  // debugLogDiagnostics: true,
+  navigatorKey: _rootNavigatorKey,
   initialLocation: Routes.home,
   redirect: _redirect,
   routes: [
@@ -37,6 +41,18 @@ final router = GoRouter(
         return LoginScreen(
             viewModel: LoginViewModel(authRepository: context.read()));
       },
+    ),
+    GoRoute(
+      path: Routes.notifications,
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) => MaterialPage(
+        key: ValueKey(state.uri.toString()),
+        child: NotificationScreen(
+          viewModel: NotificationViewModel(
+            notificationRepository: context.read(),
+          ),
+        ),
+      ),
     ),
     StatefulShellRoute.indexedStack(
       branches: [
@@ -61,19 +77,22 @@ final router = GoRouter(
             routes: [
               GoRoute(
                 path: Routes.workoutCreateRelative,
-                builder: (context, state) {
-                  return WorkoutCreateScreen(
+                parentNavigatorKey: _rootNavigatorKey,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: ValueKey(state.uri.toString()),
+                  child: WorkoutCreateScreen(
                     viewModel: WorkoutCreateViewModel(
                       workoutRepository: context.read(),
                       authRepository: context.read(),
                       shareIntentService: context.read(),
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
               GoRoute(
                 path: ':id',
-                builder: (context, state) {
+                parentNavigatorKey: _rootNavigatorKey,
+                pageBuilder: (context, state) {
                   final id = int.parse(state.pathParameters['id']!);
                   final workoutDetailViewModel = WorkoutDetailViewModel(
                     workoutRepository: context.read(),
@@ -82,14 +101,18 @@ final router = GoRouter(
 
                   workoutDetailViewModel.loadWorkout.execute(id);
 
-                  return WorkoutDetailScreen(
-                    viewModel: workoutDetailViewModel,
+                  return MaterialPage(
+                    key: ValueKey(state.uri.toString()),
+                    child: WorkoutDetailScreen(
+                      viewModel: workoutDetailViewModel,
+                    ),
                   );
                 },
                 routes: [
                   GoRoute(
                     path: 'edit',
-                    builder: (context, state) {
+                    parentNavigatorKey: _rootNavigatorKey,
+                    pageBuilder: (context, state) {
                       final id = int.parse(state.pathParameters['id']!);
                       final vm = WorkoutCreateViewModel(
                         workoutRepository: context.read(),
@@ -97,7 +120,10 @@ final router = GoRouter(
                         shareIntentService: context.read(),
                       );
                       vm.loadWorkoutForEdit(id);
-                      return WorkoutCreateScreen(viewModel: vm);
+                      return MaterialPage(
+                        key: ValueKey(state.uri.toString()),
+                        child: WorkoutCreateScreen(viewModel: vm),
+                      );
                     },
                   ),
                 ],

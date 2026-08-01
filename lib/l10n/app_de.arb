@@ -245,5 +245,9 @@
   "workoutTypeVirtualActivity": "Virtual Activity",
   "workoutTypeExpedition": "Expedition",
   "workoutTypeUltra": "Ultramarathon",
-  "workoutTypeAll": "All Sports"
+  "workoutTypeAll": "All Sports",
+  "notifications": "Benachrichtigungen",
+  "markAllAsRead": "Alle als gelesen markieren",
+  "noNotifications": "Keine Benachrichtigungen",
+  "noNotificationsDescription": "Du bist auf dem neuesten Stand!"
 }

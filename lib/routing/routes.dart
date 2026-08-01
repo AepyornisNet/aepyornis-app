@@ -19,4 +19,5 @@ abstract final class Routes {
   static const settingsHealthWorkoutsRelative = 'workouts';
   static const settingsHealthWorkouts =
       '$settingsHealth/$settingsHealthWorkoutsRelative';
+  static const notifications = '/notifications';
 }

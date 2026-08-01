@@ -1435,6 +1435,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All Sports'**
   String get workoutTypeAll;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @markAllAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllAsRead;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get noNotifications;
+
+  /// No description provided for @noNotificationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up!'**
+  String get noNotificationsDescription;
 }
 
 class _AppLocalizationsDelegate

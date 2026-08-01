@@ -14,6 +14,8 @@ import '../data/services/shared_preferences_service.dart';
 import '../ui/home/view_models/home_viewmodel.dart';
 import '../ui/workout/list/view_models/workout_list_viewmodel.dart';
 
+import '../data/repositories/notification/notification_repository.dart';
+import '../data/repositories/notification/notification_repository_remote.dart';
 import '../data/repositories/statistics/statistics_repository.dart';
 import '../data/repositories/statistics/statistics_repository_remote.dart';
 import '../ui/statistic/overview/view_models/statistic_overview_viewmodel.dart';
@@ -42,6 +44,10 @@ List<SingleChildWidget> get providersRemote {
         create: (context) =>
             StatisticsRepositoryRemote(apiClient: context.read())
                 as StatisticsRepository),
+    Provider(
+        create: (context) =>
+            NotificationRepositoryRemote(apiClient: context.read())
+                as NotificationRepository),
     ChangeNotifierProvider(
         create: (context) => WorkoutListViewModel(
               workoutRepository: context.read(),
