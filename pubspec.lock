@@ -433,10 +433,10 @@ packages:
     dependency: "direct main"
     description:
       name: health_connector
-      sha256: "3caec088ae94023117b30e804a2bc19c369121a0618a5baa0849472e17d7b6c8"
+      sha256: "9e9cef0297dd036e886f74944120ac39e3c2ca0b804a192ff5fb4186d300bede"
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.3"
+    version: "3.9.4"
   health_connector_core:
     dependency: transitive
     description:
